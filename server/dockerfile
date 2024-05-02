@@ -1,0 +1,14 @@
+FROM python:3.12
+
+WORKDIR /usr/src/server
+
+COPY . .
+
+RUN pip install --upgrade pip \
+ && pip install -r requirements.txt
+#  && pip install matplotlib scipy flask numpy \
+#  && pip install -U flask_cors \
+#  && pip install git+https://github.com/kkito0726/MEA_modules.git
+
+
+CMD [ "flask", "run" ]
