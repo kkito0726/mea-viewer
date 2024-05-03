@@ -1,3 +1,4 @@
+altgraph==0.17.4
 blinker==1.8.1
 click==8.1.7
 contourpy==1.2.1
@@ -8,11 +9,14 @@ fonttools==4.51.0
 itsdangerous==2.2.0
 Jinja2==3.1.3
 kiwisolver==1.4.5
+macholib==1.16.3
 MarkupSafe==2.1.5
 matplotlib==3.8.4
 numpy==1.26.4
 packaging==24.0
 pillow==10.3.0
+pyinstaller==6.6.0
+pyinstaller-hooks-contrib==2024.5
 pyMEA @ git+https://github.com/kkito0726/MEA_modules.git@9ea2ef52da486d78ca2baba45fc265b164c85518
 pyparsing==3.1.2
 python-dateutil==2.9.0.post0

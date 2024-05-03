@@ -4,9 +4,9 @@ import { Topbar } from "../components/Topbar";
 
 export const ShowAll = () => {
   return (
-    <div className="w-screen">
+    <div className="w-screen hidden-scrollbar">
       <Topbar />
-      <div className="flex w-screen min-h-screen">
+      <div className="flex w-full min-h-screen ">
         <Sidebar />
         <ShowAllBody />
       </div>
