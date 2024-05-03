@@ -11,4 +11,4 @@ RUN pip install --upgrade pip \
 #  && pip install git+https://github.com/kkito0726/MEA_modules.git
 
 
-CMD [ "flask", "run" ]
+# CMD [ "python" "app.py" ]

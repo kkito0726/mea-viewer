@@ -5,10 +5,10 @@ services:
     build: ./server
     tty: true
     ports:
-      - 5001:5000
+      - "5001:5001"
 
   client:
     build: ./client
     tty: true
     ports:
-      - 5173:5173
+      - "5173:5173"
