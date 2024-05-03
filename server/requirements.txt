@@ -15,7 +15,6 @@ matplotlib==3.8.4
 numpy==1.26.4
 packaging==24.0
 pillow==10.3.0
-pyinstaller==6.6.0
 pyinstaller-hooks-contrib==2024.5
 pyMEA @ git+https://github.com/kkito0726/MEA_modules.git@9ea2ef52da486d78ca2baba45fc265b164c85518
 pyparsing==3.1.2
