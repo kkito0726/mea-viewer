@@ -56,7 +56,7 @@ export const ShowAllBody = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsPost(true);
-    const url = "http://0.0.0.0:5001/showAll";
+    const url = "http://127.0.0.1:5001/showAll";
     const reqBody: PostValue = {
       hed_path: filePath,
       ...values,
