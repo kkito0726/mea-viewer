@@ -1,6 +1,12 @@
 import { FormValues } from "../types/FormValues";
 
-export const getFormData = (values: FormValues) => {
+type FormData = {
+  name: string;
+  label: string;
+  value: number;
+};
+
+export const getFormData = (values: FormValues): FormData[] => {
   return [
     {
       name: "start",

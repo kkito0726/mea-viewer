@@ -1,21 +1,12 @@
 import React, { useState } from "react";
 import { Footer } from "./Footer";
 import { ResFigure } from "./ResFigure";
-import { FormValues } from "../types/FormValues";
+import { FormValues, initFormValue } from "../types/FormValues";
 import { Form } from "./Form";
 import { fetchApi } from "../hooks/fetchApi";
 
 export const ShowAllBody = () => {
-  const [values, setValues] = useState<FormValues>({
-    hed_path: "",
-    start: 0,
-    end: 5,
-    volt_min: -200,
-    volt_max: 200,
-    x_ratio: 8,
-    y_ratio: 8,
-    dpi: 100,
-  });
+  const [values, setValues] = useState<FormValues>(initFormValue);
 
   const [imgSrc, setImgSrc] = useState<string>("");
   const [isPost, setIsPost] = useState<boolean>(false);
@@ -37,16 +28,7 @@ export const ShowAllBody = () => {
 
   const handleInitialize = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    setValues({
-      hed_path: values.hed_path,
-      start: 0,
-      end: 5,
-      volt_min: -200,
-      volt_max: 200,
-      x_ratio: 8,
-      y_ratio: 8,
-      dpi: 100,
-    });
+    setValues(initFormValue);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
