@@ -20,7 +20,7 @@ export const Form: React.FC<Props> = ({
   const labelCss = "block text-sm font-medium text-gray-300 p-1";
   const formData = getFormData(values);
   return (
-    <div className="p-4 bg-zinc-700 text-white max-w-2xl mx-auto my-10 rounded-lg shadow-lg">
+    <div className="p-4 bg-zinc-700 text-white max-w-2xl mx-auto my-2 rounded-lg shadow-lg">
       <div className="p-4 rounded mb-2">
         <label
           htmlFor="start"
