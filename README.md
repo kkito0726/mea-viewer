@@ -10,7 +10,7 @@ MEA 計測データをブラウザ上で確認するアプリ
 
 1. [Git install](https://qiita.com/T-H9703EnAc/items/4fbe6593d42f9a844b1c)
 2. [Docker Desktop install](https://docs.docker.com/get-docker/)
-3. git bash (Git インストール時に同時に入る)で以下のコマンドを実行
+3. Docker Desktop を起動した状態で、git bash (Git インストール時に同時に入る)で以下のコマンドを実行
 
 初回のみ
 
@@ -20,12 +20,13 @@ cd ~/Workspace
 git clone https://github.com/kkito0726/mea-viewer
 cd mea-viewer
 bash ~/Workspace/mea-viewer/win-setup.sh
+source ~/.bashrc
 ```
 
 ### Mac OS の場合
 
 1. [Docker Desktop install](https://docs.docker.com/get-docker/)
-2. ターミナルで以下のコマンドを実行
+2. Docker Desktop を起動した状態で、ターミナルで以下のコマンドを実行
 
 初回のみ
 
@@ -34,6 +35,7 @@ mkdir ~/Workspace
 cd ~/Workspace
 git clone https://github.com/kkito0726/mea-viewer
 bash ~/Workspace/mea-viewer/mac-setup.sh
+source ~/.zshrc
 ```
 
 ## 2. アプリの実行
