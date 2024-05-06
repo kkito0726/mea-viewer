@@ -11,12 +11,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ name }) => {
   return (
     <div className="">
       <div className="cursor-pointer">
-        <ul className="p-0 m-0 list-none text-slate-300 text-center">
+        <ul
+          key="sidebar-item"
+          className="p-0 m-0 list-none text-slate-300 text-center"
+        >
           {sidebarData.map((data, i) => {
             return (
-              <Link to={data.link}>
+              <Link key={i} to={data.link}>
                 <li
-                  key={i}
                   className={
                     name === data.name ? buttonCss + selectCss : buttonCss
                   }

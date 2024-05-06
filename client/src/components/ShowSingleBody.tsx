@@ -1,28 +1,15 @@
-import { ChangeEvent, useState } from "react";
-import { HedInput } from "./HedInput";
-import { HedValue, initHedValue } from "../types/HedValue";
-import { readHed } from "../hooks/readHed";
-import { BioInput } from "./BioInput";
-import { readBio, ReadTime } from "../hooks/readBio";
+import { useState } from "react";
+
 import { Form } from "./Form";
 import { fetchShowSingle } from "../hooks/fetchApi";
 import { ResFigure } from "./ResFigure";
 import { ChForm } from "./ChForm";
 import { ChFormValue, initChFormValue } from "../types/ChFormValue";
 import { Footer } from "./Footer";
+import { ReadBio } from "./ReadBio";
 
 export const ShowSingleBady = () => {
-  const [hedValue, setHedValue] = useState<HedValue>(initHedValue);
-  const handleHedChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setHedValue({
-      ...hedValue,
-      [name]: parseInt(value),
-    });
-  };
-  const handleHedFile = async (e: ChangeEvent<HTMLInputElement>) => {
-    setHedValue({ ...(await readHed(e)) });
-  };
+  const [meaData, setMeaData] = useState<Float32Array[]>([]);
 
   const [values, setValues] = useState<ChFormValue>(initChFormValue);
 
@@ -59,34 +46,10 @@ export const ShowSingleBady = () => {
     setIsPost(false);
   };
 
-  const [readTime, setReadTime] = useState<ReadTime>({ start: 0, end: 5 });
-  const [meaData, setMeaData] = useState<Float32Array[]>([]);
-  const handleReadTime = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setReadTime({
-      ...readTime,
-      [name]: parseInt(value),
-    });
-  };
-  const handleBioInput = async (e: ChangeEvent<HTMLInputElement>) => {
-    setMeaData(await readBio(e, hedValue, readTime));
-  };
-
   return (
     <div className="flex-1">
       <div className="flex justify-center">
-        <div className="flex max-w-4xl p-2">
-          <HedInput
-            hedValue={hedValue}
-            handleHedChange={handleHedChange}
-            handleHedFile={handleHedFile}
-          />
-          <BioInput
-            readTime={readTime}
-            handleReadTime={handleReadTime}
-            handleBioInput={handleBioInput}
-          />
-        </div>
+        <ReadBio setMeaData={setMeaData} />
       </div>
 
       {meaData[0] ? (

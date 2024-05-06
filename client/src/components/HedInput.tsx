@@ -5,12 +5,14 @@ type BioInputProps = {
   hedValue: HedValue;
   handleHedChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   handleHedFile: (e: ChangeEvent<HTMLInputElement>) => Promise<void>;
+  hedName: string;
 };
 
 export const HedInput: React.FC<BioInputProps> = ({
   hedValue,
   handleHedChange,
   handleHedFile,
+  hedName,
 }) => {
   const rateValues = [100000, 50000, 25000, 20000, 10000, 5000];
   const gainValues = [20, 100, 1000, 2000, 5000, 10000, 20000, 50000];
@@ -57,6 +59,7 @@ export const HedInput: React.FC<BioInputProps> = ({
               onChange={handleHedChange}
               name="sampling_rate"
               id="sampling-rate"
+              disabled={!!hedName}
             >
               {rateValues.map((value, i) => (
                 <option key={i} value={value}>
@@ -73,6 +76,7 @@ export const HedInput: React.FC<BioInputProps> = ({
               onChange={handleHedChange}
               name="gain"
               id="gain"
+              disabled={!!hedName}
             >
               {gainValues.map((value, i) => (
                 <option key={i} value={value}>
@@ -82,6 +86,11 @@ export const HedInput: React.FC<BioInputProps> = ({
             </select>
           </div>
         </div>
+        {hedName ? (
+          <div className="flex items-center justify-between">
+            <span>{hedName}</span>
+          </div>
+        ) : null}
       </div>
     </div>
   );

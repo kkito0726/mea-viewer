@@ -693,6 +693,11 @@ video {
   max-width: 1024px;
 }
 
+.max-w-min {
+  max-width: -moz-min-content;
+  max-width: min-content;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -995,6 +1000,11 @@ video {
 .text-slate-300 {
   --tw-text-opacity: 1;
   color: rgb(203 213 225 / var(--tw-text-opacity));
+}
+
+.text-gray-400 {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
 }
 
 .shadow-lg {
