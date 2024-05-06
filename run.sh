@@ -1,1 +1,0 @@
-python ~/Workspace/mea-viewer/server/app.py

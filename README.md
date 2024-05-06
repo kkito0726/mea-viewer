@@ -4,12 +4,12 @@ MEA 計測データをブラウザ上で確認するアプリ
 
 ## 1. 環境構築
 
-フロントエンドは公開済みで、バックエンドはローカル環境で実行したいので本リポジトリをクローンして実行する。
+アプリケーションを docker-compose で動かす。
 
 ### Windows OS の場合
 
-1. [Python install](https://www.python.org/downloads/)
-2. [Git install](https://qiita.com/T-H9703EnAc/items/4fbe6593d42f9a844b1c)
+1. [Git install](https://qiita.com/T-H9703EnAc/items/4fbe6593d42f9a844b1c)
+2. [Docker Desktop install](https://docs.docker.com/get-docker/)
 3. git bash (Git インストール時に同時に入る)で以下のコマンドを実行
 
 初回のみ
@@ -18,12 +18,13 @@ MEA 計測データをブラウザ上で確認するアプリ
 mkdir ~/Workspace
 cd ~/Workspace
 git clone https://github.com/kkito0726/mea-viewer
-bash ./mea-viewer/setup.sh
+cd mea-viewer
+bash ~/Workspace/mea-viewer/win-setup.sh
 ```
 
 ### Mac OS の場合
 
-1. [Python install](https://qiita.com/omo_taku/items/bc97f69391b2f4627f36#%E6%96%B9%E6%B3%952-homebrew%E3%82%92%E6%B4%BB%E7%94%A8%E3%81%99%E3%82%8B)
+1. [Docker Desktop install](https://docs.docker.com/get-docker/)
 2. ターミナルで以下のコマンドを実行
 
 初回のみ
@@ -32,17 +33,34 @@ bash ./mea-viewer/setup.sh
 mkdir ~/Workspace
 cd ~/Workspace
 git clone https://github.com/kkito0726/mea-viewer
-bash ./mea-viewer/setup.sh
+bash ~/Workspace/mea-viewer/mac-setup.sh
 ```
 
 ## 2. アプリの実行
 
+Docker Desktop を起動した状態で
+
 ```bash
-bash ~/Workspace/mea-viewer/run.sh
+mea-viewer
 ```
 
-このコマンドを実行するとアプリケーションが立ち上がり、ブラウザが開く
-終了する場合は`Ctrl`+`c`で終了
+このコマンドで Docker コンテナが立ち上がり、ブラウザが開く。
+PC 再起動や Docker Desktop を再起動した場合はこのコマンドをもう一度実行する。
+
+### Docker コンテナを停止したい場合
+
+```bash
+docker-compose -f ~/Workspace/mea-viewer/docker-compose.yml stop
+```
+
+## 3. アプリのアップデートをする場合
+
+ローカルリポジトリを最新版にして、docker コンテナを build する
+
+```bash
+cd ~/Workspace/mea-viewer
+docker-compose build
+```
 
 ---
 
