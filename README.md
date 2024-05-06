@@ -18,7 +18,6 @@ MEA 計測データをブラウザ上で確認するアプリ
 mkdir ~/Workspace
 cd ~/Workspace
 git clone https://github.com/kkito0726/mea-viewer
-cd mea-viewer
 bash ~/Workspace/mea-viewer/win-setup.sh
 source ~/.bashrc
 ```
