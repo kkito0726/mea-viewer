@@ -2,24 +2,27 @@ from flask import request
 from model.form_value import FormValue
 from lib.plot import showAll
 from pyMEA.MEA import MEA
+import numpy as np
+import json
 
 
 def showAllService() -> str:
+    # POSTされたファイルデータを取得
+    files = request.files.values()
+    data = np.array([np.frombuffer(file.read(), dtype=np.float32) for file in files])
+
+    json_data = request.form.get("jsonData")
+    if json_data:
+        json_data = json.loads(json_data)  # JSON文字列をPython辞書に変換
     value = FormValue(
-        request.json["hed_path"],
-        request.json["start"],
-        request.json["end"],
-        request.json["volt_min"],
-        request.json["volt_max"],
-        request.json["x_ratio"],
-        request.json["y_ratio"],
-        request.json["dpi"],
+        json_data["start"],
+        json_data["end"],
+        json_data["volt_min"],
+        json_data["volt_max"],
+        json_data["x_ratio"],
+        json_data["y_ratio"],
+        json_data["dpi"],
     )
-    start = int(value.start - 1)
-    if start < 0:
-        start = 0
-    end = int(value.end + 1)
-    data = MEA(value.hed_path, start, end)
     image = showAll(
         data,
         value.start,

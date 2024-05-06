@@ -9,7 +9,7 @@ import base64
 
 
 def showAll(
-    data: MEA,
+    data,
     start=0,
     end=5,
     volt_min=-200,
@@ -19,16 +19,12 @@ def showAll(
 ) -> str:
     buf = io.BytesIO()
 
-    # 読み込み開始時間が0ではないときズレが生じるため差を取っている
-    start_frame = int(abs(data.start - start) * data.SAMPLING_RATE)
-    end_frame = int(abs(data.start - end) * data.SAMPLING_RATE)
-
     plt.figure(figsize=figsize, dpi=dpi)
     for i in range(1, 65, 1):
         plt.subplot(8, 8, i)
         plt.plot(
-            data.array[0][start_frame:end_frame],
-            data.array[i][start_frame:end_frame],
+            data[0],
+            data[i],
         )
         plt.ylim(volt_min, volt_max)
         plt.xlim(start, end)

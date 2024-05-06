@@ -1,5 +1,4 @@
 export type FormValues = {
-  hed_path: string;
   start: number;
   end: number;
   volt_min: number;
@@ -10,7 +9,6 @@ export type FormValues = {
 };
 
 export const initFormValue: FormValues = {
-  hed_path: "",
   start: 0,
   end: 5,
   volt_min: -200,

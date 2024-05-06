@@ -4,8 +4,10 @@ import { ResFigure } from "./ResFigure";
 import { FormValues, initFormValue } from "../types/FormValues";
 import { Form } from "./Form";
 import { fetchApi } from "../hooks/fetchApi";
+import { ReadBio } from "./ReadBio";
 
 export const ShowAllBody = () => {
+  const [meaData, setMeaData] = useState<Float32Array[]>([]);
   const [values, setValues] = useState<FormValues>(initFormValue);
 
   const [imgSrc, setImgSrc] = useState<string>("");
@@ -13,17 +15,10 @@ export const ShowAllBody = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === "hed_path") {
-      setValues({
-        ...values,
-        [name]: value,
-      });
-    } else {
-      setValues({
-        ...values,
-        [name]: value,
-      });
-    }
+    setValues({
+      ...values,
+      [name]: parseFloat(value),
+    });
   };
 
   const handleInitialize = (e: { preventDefault: () => void }) => {
@@ -34,23 +29,28 @@ export const ShowAllBody = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsPost(true);
-    const resData = await fetchApi(values);
+    const resData = await fetchApi(values, meaData);
     setImgSrc(resData.imgSrc);
     setIsPost(false);
   };
 
   return (
     <div className="flex-1">
-      <div className="flex flex-col items-center">
-        <Form
-          values={values}
-          handleChange={handleChange}
-          handleInitialize={handleInitialize}
-          handleSubmit={handleSubmit}
-        />
-        <ResFigure isPost={isPost} imgSrc={imgSrc} />
-        <Footer />
+      <div className="flex justify-center">
+        <ReadBio setMeaData={setMeaData} />
       </div>
+      {meaData[0] ? (
+        <div className="flex flex-col items-center">
+          <Form
+            values={values}
+            handleChange={handleChange}
+            handleInitialize={handleInitialize}
+            handleSubmit={handleSubmit}
+          />
+          <ResFigure isPost={isPost} imgSrc={imgSrc} />
+          <Footer />
+        </div>
+      ) : null}
     </div>
   );
 };

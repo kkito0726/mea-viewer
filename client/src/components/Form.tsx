@@ -21,23 +21,6 @@ export const Form: React.FC<Props> = ({
   const formData = getFormData(values);
   return (
     <div className="p-4 bg-zinc-700 text-white max-w-2xl mx-auto my-2 rounded-lg shadow-lg">
-      <div className="p-4 rounded mb-2">
-        <label
-          htmlFor="start"
-          className="block font-medium text-gray-300 rounded-sm"
-        >
-          hedファイルのフルパス追加
-        </label>
-        <input
-          type="text"
-          id="hed_path"
-          name="hed_path"
-          className={barCss}
-          value={values.hed_path}
-          onChange={handleChange}
-        />
-      </div>
-
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4">
           {formData.map((data, i) => {

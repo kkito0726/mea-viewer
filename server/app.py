@@ -36,7 +36,6 @@ def show_single():
     if json_data:
         json_data = json.loads(json_data)  # JSON文字列をPython辞書に変換
     value = FormValue(
-        json_data["hed_path"],
         json_data["start"],
         json_data["end"],
         json_data["volt_min"],

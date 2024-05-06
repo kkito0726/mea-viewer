@@ -1,8 +1,5 @@
 class FormValue:
-    def __init__(
-        self, hed_path, start, end, volt_min, volt_max, x_ratio, y_ratio, dpi
-    ) -> None:
-        self.hed_path = hed_path
+    def __init__(self, start, end, volt_min, volt_max, x_ratio, y_ratio, dpi) -> None:
         self.start = float(start)
         self.end = float(end)
         self.volt_min = float(volt_min)

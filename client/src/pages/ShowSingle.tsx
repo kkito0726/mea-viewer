@@ -5,7 +5,7 @@ import { Topbar } from "../components/Topbar";
 export const ShowSingle = () => {
   return (
     <div className="w-screen hidden-scrollbar">
-      <Topbar />
+      <Topbar displayName="1電極表示" />
       <div className="flex w-full min-h-screen">
         <Sidebar name="showSingle" />
         <ShowSingleBady />

@@ -20,17 +20,10 @@ export const ShowSingleBady = () => {
     e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     const { name, value } = e.target;
-    if (name === "hed_path") {
-      setValues({
-        ...values,
-        [name]: value,
-      });
-    } else {
-      setValues({
-        ...values,
-        [name]: value,
-      });
-    }
+    setValues({
+      ...values,
+      [name]: parseFloat(value),
+    });
   };
 
   const handleInitialize = (e: { preventDefault: () => void }) => {
@@ -42,7 +35,9 @@ export const ShowSingleBady = () => {
     e.preventDefault();
     setIsPost(true);
     const resData = await fetchShowSingle(values, meaData);
-    setImgSrc(resData.imgSrc);
+    if (resData !== undefined) {
+      setImgSrc(resData.imgSrc);
+    }
     setIsPost(false);
   };
 
