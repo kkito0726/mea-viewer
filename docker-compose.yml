@@ -11,4 +11,4 @@ services:
     build: ./client
     tty: true
     ports:
-      - "5173:5173"
+      - "4173:4173"
