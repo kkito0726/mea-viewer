@@ -2,18 +2,23 @@ import { ChFormValue } from "../types/ChFormValue";
 import { FormValues } from "../types/FormValues";
 import { ImgResponse } from "../types/ImgResponse";
 
-export const fetchApi = async (values: FormValues) => {
+export const fetchApi = async (values: FormValues, meaData: Float32Array[]) => {
   const url = "http://127.0.0.1:5001/showAll";
+
+  const buffers = meaData.map((v) => new Blob([v.buffer]));
+
+  // FormDataを使用してデータを送信
+  const formData = new FormData();
+  buffers.forEach((blob, index) => {
+    formData.append(`file${index}`, blob);
+  });
+  formData.append("jsonData", JSON.stringify(values));
 
   try {
     const res = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
+      body: formData, // ヘッダーのContent-TypeはFormDataに任せる
     });
-
     const resData: ImgResponse = await res.json();
     return resData;
   } catch (e) {
@@ -45,9 +50,10 @@ export const fetchShowSingle = async (
       method: "POST",
       body: formData, // ヘッダーのContent-TypeはFormDataに任せる
     });
-    const resData = await res.json();
+    const resData: ImgResponse = await res.json();
     return resData;
   } catch (e) {
     console.error(e);
   }
+  return { imgSrc: "" };
 };

@@ -4,7 +4,7 @@ import { TopBody } from "../components/TopBody";
 export const Toppage = () => {
   return (
     <>
-      <Topbar />
+      <Topbar displayName="" />
       <TopBody />
     </>
   );
