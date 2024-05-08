@@ -1,24 +1,19 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { Footer } from "../footer/Footer";
+import { ResFigure } from "../figure/ResFigure";
+import { FormValues, initFormValue } from "../../types/FormValues";
+import { Form } from "./form/Form";
+import { fetchApi } from "../../hooks/fetchApi";
+import { ReadBio } from "./readMeaFile/ReadBio";
 
-import { Form } from "./Form";
-import { fetchShowSingle } from "../hooks/fetchApi";
-import { ResFigure } from "./ResFigure";
-import { ChForm } from "./ChForm";
-import { ChFormValue, initChFormValue } from "../types/ChFormValue";
-import { Footer } from "./Footer";
-import { ReadBio } from "./ReadBio";
-
-export const ShowSingleBady = () => {
+export const ShowAllBody = () => {
   const [meaData, setMeaData] = useState<Float32Array[]>([]);
-
-  const [values, setValues] = useState<ChFormValue>(initChFormValue);
+  const [values, setValues] = useState<FormValues>(initFormValue);
 
   const [imgSrc, setImgSrc] = useState<string>("");
   const [isPost, setIsPost] = useState<boolean>(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setValues({
       ...values,
@@ -28,16 +23,14 @@ export const ShowSingleBady = () => {
 
   const handleInitialize = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    setValues(initChFormValue);
+    setValues(initFormValue);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsPost(true);
-    const resData = await fetchShowSingle(values, meaData);
-    if (resData !== undefined) {
-      setImgSrc(resData.imgSrc);
-    }
+    const resData = await fetchApi(values, meaData);
+    setImgSrc(resData.imgSrc);
     setIsPost(false);
   };
 
@@ -46,17 +39,15 @@ export const ShowSingleBady = () => {
       <div className="flex justify-center">
         <ReadBio setMeaData={setMeaData} />
       </div>
-
       {meaData[0] ? (
         <div className="flex flex-col items-center">
-          <ChForm values={values} handleChange={handleChange} />
           <Form
             values={values}
             handleChange={handleChange}
             handleInitialize={handleInitialize}
             handleSubmit={handleSubmit}
           />
-          <ResFigure imgSrc={imgSrc} isPost={isPost} />
+          <ResFigure isPost={isPost} imgSrc={imgSrc} />
           <Footer />
         </div>
       ) : null}

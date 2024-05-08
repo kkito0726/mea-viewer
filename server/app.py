@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-from service.service import showAllService
+from service.service import showAllService, showSingleService
 import webbrowser
 import numpy as np
 from flask import request
@@ -27,34 +27,7 @@ def plot_showAll():
 
 @app.route("/showSingle", methods=["POST"])
 def show_single():
-    # POSTされたファイルデータを取得
-    files = request.files.values()
-    arrays = np.array([np.frombuffer(file.read(), dtype=np.float32) for file in files])
-    x, y = arrays[0], arrays[1]
-
-    json_data = request.form.get("jsonData")
-    if json_data:
-        json_data = json.loads(json_data)  # JSON文字列をPython辞書に変換
-    value = FormValue(
-        json_data["start"],
-        json_data["end"],
-        json_data["volt_min"],
-        json_data["volt_max"],
-        json_data["x_ratio"],
-        json_data["y_ratio"],
-        json_data["dpi"],
-    )
-    image = showSingle(
-        x,
-        y,
-        value.start,
-        value.end,
-        value.volt_min,
-        value.volt_max,
-        (value.x_ratio, value.y_ratio),
-        value.dpi,
-    )
-
+    image = showSingleService()
     return jsonify({"imgSrc": image})
 
 

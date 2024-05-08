@@ -1,5 +1,7 @@
-import { FigureProps } from "../types/FigureProps";
-
+type FigureProps = {
+  isPost: boolean;
+  imgSrc: string;
+};
 export const ResFigure: React.FC<FigureProps> = ({ isPost, imgSrc }) => {
   return (
     <>

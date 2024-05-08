@@ -1,6 +1,6 @@
-import { ShowSingleBady } from "../components/ShowSingleBody";
-import { Sidebar } from "../components/Sidebar";
-import { Topbar } from "../components/Topbar";
+import { ShowSingleBady } from "../components/body/ShowSingleBody";
+import { Sidebar } from "../components/sidebar/Sidebar";
+import { Topbar } from "../components/topbar/Topbar";
 
 export const ShowSingle = () => {
   return (

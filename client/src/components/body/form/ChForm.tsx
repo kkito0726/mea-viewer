@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
-import { barCss } from "../hooks/barCss";
-import { ChFormValue } from "../types/ChFormValue";
+import { barCss } from "../../../hooks/barCss";
+import { ChFormValue } from "../../../types/ChFormValue";
 
 type ChFormProps = {
   values: ChFormValue;
