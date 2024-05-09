@@ -3,6 +3,7 @@ import { barCss } from "../../../hooks/barCss";
 import { ReadTime } from "../../../types/ReadTime";
 
 type BioInputProps = {
+  handleReadBio: () => void;
   readTime: ReadTime;
   handleReadTime: (e: ChangeEvent<HTMLInputElement>) => void;
   handleBioInput: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -10,6 +11,7 @@ type BioInputProps = {
 };
 
 export const BioInput: React.FC<BioInputProps> = ({
+  handleReadBio,
   readTime,
   handleReadTime,
   handleBioInput,
@@ -22,9 +24,9 @@ export const BioInput: React.FC<BioInputProps> = ({
       fileInputRef.current.click();
     }
   };
-  const reloadPage = () => {
-    window.location.reload();
-  };
+  // const reloadPage = () => {
+  //   window.location.reload();
+  // };
   return (
     <div className="p-4 bg-zinc-700 text-white max-w-2xl mx-auto my-10 rounded-lg shadow-lg">
       <div className="flex flex-col p-4 mb-4">
@@ -79,9 +81,9 @@ export const BioInput: React.FC<BioInputProps> = ({
           <button
             type="submit"
             className=" max-w-min mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            onClick={reloadPage}
+            onClick={handleReadBio}
           >
-            Reload
+            Read Again
           </button>
         </div>
       ) : null}

@@ -10,12 +10,21 @@ type FileName = {
   hedName: string;
   bioName: string;
 };
+type MeaFile = {
+  hedFile: File | undefined;
+  bioFile: File | undefined;
+};
 type ReadBioProps = {
   setMeaData: React.Dispatch<React.SetStateAction<Float32Array[]>>;
 };
 export const ReadBio: React.FC<ReadBioProps> = ({ setMeaData }) => {
   const [isBioRead, setIsBioRead] = useState(false);
   const [hedValue, setHedValue] = useState<HedValue>(initHedValue);
+  const [meaFile, setMeaFile] = useState<MeaFile | undefined>({
+    hedFile: undefined,
+    bioFile: undefined,
+  });
+
   const handleHedChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setHedValue({
@@ -30,8 +39,13 @@ export const ReadBio: React.FC<ReadBioProps> = ({ setMeaData }) => {
         ...fileName,
         hedName: file.name,
       });
+      setMeaFile({ hedFile: file, bioFile: meaFile?.bioFile });
       setHedValue({ ...(await readHed(file)) });
     }
+  };
+  const handleRefreshHedFile = () => {
+    setMeaFile({ hedFile: undefined, bioFile: meaFile?.bioFile });
+    setFileName({ hedName: "", bioName: fileName.bioName });
   };
   const [readTime, setReadTime] = useState<ReadTime>({ start: 0, end: 120 });
   const handleBioInput = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -42,6 +56,7 @@ export const ReadBio: React.FC<ReadBioProps> = ({ setMeaData }) => {
         ...fileName,
         bioName: file.name,
       });
+      setMeaFile({ hedFile: meaFile?.hedFile, bioFile: file });
       setMeaData(await readBio(file, hedValue, readTime));
       setIsBioRead(false);
     }
@@ -54,6 +69,13 @@ export const ReadBio: React.FC<ReadBioProps> = ({ setMeaData }) => {
     });
   };
 
+  const handleReadBio = async () => {
+    setIsBioRead(true);
+    if (!meaFile?.bioFile) return;
+    setMeaData(await readBio(meaFile.bioFile, hedValue, readTime));
+    setIsBioRead(false);
+  };
+
   const [fileName, setFileName] = useState<FileName>({
     hedName: "",
     bioName: "",
@@ -63,12 +85,14 @@ export const ReadBio: React.FC<ReadBioProps> = ({ setMeaData }) => {
     <div>
       <div className="flex max-w-4xl p-2">
         <HedInput
+          handleRefreshHedFile={handleRefreshHedFile}
           hedValue={hedValue}
           handleHedChange={handleHedChange}
           handleHedFile={handleHedFile}
           hedName={fileName.hedName}
         />
         <BioInput
+          handleReadBio={handleReadBio}
           readTime={readTime}
           handleReadTime={handleReadTime}
           handleBioInput={handleBioInput}
