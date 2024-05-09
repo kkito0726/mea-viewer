@@ -1,6 +1,6 @@
-import { ShowAllBody } from "../components/ShowAllBody";
-import { Sidebar } from "../components/Sidebar";
-import { Topbar } from "../components/Topbar";
+import { ShowAllBody } from "../components/body/ShowAllBody";
+import { Sidebar } from "../components/sidebar/Sidebar";
+import { Topbar } from "../components/topbar/Topbar";
 
 export const ShowAll = () => {
   return (

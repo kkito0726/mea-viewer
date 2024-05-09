@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-import { Form } from "./Form";
-import { fetchShowSingle } from "../hooks/fetchApi";
-import { ResFigure } from "./ResFigure";
-import { ChForm } from "./ChForm";
-import { ChFormValue, initChFormValue } from "../types/ChFormValue";
-import { Footer } from "./Footer";
-import { ReadBio } from "./ReadBio";
+import { Form } from "./form/Form";
+import { fetchShowSingle } from "../../hooks/fetchApi";
+import { ResFigure } from "../figure/ResFigure";
+import { ChForm } from "./form/ChForm";
+import { ChFormValue, initChFormValue } from "../../types/ChFormValue";
+import { Footer } from "../footer/Footer";
+import { ReadBio } from "./readMeaFile/ReadBio";
 
 export const ShowSingleBady = () => {
   const [meaData, setMeaData] = useState<Float32Array[]>([]);

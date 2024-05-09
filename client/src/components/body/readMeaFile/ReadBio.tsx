@@ -1,9 +1,11 @@
-import React, { ChangeEvent, useState } from "react";
-import { readBio, ReadTime } from "../hooks/readBio";
+import { ChangeEvent, useState } from "react";
+import { readBio } from "../../../hooks/readBio";
 import { HedInput } from "./HedInput";
 import { BioInput } from "./BioInput";
-import { HedValue, initHedValue } from "../types/HedValue";
-import { readHed } from "../hooks/readHed";
+import { HedValue, initHedValue } from "../../../types/HedValue";
+import { readHed } from "../../../hooks/readHed";
+import { handleFileFromChangeEvent } from "../../../hooks/handleEvent";
+import { ReadTime } from "../../../types/ReadTime";
 type FileName = {
   hedName: string;
   bioName: string;
@@ -22,35 +24,27 @@ export const ReadBio: React.FC<ReadBioProps> = ({ setMeaData }) => {
     });
   };
   const handleHedFile = async (e: ChangeEvent<HTMLInputElement>) => {
-    const input = e.target as HTMLInputElement; // イベントからHTMLInputElementを取得
-    const file = input.files?.item(0);
-    if (!file) {
-      const errMsg = "ファイルが選択されていません";
-      alert(errMsg);
-      return;
+    const file = handleFileFromChangeEvent(e);
+    if (file) {
+      setFileName({
+        ...fileName,
+        hedName: file.name,
+      });
+      setHedValue({ ...(await readHed(file)) });
     }
-    setFileName({
-      ...fileName,
-      hedName: file.name,
-    });
-    setHedValue({ ...(await readHed(e)) });
   };
   const [readTime, setReadTime] = useState<ReadTime>({ start: 0, end: 120 });
   const handleBioInput = async (e: ChangeEvent<HTMLInputElement>) => {
     setIsBioRead(true);
-    const input = e.target as HTMLInputElement; // イベントからHTMLInputElementを取得
-    const file = input.files?.item(0);
-    if (!file) {
-      const errMsg = "ファイルが選択されていません";
-      alert(errMsg);
-      return;
+    const file = handleFileFromChangeEvent(e);
+    if (file) {
+      setFileName({
+        ...fileName,
+        bioName: file.name,
+      });
+      setMeaData(await readBio(file, hedValue, readTime));
+      setIsBioRead(false);
     }
-    setFileName({
-      ...fileName,
-      bioName: file.name,
-    });
-    setMeaData(await readBio(e, hedValue, readTime));
-    setIsBioRead(false);
   };
   const handleReadTime = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

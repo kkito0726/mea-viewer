@@ -1,5 +1,5 @@
 import { ChangeEvent, useRef } from "react";
-import { HedValue } from "../types/HedValue";
+import { HedValue } from "../../../types/HedValue";
 
 type BioInputProps = {
   hedValue: HedValue;

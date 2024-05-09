@@ -1,23 +1,42 @@
-import { ChangeEvent } from "react";
+import { handleFileError } from "../errors/handleFileError";
 import { HedValue } from "../types/HedValue";
-
-export type ReadTime = {
-  start: number;
-  end: number;
-};
+import { ReadTime } from "../types/ReadTime";
 
 const VOLT_RANGE = 100;
 const ELECTRODE_NUMBER = 64;
 const BYTES_PER_SAMPLE = 2;
 const DATA_UNIT_LENGTH = ELECTRODE_NUMBER + 4;
 
-const handleFileError = (
-  errMsg: string,
-  reject: (reason?: unknown) => void
-) => {
-  alert(errMsg);
-  console.error(errMsg);
-  reject(new Error(errMsg));
+export const readBio = (
+  file: File,
+  hedValue: HedValue,
+  readTime: ReadTime
+): Promise<Float32Array[]> => {
+  return new Promise((resolve, reject) => {
+    const startByte: number =
+      readTime.start *
+      hedValue.sampling_rate *
+      BYTES_PER_SAMPLE *
+      DATA_UNIT_LENGTH;
+    const byteCount: number =
+      (readTime.end - readTime.start) *
+      hedValue.sampling_rate *
+      BYTES_PER_SAMPLE *
+      DATA_UNIT_LENGTH;
+    const cols: number =
+      (readTime.end - readTime.start) * hedValue.sampling_rate;
+
+    const reader = new FileReader();
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      const buffer = new Int16Array(e.target!.result as ArrayBuffer);
+      const reshapedData = convertData(buffer, hedValue, readTime, cols);
+      resolve(reshapedData);
+    };
+    reader.onerror = () => {
+      handleFileError("ファイルの読み込みに失敗しました", reject);
+    };
+    reader.readAsArrayBuffer(file.slice(startByte, startByte + byteCount));
+  });
 };
 
 const convertData = (
@@ -53,44 +72,4 @@ const convertData = (
   }
 
   return reshapedData;
-};
-
-export const readBio = (
-  e: ChangeEvent<HTMLInputElement>,
-  hedValue: HedValue,
-  readTime: ReadTime
-): Promise<Float32Array[]> => {
-  return new Promise((resolve, reject) => {
-    const input = e.target as HTMLInputElement;
-    const file = input.files?.item(0);
-
-    if (!file) {
-      handleFileError("ファイルが選択されていません", reject);
-      return;
-    }
-
-    const startByte: number =
-      readTime.start *
-      hedValue.sampling_rate *
-      BYTES_PER_SAMPLE *
-      DATA_UNIT_LENGTH;
-    const byteCount: number =
-      (readTime.end - readTime.start) *
-      hedValue.sampling_rate *
-      BYTES_PER_SAMPLE *
-      DATA_UNIT_LENGTH;
-    const cols: number =
-      (readTime.end - readTime.start) * hedValue.sampling_rate;
-
-    const reader = new FileReader();
-    reader.onload = (e: ProgressEvent<FileReader>) => {
-      const buffer = new Int16Array(e.target!.result as ArrayBuffer);
-      const reshapedData = convertData(buffer, hedValue, readTime, cols);
-      resolve(reshapedData);
-    };
-    reader.onerror = () => {
-      handleFileError("ファイルの読み込みに失敗しました", reject);
-    };
-    reader.readAsArrayBuffer(file.slice(startByte, startByte + byteCount));
-  });
 };

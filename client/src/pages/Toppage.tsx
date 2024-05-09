@@ -1,5 +1,5 @@
-import { Topbar } from "../components/Topbar";
-import { TopBody } from "../components/TopBody";
+import { Topbar } from "../components/topbar/Topbar";
+import { TopBody } from "../components/body/TopBody";
 
 export const Toppage = () => {
   return (

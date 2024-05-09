@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Footer } from "./Footer";
-import { ResFigure } from "./ResFigure";
-import { FormValues, initFormValue } from "../types/FormValues";
-import { Form } from "./Form";
-import { fetchApi } from "../hooks/fetchApi";
-import { ReadBio } from "./ReadBio";
+import { useState } from "react";
+import { Footer } from "../footer/Footer";
+import { ResFigure } from "../figure/ResFigure";
+import { FormValues, initFormValue } from "../../types/FormValues";
+import { Form } from "./form/Form";
+import { fetchApi } from "../../hooks/fetchApi";
+import { ReadBio } from "./readMeaFile/ReadBio";
 
 export const ShowAllBody = () => {
   const [meaData, setMeaData] = useState<Float32Array[]>([]);

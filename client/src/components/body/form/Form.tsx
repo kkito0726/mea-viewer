@@ -1,6 +1,5 @@
-import React from "react";
-import { FormValues } from "../types/FormValues";
-import { getFormData } from "../hooks/getFormData";
+import { FormValues } from "../../../types/FormValues";
+import { getFormData } from "../../../hooks/getFormData";
 
 type Props = {
   values: FormValues;

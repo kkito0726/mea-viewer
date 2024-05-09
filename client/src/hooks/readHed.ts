@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { handleFileError } from "../errors/handleFileError";
 import { HedValue } from "../types/HedValue";
 
 type readType = {
@@ -25,20 +25,8 @@ const gains: readType = {
   16616: 50000,
 };
 
-export const readHed = (
-  event: ChangeEvent<HTMLInputElement>
-): Promise<HedValue> => {
+export const readHed = (file: File): Promise<HedValue> => {
   return new Promise<HedValue>((resolve, reject) => {
-    const input = event.target as HTMLInputElement; // イベントからHTMLInputElementを取得
-    const file = input.files?.item(0); // inputからファイルを取得
-
-    if (!file) {
-      const errMsg = "ファイルが選択されていません";
-      alert(errMsg);
-      reject(new Error(errMsg)); // ファイルがない場合はrejectを呼び出す
-      return;
-    }
-
     const reader = new FileReader();
     reader.onload = (loadEvent: ProgressEvent<FileReader>) => {
       if (loadEvent.target?.result instanceof ArrayBuffer) {
@@ -54,7 +42,7 @@ export const readHed = (
       }
     };
     reader.onerror = () => {
-      reject(new Error("File could not be read."));
+      handleFileError("ファイルの読み込みに失敗しました", reject);
     };
 
     reader.readAsArrayBuffer(file); // Fileオブジェクトを渡す
