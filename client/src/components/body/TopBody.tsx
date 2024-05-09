@@ -13,7 +13,7 @@ export const TopBody = () => {
         <p className="mt-6">計測データを即座に確認！</p>
         <Link to={"/showAll"}>
           <p className="mt-7 text-4xl bg-green-600 rounded-full p-3 cursor-pointer hover:bg-green-400">
-            Let's Start
+            {"Let's Start"}
           </p>
         </Link>
       </div>

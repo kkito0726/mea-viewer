@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Footer } from "../footer/Footer";
 import { ResFigure } from "../figure/ResFigure";
 import { FormValues, initFormValue } from "../../types/FormValues";

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef } from "react";
+import { ChangeEvent, useRef } from "react";
 import { barCss } from "../../../hooks/barCss";
 import { ReadTime } from "../../../types/ReadTime";
 

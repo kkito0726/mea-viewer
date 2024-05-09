@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { readBio } from "../../../hooks/readBio";
 import { HedInput } from "./HedInput";
 import { BioInput } from "./BioInput";

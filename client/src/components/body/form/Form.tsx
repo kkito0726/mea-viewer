@@ -1,4 +1,3 @@
-import React from "react";
 import { FormValues } from "../../../types/FormValues";
 import { getFormData } from "../../../hooks/getFormData";
 

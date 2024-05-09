@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { sidebarData } from "../../hooks/getSidebarData";
-import React from "react";
 
 type SidebarProps = {
   name: string;
