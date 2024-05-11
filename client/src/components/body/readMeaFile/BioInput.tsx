@@ -27,8 +27,8 @@ export const BioInput: React.FC<BioInputProps> = ({
     }
   };
   return (
-    <div className="p-4 bg-zinc-700 text-white mx-auto my-10 rounded-lg">
-      <div className="flex flex-col p-4 mb-4">
+    <div className="p-4 text-white">
+      <div className="flex flex-col px-4 pb-1">
         <span className="block font-medium text-gray-300 rounded-sm">
           .bioファイルを選択
         </span>

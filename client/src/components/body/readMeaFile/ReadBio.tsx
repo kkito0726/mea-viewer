@@ -35,29 +35,30 @@ export const ReadBio: React.FC<ReadBioProps> = ({
   handleReadBio,
 }) => {
   return (
-    <div>
-      <div className="flex">
-        <HedInput
-          handleRefreshHedFile={handleRefreshHedFile}
-          hedValue={hedValue}
-          handleHedChange={handleHedChange}
-          handleHedFile={handleHedFile}
-          hedName={fileName.hedName}
-        />
-        <BioInput
-          handleReadBio={handleReadBio}
-          readTime={readTime}
-          handleReadTime={handleReadTime}
-          handleBioInput={handleBioInput}
-          bioName={fileName.bioName}
-          meaData={meaData}
-        />
+    <>
+      <HedInput
+        handleRefreshHedFile={handleRefreshHedFile}
+        hedValue={hedValue}
+        handleHedChange={handleHedChange}
+        handleHedFile={handleHedFile}
+        hedName={fileName.hedName}
+      />
+      <BioInput
+        handleReadBio={handleReadBio}
+        readTime={readTime}
+        handleReadTime={handleReadTime}
+        handleBioInput={handleBioInput}
+        bioName={fileName.bioName}
+        meaData={meaData}
+      />
+      <div className="px-9 pb-4">
+        <hr className="border border-zinc-600" />
       </div>
       {isBioRead ? (
         <div className="flex justify-center">
           <span className="text-gray-300 text-center">MEAデータ読込中</span>
         </div>
       ) : null}
-    </div>
+    </>
   );
 };

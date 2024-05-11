@@ -30,9 +30,9 @@ export const HedInput: React.FC<BioInputProps> = ({
   };
 
   return (
-    <div className="mx-2">
-      <div className="p-4 bg-zinc-700 text-gray-300 max-w-2xl mx-auto my-10 rounded-lg">
-        <div className="flex flex-col p-4 mb-4">
+    <div>
+      <div className="px-4 text-gray-300 max-w-2xl mx-auto">
+        <div className="flex flex-col p-4">
           <span className="block font-medium text-gray-300 rounded-sm">
             .hedファイルから値を設定する
           </span>

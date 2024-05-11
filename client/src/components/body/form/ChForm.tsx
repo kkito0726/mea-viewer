@@ -9,10 +9,8 @@ type ChFormProps = {
 
 export const ChForm: React.FC<ChFormProps> = ({ values, handleChange }) => {
   return (
-    <div className="flex flex-col p-4 bg-zinc-700 text-white max-w-2xl mx-auto rounded-lg shadow-lg">
-      <span className="block font-medium text-gray-300 rounded-sm">
-        電極番号を選択
-      </span>
+    <div className="px-8 pb-1 text-white">
+      <span className=" text-gray-300">電極番号を選択</span>
       <select
         name="ch"
         id="ch-select"
