@@ -31,8 +31,6 @@ def decode_request():
     ):
         end_frame = len(data[0])
 
-    print(json_data)
-
     return data[:, start_frame:end_frame], json_data
 
 
