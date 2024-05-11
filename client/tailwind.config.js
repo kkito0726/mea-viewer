@@ -3,7 +3,7 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      height: {
+      minHeight: {
         "screen-minus-topbar": "calc(100vh - 56px)",
       },
       width: {

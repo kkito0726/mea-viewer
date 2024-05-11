@@ -140,7 +140,7 @@ export const Body: React.FC<BodyProps> = ({ fetchApi, pageName }) => {
   return (
     <>
       <div className="flex">
-        <div className="flex flex-col h-screen-minus-topbar bg-zinc-700">
+        <div className="flex flex-col min-h-screen-minus-topbar bg-zinc-700">
           <ReadBio
             isBioRead={isBioRead}
             hedValue={hedValue}
