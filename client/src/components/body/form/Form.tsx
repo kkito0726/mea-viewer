@@ -42,7 +42,7 @@ export const Form: React.FC<FormProps> = ({
             );
           })}
         </div>
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-end">
           <button
             type="button"
             className="mt-4 bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-3"

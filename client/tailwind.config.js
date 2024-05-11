@@ -2,7 +2,14 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        "screen-minus-topbar": "calc(100vh - 56px)",
+      },
+      width: {
+        figure: "calc(100vw-578px)",
+      },
+    },
   },
   plugins: [],
 };
