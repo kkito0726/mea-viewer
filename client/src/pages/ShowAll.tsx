@@ -1,6 +1,7 @@
-import { ShowAllBody } from "../components/body/ShowAllBody";
+import { Body } from "../components/body/Body";
 import { Sidebar } from "../components/sidebar/Sidebar";
 import { Topbar } from "../components/topbar/Topbar";
+import { fetchShowAll } from "../hooks/fetchApi";
 
 export const ShowAll = () => {
   return (
@@ -8,7 +9,7 @@ export const ShowAll = () => {
       <Topbar displayName="64電極表示" />
       <div className="flex w-full min-h-screen">
         <Sidebar name="showAll" />
-        <ShowAllBody />
+        <Body pageName="showAll" fetchApi={fetchShowAll} />
       </div>
     </div>
   );

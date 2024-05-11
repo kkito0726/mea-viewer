@@ -1,14 +1,14 @@
 import { FormValues } from "../../../types/FormValues";
 import { getFormData } from "../../../hooks/getFormData";
 
-type Props = {
+export type FormProps = {
   values: FormValues;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleInitialize: (e: { preventDefault: () => void }) => void;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
-export const Form: React.FC<Props> = ({
+export const Form: React.FC<FormProps> = ({
   values,
   handleChange,
   handleInitialize,
@@ -34,6 +34,7 @@ export const Form: React.FC<Props> = ({
                   name={data.name}
                   className={barCss}
                   value={data.value}
+                  min={data.min}
                   onChange={handleChange}
                 />
               </div>
@@ -42,7 +43,7 @@ export const Form: React.FC<Props> = ({
         </div>
         <div className="flex justify-end mt-4">
           <button
-            type="submit"
+            type="button"
             className="mt-4 bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-3"
             onClick={handleInitialize}
           >

@@ -15,30 +15,32 @@ def decode_request():
     if json_data:
         json_data = json.loads(json_data)  # JSON文字列をPython辞書に変換
 
-    return data, json_data
+    start_frame = (json_data["start"] - json_data["readTime"]["start"]) * json_data[
+        "hedValue"
+    ]["sampling_rate"]
+    end_frame = (json_data["end"] - json_data["readTime"]["start"]) * json_data[
+        "hedValue"
+    ]["sampling_rate"]
+    if start_frame < 0:
+        start_frame = 0
+    if end_frame < 0:
+        end_frame = 1
+    if (
+        end_frame
+        > json_data["readTime"]["end"] * json_data["hedValue"]["sampling_rate"]
+    ):
+        end_frame = len(data[0])
+
+    print(json_data)
+
+    return data[:, start_frame:end_frame], json_data
 
 
 def showAllService() -> str:
     data, json_data = decode_request()
+    form_value = FormValue(json_data=json_data)
 
-    value = FormValue(
-        json_data["start"],
-        json_data["end"],
-        json_data["volt_min"],
-        json_data["volt_max"],
-        json_data["x_ratio"],
-        json_data["y_ratio"],
-        json_data["dpi"],
-    )
-    image = showAll(
-        data,
-        value.start,
-        value.end,
-        value.volt_min,
-        value.volt_max,
-        figsize=(value.x_ratio, value.y_ratio),
-        dpi=value.dpi,
-    )
+    image = showAll(data, form_value)
 
     return image
 
@@ -46,25 +48,8 @@ def showAllService() -> str:
 def showSingleService() -> str:
     data, json_data = decode_request()
     x, y = data[0], data[1]
+    form_value = FormValue(json_data=json_data)
 
-    value = FormValue(
-        json_data["start"],
-        json_data["end"],
-        json_data["volt_min"],
-        json_data["volt_max"],
-        json_data["x_ratio"],
-        json_data["y_ratio"],
-        json_data["dpi"],
-    )
-    image = showSingle(
-        x,
-        y,
-        value.start,
-        value.end,
-        value.volt_min,
-        value.volt_max,
-        (value.x_ratio, value.y_ratio),
-        value.dpi,
-    )
+    image = showSingle(x, y, form_value)
 
     return image

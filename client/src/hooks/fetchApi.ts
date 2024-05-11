@@ -1,9 +1,13 @@
-import { ChFormValue } from "../types/ChFormValue";
-import { FormValues } from "../types/FormValues";
 import { ImgResponse } from "../types/ImgResponse";
+import { RequestEntity } from "../types/requestEntity";
 
-export const fetchApi = async (values: FormValues, meaData: Float32Array[]) => {
-  const url = "http://127.0.0.1:5001/showAll";
+const ROOT_URL = "http://127.0.0.1:5001";
+
+export const fetchShowAll = async (
+  values: RequestEntity,
+  meaData: Float32Array[]
+) => {
+  const url = ROOT_URL + "/showAll";
 
   const buffers = meaData.map((v) => new Blob([v.buffer]));
 
@@ -28,10 +32,10 @@ export const fetchApi = async (values: FormValues, meaData: Float32Array[]) => {
 };
 
 export const fetchShowSingle = async (
-  value: ChFormValue,
+  value: RequestEntity,
   meaData: Float32Array[]
 ) => {
-  const url = "http://127.0.0.1:5001/showSingle";
+  const url = ROOT_URL + "/showSingle";
 
   // バイナリデータをBlobに変換
   const buffers = [meaData[0], meaData[value.ch]].map(
