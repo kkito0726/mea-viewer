@@ -3,17 +3,21 @@ import { barCss } from "../../../hooks/barCss";
 import { ReadTime } from "../../../types/ReadTime";
 
 type BioInputProps = {
+  handleReadBio: () => void;
   readTime: ReadTime;
   handleReadTime: (e: ChangeEvent<HTMLInputElement>) => void;
   handleBioInput: (e: ChangeEvent<HTMLInputElement>) => void;
   bioName: string;
+  meaData: Float32Array[];
 };
 
 export const BioInput: React.FC<BioInputProps> = ({
+  handleReadBio,
   readTime,
   handleReadTime,
   handleBioInput,
   bioName,
+  meaData,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -22,11 +26,8 @@ export const BioInput: React.FC<BioInputProps> = ({
       fileInputRef.current.click();
     }
   };
-  const reloadPage = () => {
-    window.location.reload();
-  };
   return (
-    <div className="p-4 bg-zinc-700 text-white max-w-2xl mx-auto my-10 rounded-lg shadow-lg">
+    <div className="p-4 bg-zinc-700 text-white mx-auto my-10 rounded-lg">
       <div className="flex flex-col p-4 mb-4">
         <span className="block font-medium text-gray-300 rounded-sm">
           .bioファイルを選択
@@ -69,21 +70,30 @@ export const BioInput: React.FC<BioInputProps> = ({
         </div>
       </div>
       {bioName ? (
-        <div className="flex  justify-between">
-          <div className="flex items-center justify-between">
-            <span>{bioName}</span>
-            {/* <span>
-              {readTime.start} ~ {readTime.end} (s)
-            </span> */}
+        <>
+          <div className="flex flex-col p-2">
+            <div className="flex justify-between">
+              <div>
+                <span>{bioName}</span>
+              </div>
+              <div>
+                <span>
+                  {Math.floor(meaData[0][0])} ~{" "}
+                  {Math.round(meaData[0][meaData[0].length - 1])} (s)
+                </span>
+              </div>
+            </div>
           </div>
-          <button
-            type="submit"
-            className=" max-w-min mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            onClick={reloadPage}
-          >
-            Reload
-          </button>
-        </div>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className=" bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              onClick={handleReadBio}
+            >
+              Read Again
+            </button>
+          </div>
+        </>
       ) : null}
     </div>
   );

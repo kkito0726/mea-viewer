@@ -1,78 +1,56 @@
-import { ChangeEvent, useState } from "react";
-import { readBio } from "../../../hooks/readBio";
+import { ChangeEvent } from "react";
 import { HedInput } from "./HedInput";
 import { BioInput } from "./BioInput";
-import { HedValue, initHedValue } from "../../../types/HedValue";
-import { readHed } from "../../../hooks/readHed";
-import { handleFileFromChangeEvent } from "../../../hooks/handleEvent";
+import { HedValue } from "../../../types/HedValue";
 import { ReadTime } from "../../../types/ReadTime";
 type FileName = {
   hedName: string;
   bioName: string;
 };
+
 type ReadBioProps = {
-  setMeaData: React.Dispatch<React.SetStateAction<Float32Array[]>>;
+  isBioRead: boolean;
+  hedValue: HedValue;
+  readTime: ReadTime;
+  fileName: FileName;
+  meaData: Float32Array[];
+  handleHedChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  handleHedFile: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleBioInput: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleReadTime: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleRefreshHedFile: () => void;
+  handleReadBio: () => void;
 };
-export const ReadBio: React.FC<ReadBioProps> = ({ setMeaData }) => {
-  const [isBioRead, setIsBioRead] = useState(false);
-  const [hedValue, setHedValue] = useState<HedValue>(initHedValue);
-  const handleHedChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setHedValue({
-      ...hedValue,
-      [name]: parseInt(value),
-    });
-  };
-  const handleHedFile = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = handleFileFromChangeEvent(e);
-    if (file) {
-      setFileName({
-        ...fileName,
-        hedName: file.name,
-      });
-      setHedValue({ ...(await readHed(file)) });
-    }
-  };
-  const [readTime, setReadTime] = useState<ReadTime>({ start: 0, end: 120 });
-  const handleBioInput = async (e: ChangeEvent<HTMLInputElement>) => {
-    setIsBioRead(true);
-    const file = handleFileFromChangeEvent(e);
-    if (file) {
-      setFileName({
-        ...fileName,
-        bioName: file.name,
-      });
-      setMeaData(await readBio(file, hedValue, readTime));
-      setIsBioRead(false);
-    }
-  };
-  const handleReadTime = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setReadTime({
-      ...readTime,
-      [name]: parseInt(value),
-    });
-  };
-
-  const [fileName, setFileName] = useState<FileName>({
-    hedName: "",
-    bioName: "",
-  });
-
+export const ReadBio: React.FC<ReadBioProps> = ({
+  isBioRead,
+  hedValue,
+  readTime,
+  fileName,
+  meaData,
+  handleHedChange,
+  handleHedFile,
+  handleBioInput,
+  handleReadTime,
+  handleRefreshHedFile,
+  handleReadBio,
+}) => {
   return (
     <div>
-      <div className="flex max-w-4xl p-2">
+      <div className="flex">
         <HedInput
+          handleRefreshHedFile={handleRefreshHedFile}
           hedValue={hedValue}
           handleHedChange={handleHedChange}
           handleHedFile={handleHedFile}
           hedName={fileName.hedName}
         />
         <BioInput
+          handleReadBio={handleReadBio}
           readTime={readTime}
           handleReadTime={handleReadTime}
           handleBioInput={handleBioInput}
           bioName={fileName.bioName}
+          meaData={meaData}
         />
       </div>
       {isBioRead ? (

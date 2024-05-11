@@ -2,13 +2,15 @@ import { ChangeEvent, useRef } from "react";
 import { HedValue } from "../../../types/HedValue";
 
 type BioInputProps = {
+  handleRefreshHedFile: () => void;
   hedValue: HedValue;
   handleHedChange: (e: ChangeEvent<HTMLSelectElement>) => void;
-  handleHedFile: (e: ChangeEvent<HTMLInputElement>) => Promise<void>;
+  handleHedFile: (e: ChangeEvent<HTMLInputElement>) => void;
   hedName: string;
 };
 
 export const HedInput: React.FC<BioInputProps> = ({
+  handleRefreshHedFile,
   hedValue,
   handleHedChange,
   handleHedFile,
@@ -29,7 +31,7 @@ export const HedInput: React.FC<BioInputProps> = ({
 
   return (
     <div className="mx-2">
-      <div className="p-4 bg-zinc-700 text-gray-300 max-w-2xl mx-auto my-10 rounded-lg shadow-lg">
+      <div className="p-4 bg-zinc-700 text-gray-300 max-w-2xl mx-auto my-10 rounded-lg">
         <div className="flex flex-col p-4 mb-4">
           <span className="block font-medium text-gray-300 rounded-sm">
             .hedファイルから値を設定する
@@ -89,6 +91,12 @@ export const HedInput: React.FC<BioInputProps> = ({
         {hedName ? (
           <div className="flex items-center justify-between">
             <span>{hedName}</span>
+            <button
+              className="mt-4 bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-3"
+              onClick={handleRefreshHedFile}
+            >
+              Refresh
+            </button>
           </div>
         ) : null}
       </div>
