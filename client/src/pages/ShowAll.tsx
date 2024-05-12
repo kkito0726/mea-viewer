@@ -5,11 +5,13 @@ import { fetchShowAll } from "../hooks/fetchApi";
 
 export const ShowAll = () => {
   return (
-    <div className="w-screen hidden-scrollbar">
-      <Topbar displayName="64電極表示" />
-      <div className="flex w-full min-h-screen">
-        <Sidebar name="showAll" />
-        <Body pageName="showAll" fetchApi={fetchShowAll} />
+    <div className="min-h-screen w-screen">
+      <div className="overflow-auto">
+        <Topbar displayName="64電極表示" />
+        <div className="flex">
+          <Sidebar name="showAll" />
+          <Body pageName="showAll" fetchApi={fetchShowAll} />
+        </div>
       </div>
     </div>
   );

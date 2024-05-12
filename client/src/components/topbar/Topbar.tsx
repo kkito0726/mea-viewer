@@ -6,7 +6,7 @@ type TopbarProps = {
 
 export const Topbar: React.FC<TopbarProps> = ({ displayName }) => {
   return (
-    <div className="flex items-center justify-between w-screen bg-zinc-950 border-zinc-600 sticky top-0 z-50 p-2">
+    <div className="flex items-center justify-between w-screen bg-zinc-950 border-zinc-600 sticky top-0 z-50 p-2 min-h-8">
       <Link to={"/"}>
         <div className="p-2 rounded cursor-pointer hover:bg-zinc-900">
           <span className="text-slate-200">

@@ -5,11 +5,13 @@ import { fetchShowSingle } from "../hooks/fetchApi";
 
 export const ShowSingle = () => {
   return (
-    <div className="w-screen hidden-scrollbar">
-      <Topbar displayName="1電極表示" />
-      <div className="flex w-full min-h-screen">
-        <Sidebar name="showSingle" />
-        <Body pageName="showSingle" fetchApi={fetchShowSingle} />
+    <div className="min-h-screen w-screen">
+      <div className="overflow-auto">
+        <Topbar displayName="1電極表示" />
+        <div className="flex">
+          <Sidebar name="showSingle" />
+          <Body pageName="showSingle" fetchApi={fetchShowSingle} />
+        </div>
       </div>
     </div>
   );

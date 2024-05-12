@@ -1,5 +1,4 @@
 import { ChangeEvent, useState } from "react";
-import { Footer } from "../footer/Footer";
 import { ResFigure } from "../figure/ResFigure";
 import { Form } from "./form/Form";
 import { ReadBio } from "./readMeaFile/ReadBio";
@@ -106,6 +105,10 @@ export const Body: React.FC<BodyProps> = ({ fetchApi, pageName }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!meaData[0]) {
+      alert("MEAデータが読み込まれていません");
+      return;
+    }
     setIsPost(true);
     const resData = await fetchApi(
       {
@@ -135,38 +138,38 @@ export const Body: React.FC<BodyProps> = ({ fetchApi, pageName }) => {
   };
 
   return (
-    <div className="flex-1">
-      <div className="flex justify-center">
-        <ReadBio
-          isBioRead={isBioRead}
-          hedValue={hedValue}
-          readTime={readTime}
-          fileName={fileName}
-          handleHedChange={handleHedChange}
-          handleHedFile={handleHedFile}
-          handleBioInput={handleBioInput}
-          handleReadTime={handleReadTime}
-          handleRefreshHedFile={handleRefreshHedFile}
-          handleReadBio={handleReadBio}
-          meaData={meaData}
-        />
-      </div>
-      {meaData[0] ? (
-        <div className="flex flex-col items-center">
-          {pageName === "showSingle" ? (
-            <ChForm values={values} handleChange={handleChange} />
-          ) : null}
-
-          <Form
-            values={values}
-            handleChange={handleChange}
-            handleInitialize={handleInitialize}
-            handleSubmit={handleSubmit}
+    <>
+      <div className="flex">
+        <div className="flex flex-col min-h-screen-minus-topbar bg-zinc-700">
+          <ReadBio
+            isBioRead={isBioRead}
+            hedValue={hedValue}
+            readTime={readTime}
+            fileName={fileName}
+            handleHedChange={handleHedChange}
+            handleHedFile={handleHedFile}
+            handleBioInput={handleBioInput}
+            handleReadTime={handleReadTime}
+            handleRefreshHedFile={handleRefreshHedFile}
+            handleReadBio={handleReadBio}
+            meaData={meaData}
           />
-          <ResFigure isPost={isPost} imgSrc={imgSrc} />
-          <Footer />
+          <div className="flex flex-col">
+            {pageName === "showSingle" ? (
+              <ChForm values={values} handleChange={handleChange} />
+            ) : null}
+
+            <Form
+              values={values}
+              handleChange={handleChange}
+              handleInitialize={handleInitialize}
+              handleSubmit={handleSubmit}
+            />
+          </div>
         </div>
-      ) : null}
-    </div>
+
+        <ResFigure isPost={isPost} imgSrc={imgSrc} />
+      </div>
+    </>
   );
 };

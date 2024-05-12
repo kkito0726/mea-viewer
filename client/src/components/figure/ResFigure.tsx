@@ -4,17 +4,32 @@ type FigureProps = {
 };
 export const ResFigure: React.FC<FigureProps> = ({ isPost, imgSrc }) => {
   return (
-    <>
-      {isPost ? <p className="text-slate-200 rounded p-2">処理中です</p> : null}
+    <div className="flex flex-col justify-center">
+      {isPost ? (
+        <div className="flex justify-center">
+          <p className="text-slate-200 p-2">処理中です</p>
+        </div>
+      ) : null}
       {imgSrc ? (
-        <div className="p-3 bg-gray-500 rounded max-w-screen-lg">
+        <div className="flex justify-center items-center py-4 px-8">
           <img
             src={"data:image/png;base64," + imgSrc}
-            className="p-3 rounded"
+            className="rounded-2xl"
             alt=""
           />
         </div>
-      ) : null}
-    </>
+      ) : isPost ? null : (
+        <div className="flex flex-col justify-center items-center text-gray-200 px-11">
+          <span className="text-8xl">
+            MEA <span className="text-green-400">Viewer</span>
+          </span>
+          <div className="flex justify-end items-end w-full">
+            <span className="text-2xl">
+              Powered by LaR<span className="text-green-400">Code</span>
+            </span>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };

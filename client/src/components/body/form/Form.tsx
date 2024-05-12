@@ -1,5 +1,6 @@
 import { FormValues } from "../../../types/FormValues";
 import { getFormData } from "../../../hooks/getFormData";
+import { Footer } from "../../footer/Footer";
 
 export type FormProps = {
   values: FormValues;
@@ -16,10 +17,10 @@ export const Form: React.FC<FormProps> = ({
 }) => {
   const barCss =
     "mt-1 block w-full px-3 py-2 text-green-300 bg-zinc-800 border-none rounded-md shadow-sm focus:outline-none";
-  const labelCss = "block text-sm font-medium text-gray-300 p-1";
+  const labelCss = "block text-sm font-medium text-gray-300 px-1";
   const formData = getFormData(values);
   return (
-    <div className="p-4 bg-zinc-700 text-white max-w-2xl mx-auto my-2 rounded-lg shadow-lg">
+    <div className="px-4 text-white">
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4">
           {formData.map((data, i) => {
@@ -41,7 +42,7 @@ export const Form: React.FC<FormProps> = ({
             );
           })}
         </div>
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-end">
           <button
             type="button"
             className="mt-4 bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-3"
@@ -57,6 +58,7 @@ export const Form: React.FC<FormProps> = ({
           </button>
         </div>
       </form>
+      <Footer />
     </div>
   );
 };
