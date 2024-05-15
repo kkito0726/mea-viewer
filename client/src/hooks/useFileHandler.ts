@@ -88,10 +88,10 @@ export const useFileHandler = () => {
   };
 
   return {
-    meaFile,
     fileName,
     isBioRead,
     hedValue,
+    readTime,
     meaData,
     handleHedChange,
     handleHedFile,
