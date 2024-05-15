@@ -1,7 +1,6 @@
 from flask import request
 from model.form_value import FormValue
 from lib.plot import showAll, showSingle
-from pyMEA.MEA import MEA
 import numpy as np
 import json
 
