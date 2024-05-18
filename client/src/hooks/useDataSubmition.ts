@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { ImgResponse } from "../types/ImgResponse";
+
 import { RequestEntity } from "../types/requestEntity";
 import { ChFormValue, initChFormValue } from "../types/ChFormValue";
 import { HedValue } from "../types/HedValue";
+import { fetchShowAll, fetchShowDetection, fetchShowSingle } from "./fetchApi";
+import { PageName } from "../enum/PageName";
 
 export const useDataSubmission = (
-  fetchApi: (
-    value: RequestEntity,
-    meaData: Float32Array[]
-  ) => Promise<ImgResponse>,
+  pageName: string,
+  activeChs: number[],
   meaData: Float32Array[],
   hedValue: HedValue
 ) => {
@@ -21,10 +21,17 @@ export const useDataSubmission = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setValues({
-      ...values,
-      [name]: parseFloat(value),
-    });
+    if (name === "ch") {
+      setValues({
+        ...values,
+        chs: [parseInt(value)],
+      });
+    } else {
+      setValues({
+        ...values,
+        [name]: parseFloat(value),
+      });
+    }
   };
 
   const handleInitialize = (e: { preventDefault: () => void }) => {
@@ -39,19 +46,34 @@ export const useDataSubmission = (
       return;
     }
     setIsPost(true);
-    const resData = await fetchApi(
-      {
-        readTime: {
-          start: Math.floor(meaData[0][0]),
-          end: Math.round(meaData[0][meaData[0].length - 1]),
-        },
-        hedValue: hedValue,
-        ...values,
-      },
-      meaData
-    );
-    setImgSrc(resData.imgSrc);
+    const resData = await handleFetch();
+    if (resData) {
+      setImgSrc(resData.imgSrc);
+    }
+
     setIsPost(false);
+  };
+
+  const handleFetch = async () => {
+    const requestEntity: RequestEntity = {
+      readTime: {
+        start: Math.floor(meaData[0][0]),
+        end: Math.round(meaData[0][meaData[0].length - 1]),
+      },
+      hedValue: hedValue,
+      ...values,
+    };
+    switch (pageName) {
+      case PageName.SHOW_ALL:
+        return await fetchShowAll(requestEntity, meaData);
+        break;
+      case PageName.SHOW_SINGLE:
+        return await fetchShowSingle(requestEntity, meaData);
+        break;
+      case PageName.SHOW_DETECTION:
+        return await fetchShowDetection(requestEntity, meaData, activeChs);
+        break;
+    }
   };
   return {
     values,

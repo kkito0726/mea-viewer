@@ -1,4 +1,5 @@
 import matplotlib
+import numpy as np
 from model.form_value import FormValue
 
 matplotlib.use("Agg")  # GUIバックエンドを使用しないように設定
@@ -31,5 +32,26 @@ def showSingle(
     plt.plot(x, y)
     plt.xlim(form_value.start, form_value.end)
     plt.ylim(form_value.volt_min, form_value.volt_max)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+
+
+@output_base64
+def showDetection(
+    data,
+    form_value: FormValue,
+    chs: list[int],
+    xlabel="Time (s)",
+    ylabel="Voltage (μV)",
+) -> str:
+    plt.figure(figsize=(form_value.x_ratio, form_value.y_ratio), dpi=form_value.dpi)
+    for i in range(1, len(data)):
+        tmp_volt = (data[i] - np.mean(data[i])) / 50
+        plt.plot(data[0], tmp_volt + (i - 1))
+    ch_labels = [str(chs[i]) for i in range(len(chs))]
+    plt.yticks(range(0, len(chs), 1), ch_labels)
+
+    plt.ylim(-1, len(chs))
+    plt.xlim(form_value.start, form_value.end)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)

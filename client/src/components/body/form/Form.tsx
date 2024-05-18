@@ -36,6 +36,7 @@ export const Form: React.FC<FormProps> = ({
                   className={barCss}
                   value={data.value}
                   min={data.min}
+                  step={data.step}
                   onChange={handleChange}
                 />
               </div>

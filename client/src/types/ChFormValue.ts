@@ -1,10 +1,10 @@
 import { FormValues, initFormValue } from "./FormValues";
 
 export type ChFormValue = {
-  ch: number;
+  chs: number[];
 } & FormValues;
 
 export const initChFormValue: ChFormValue = {
-  ch: 1,
+  chs: [1],
   ...initFormValue,
 };

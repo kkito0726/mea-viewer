@@ -1,20 +1,17 @@
 import { ResFigure } from "../figure/ResFigure";
 import { Form } from "./form/Form";
 import { ReadBio } from "./readMeaFile/ReadBio";
-import { RequestEntity } from "../../types/requestEntity";
-import { ImgResponse } from "../../types/ImgResponse";
 import { ChForm } from "./form/ChForm";
 import { useFileHandler } from "../../hooks/useFileHandler";
 import { useDataSubmission } from "../../hooks/useDataSubmition";
+import { ChPad } from "../ChPad/ChPad";
+import { useChPad } from "../../hooks/useChPad";
+import { PageName } from "../../enum/PageName";
 
 type BodyProps = {
   pageName: string;
-  fetchApi: (
-    value: RequestEntity,
-    meaData: Float32Array[]
-  ) => Promise<ImgResponse>;
 };
-export const Body: React.FC<BodyProps> = ({ fetchApi, pageName }) => {
+export const Body: React.FC<BodyProps> = ({ pageName }) => {
   const {
     fileName,
     isBioRead,
@@ -30,13 +27,21 @@ export const Body: React.FC<BodyProps> = ({ fetchApi, pageName }) => {
   } = useFileHandler();
 
   const {
+    gridSize,
+    activeChs,
+    toggleButton,
+    handleClearChs,
+    handleSelectAllChs,
+  } = useChPad();
+
+  const {
     values,
     imgSrc,
     isPost,
     handleChange,
     handleInitialize,
     handleSubmit,
-  } = useDataSubmission(fetchApi, meaData, hedValue);
+  } = useDataSubmission(pageName, activeChs, meaData, hedValue);
 
   return (
     <>
@@ -56,8 +61,17 @@ export const Body: React.FC<BodyProps> = ({ fetchApi, pageName }) => {
             meaData={meaData}
           />
           <div className="flex flex-col">
-            {pageName === "showSingle" ? (
+            {pageName === PageName.SHOW_SINGLE ? (
               <ChForm values={values} handleChange={handleChange} />
+            ) : null}
+            {!(pageName === PageName.SHOW_ALL) ? (
+              <ChPad
+                gridSize={gridSize}
+                activeChs={activeChs}
+                toggleButton={toggleButton}
+                handleClearChs={handleClearChs}
+                handleSelectAllChs={handleSelectAllChs}
+              />
             ) : null}
 
             <Form

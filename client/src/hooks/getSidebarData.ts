@@ -15,4 +15,14 @@ export const sidebarData: SidebarData[] = [
     link: "/showSingle",
     label: "1電極表示",
   },
+  {
+    name: "showDwtection",
+    link: "/showDetection",
+    label: "積み上げ表示",
+  },
+  {
+    name: "rasterPlot",
+    link: "/rasterPlot",
+    label: "RasterPlot",
+  },
 ];

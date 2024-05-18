@@ -15,7 +15,7 @@ export const ChForm: React.FC<ChFormProps> = ({ values, handleChange }) => {
         name="ch"
         id="ch-select"
         className={barCss}
-        value={values.ch}
+        value={values.chs[0]}
         onChange={handleChange}
       >
         {Array.from({ length: 64 }, (_, i) => (

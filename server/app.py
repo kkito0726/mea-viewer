@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-from service.service import showAllService, showSingleService
+from service.service import showAllService, showSingleService, showDetectionService
 
 CLIENT_URL = "https://mea-viewer.vercel.app/"
 
@@ -22,6 +22,12 @@ def plot_showAll():
 @app.route("/showSingle", methods=["POST"])
 def show_single():
     image = showSingleService()
+    return jsonify({"imgSrc": image})
+
+
+@app.route("/showDetection", methods=["POST"])
+def show_detection():
+    image = showDetectionService()
     return jsonify({"imgSrc": image})
 
 

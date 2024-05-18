@@ -1,6 +1,6 @@
 from flask import request
 from model.form_value import FormValue
-from lib.plot import showAll, showSingle
+from lib.plot import showAll, showSingle, showDetection
 import numpy as np
 import json
 
@@ -30,7 +30,7 @@ def decode_request():
     ):
         end_frame = len(data[0])
 
-    return data[:, start_frame:end_frame], json_data
+    return data[:, int(start_frame) : int(end_frame)], json_data
 
 
 def showAllService() -> str:
@@ -48,5 +48,15 @@ def showSingleService() -> str:
     form_value = FormValue(json_data=json_data)
 
     image = showSingle(x, y, form_value)
+
+    return image
+
+
+def showDetectionService() -> str:
+    data, json_data = decode_request()
+    from_value = FormValue(json_data=json_data)
+    chs = json_data["chs"]
+
+    image = showDetection(data, from_value, chs)
 
     return image
