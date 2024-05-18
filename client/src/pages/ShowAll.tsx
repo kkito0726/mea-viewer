@@ -1,6 +1,7 @@
 import { Body } from "../components/body/Body";
 import { Sidebar } from "../components/sidebar/Sidebar";
 import { Topbar } from "../components/topbar/Topbar";
+import { PageName } from "../enum/PageName";
 
 export const ShowAll = () => {
   return (
@@ -9,7 +10,7 @@ export const ShowAll = () => {
         <Topbar displayName="64電極表示" />
         <div className="flex">
           <Sidebar name="showAll" />
-          <Body pageName="showAll" />
+          <Body pageName={PageName.SHOW_ALL} />
         </div>
       </div>
     </div>

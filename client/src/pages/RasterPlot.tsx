@@ -10,7 +10,7 @@ export const RasterPlot = () => {
         <Topbar displayName={PageName.RASTER_PLOT} />
         <div className="flex">
           <Sidebar name="rasterPlot" />
-          <Body pageName="rasterPlot" />
+          <Body pageName={PageName.RASTER_PLOT} />
         </div>
       </div>
     </div>
