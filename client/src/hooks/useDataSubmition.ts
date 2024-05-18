@@ -1,16 +1,23 @@
 import { useState } from "react";
 
-import { RequestEntity } from "../types/requestEntity";
+import { PeakRequestEntity, RequestEntity } from "../types/requestEntity";
 import { ChFormValue, initChFormValue } from "../types/ChFormValue";
 import { HedValue } from "../types/HedValue";
-import { fetchShowAll, fetchShowDetection, fetchShowSingle } from "./fetchApi";
+import {
+  fetchRasterPlot,
+  fetchShowAll,
+  fetchShowDetection,
+  fetchShowSingle,
+} from "./fetchApi";
 import { PageName } from "../enum/PageName";
+import { PeakFormValue } from "../types/PeakFormValue";
 
 export const useDataSubmission = (
   pageName: string,
   activeChs: number[],
   meaData: Float32Array[],
-  hedValue: HedValue
+  hedValue: HedValue,
+  peakFormValue: PeakFormValue
 ) => {
   const [values, setValues] = useState<ChFormValue>(initChFormValue);
 
@@ -72,6 +79,15 @@ export const useDataSubmission = (
         break;
       case PageName.SHOW_DETECTION:
         return await fetchShowDetection(requestEntity, meaData, activeChs);
+        break;
+      case PageName.RASTER_PLOT:
+        {
+          const peakRequestEntity: PeakRequestEntity = {
+            ...requestEntity,
+            peakFormValue,
+          };
+          return await fetchRasterPlot(peakRequestEntity, meaData, activeChs);
+        }
         break;
     }
   };

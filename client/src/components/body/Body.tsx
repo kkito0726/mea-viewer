@@ -7,6 +7,7 @@ import { useDataSubmission } from "../../hooks/useDataSubmition";
 import { ChPad } from "../ChPad/ChPad";
 import { useChPad } from "../../hooks/useChPad";
 import { PageName } from "../../enum/PageName";
+import { usePeakFormHandler } from "../../hooks/usePeakFormHandler";
 
 type BodyProps = {
   pageName: string;
@@ -34,6 +35,8 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     handleSelectAllChs,
   } = useChPad();
 
+  const { peakFormValue, handlePeakFormChange } = usePeakFormHandler();
+
   const {
     values,
     imgSrc,
@@ -41,50 +44,50 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     handleChange,
     handleInitialize,
     handleSubmit,
-  } = useDataSubmission(pageName, activeChs, meaData, hedValue);
+  } = useDataSubmission(pageName, activeChs, meaData, hedValue, peakFormValue);
 
   return (
-    <>
-      <div className="flex">
-        <div className="flex flex-col min-h-screen-minus-topbar bg-zinc-700">
-          <ReadBio
-            isBioRead={isBioRead}
-            hedValue={hedValue}
-            readTime={readTime}
-            fileName={fileName}
-            handleHedChange={handleHedChange}
-            handleHedFile={handleHedFile}
-            handleBioInput={handleBioInput}
-            handleReadTime={handleReadTime}
-            handleRefreshHedFile={handleRefreshHedFile}
-            handleReadBio={handleReadBio}
-            meaData={meaData}
-          />
-          <div className="flex flex-col">
-            {pageName === PageName.SHOW_SINGLE ? (
-              <ChForm values={values} handleChange={handleChange} />
-            ) : null}
-            {!(pageName === PageName.SHOW_ALL) ? (
-              <ChPad
-                gridSize={gridSize}
-                activeChs={activeChs}
-                toggleButton={toggleButton}
-                handleClearChs={handleClearChs}
-                handleSelectAllChs={handleSelectAllChs}
-              />
-            ) : null}
-
-            <Form
-              values={values}
-              handleChange={handleChange}
-              handleInitialize={handleInitialize}
-              handleSubmit={handleSubmit}
+    <div className="flex">
+      <div className="flex flex-col min-h-screen-minus-topbar min-w-input bg-zinc-700">
+        <ReadBio
+          isBioRead={isBioRead}
+          hedValue={hedValue}
+          readTime={readTime}
+          fileName={fileName}
+          handleHedChange={handleHedChange}
+          handleHedFile={handleHedFile}
+          handleBioInput={handleBioInput}
+          handleReadTime={handleReadTime}
+          handleRefreshHedFile={handleRefreshHedFile}
+          handleReadBio={handleReadBio}
+          meaData={meaData}
+        />
+        <div className="flex flex-col">
+          {pageName === PageName.SHOW_SINGLE ? (
+            <ChForm values={values} handleChange={handleChange} />
+          ) : null}
+          {!(pageName === PageName.SHOW_ALL) ? (
+            <ChPad
+              gridSize={gridSize}
+              activeChs={activeChs}
+              toggleButton={toggleButton}
+              handleClearChs={handleClearChs}
+              handleSelectAllChs={handleSelectAllChs}
             />
-          </div>
-        </div>
+          ) : null}
 
-        <ResFigure isPost={isPost} imgSrc={imgSrc} />
+          <Form
+            values={values}
+            handleChange={handleChange}
+            handleInitialize={handleInitialize}
+            handleSubmit={handleSubmit}
+            peakFormValue={peakFormValue}
+            handlePeakFormChange={handlePeakFormChange}
+          />
+        </div>
       </div>
-    </>
+
+      <ResFigure isPost={isPost} imgSrc={imgSrc} />
+    </div>
   );
 };

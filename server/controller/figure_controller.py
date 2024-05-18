@@ -1,5 +1,10 @@
 from flask import Blueprint, jsonify
-from service.service import showAllService, showSingleService, showDetectionService
+from service.service import (
+    showAllService,
+    showSingleService,
+    showDetectionService,
+    rasterPlotService,
+)
 
 figure = Blueprint("figure", __name__)
 
@@ -19,4 +24,10 @@ def show_single():
 @figure.route("/showDetection", methods=["POST"])
 def show_detection():
     image = showDetectionService()
+    return jsonify({"imgSrc": image})
+
+
+@figure.route("/rasterPlot", methods={"POST"})
+def raster_plot():
+    image = rasterPlotService()
     return jsonify({"imgSrc": image})

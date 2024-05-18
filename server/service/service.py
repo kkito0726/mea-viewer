@@ -1,6 +1,8 @@
 from flask import request
 from model.form_value import FormValue
-from lib.plot import showAll, showSingle, showDetection
+from model.peak_form_value import PeakFormValue
+from lib.plot import showAll, showSingle, showDetection, raster_plot
+from lib.peak_detection import detect_peak_neg, detect_peak_pos
 import numpy as np
 import json
 
@@ -54,9 +56,42 @@ def showSingleService() -> str:
 
 def showDetectionService() -> str:
     data, json_data = decode_request()
-    from_value = FormValue(json_data=json_data)
+    form_value = FormValue(json_data=json_data)
     chs = json_data["chs"]
 
-    image = showDetection(data, from_value, chs)
+    image = showDetection(data, form_value, chs)
+
+    return image
+
+
+def rasterPlotService() -> str:
+    data, json_data = decode_request()
+    form_value = FormValue(json_data=json_data)
+    chs = json_data["chs"]
+    peak_form_value = PeakFormValue(json_data=json_data)
+
+    isPos, isNeg = peak_form_value.isPositive, peak_form_value.isNegative
+
+    if not isPos and not isNeg:
+        return ""
+
+    if not isPos and isNeg:
+        peak_index = detect_peak_neg(
+            data, peak_form_value.distance, peak_form_value.threshold
+        )
+        image = raster_plot(data, form_value, chs, peak_index)
+    elif isPos and not isNeg:
+        peak_index = detect_peak_pos(
+            data, peak_form_value.distance, peak_form_value.threshold
+        )
+        image = raster_plot(data, form_value, chs, peak_index)
+    else:
+        pos_peak = detect_peak_pos(
+            data, peak_form_value.distance, peak_form_value.threshold
+        )
+        neg_peak = detect_peak_neg(
+            data, peak_form_value.distance, peak_form_value.threshold
+        )
+        image = raster_plot(data, form_value, chs, pos_peak, neg_peak)
 
     return image

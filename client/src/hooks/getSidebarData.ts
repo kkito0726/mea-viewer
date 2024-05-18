@@ -23,6 +23,6 @@ export const sidebarData: SidebarData[] = [
   {
     name: "rasterPlot",
     link: "/rasterPlot",
-    label: "RasterPlot",
+    label: "ラスタプロット",
   },
 ];
