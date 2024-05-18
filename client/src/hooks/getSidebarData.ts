@@ -16,7 +16,7 @@ export const sidebarData: SidebarData[] = [
     label: "1電極表示",
   },
   {
-    name: "showDwtection",
+    name: "showDetection",
     link: "/showDetection",
     label: "積み上げ表示",
   },
