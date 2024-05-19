@@ -102,7 +102,7 @@ export const HedInput: React.FC<BioInputProps> = ({
           <div className="flex items-center justify-between">
             <span>{hedName}</span>
             <button
-              className="mt-4 bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-3"
+              className="mt-2 bg-gray-400 hover:bg-gray-700 text-white font-bold p-2 rounded text-sm"
               onClick={handleRefreshHedFile}
             >
               Refresh

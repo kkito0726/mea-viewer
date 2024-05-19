@@ -46,6 +46,8 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     handleSubmit,
   } = useDataSubmission(pageName, activeChs, meaData, hedValue, peakFormValue);
 
+  const chPadPages: string[] = [PageName.SHOW_DETECTION, PageName.RASTER_PLOT];
+
   return (
     <div className="flex">
       <div className="flex flex-col min-h-screen-minus-topbar min-w-input bg-zinc-700">
@@ -66,7 +68,7 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
           {pageName === PageName.SHOW_SINGLE ? (
             <ChForm values={values} handleChange={handleChange} />
           ) : null}
-          {!(pageName === PageName.SHOW_ALL) ? (
+          {chPadPages.includes(pageName) ? (
             <ChPad
               gridSize={gridSize}
               activeChs={activeChs}
