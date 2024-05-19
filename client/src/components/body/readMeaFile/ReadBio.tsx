@@ -52,7 +52,7 @@ export const ReadBio: React.FC<ReadBioProps> = ({
         bioName={fileName.bioName}
         meaData={meaData}
       />
-      <div className="px-9 pb-4">
+      <div className="px-9 pb-2">
         <hr className="border border-zinc-600" />
       </div>
       {isBioRead ? <Processing message="MEAデータ読み込み中..." /> : null}

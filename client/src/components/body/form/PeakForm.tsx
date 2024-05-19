@@ -15,7 +15,7 @@ export const PeakForm: React.FC<PeakFormProps> = ({
   const peakFormData = getPeakFormData(peakFormValue);
   return (
     <div className="text-slate-200">
-      <div className="py-2">
+      <div className="py-2 block text-sm font-medium text-gray-300 px-1">
         <span>ピーク抽出条件</span>
       </div>
 
