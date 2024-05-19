@@ -9,7 +9,7 @@ export const ShowAll = () => {
       <div className="overflow-auto">
         <Topbar displayName="64電極表示" />
         <div className="flex">
-          <Sidebar name="showAll" />
+          <Sidebar name={PageName.SHOW_ALL} />
           <Body pageName={PageName.SHOW_ALL} />
         </div>
       </div>

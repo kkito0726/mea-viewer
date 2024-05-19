@@ -9,7 +9,7 @@ export const ShowDetection = () => {
       <div className="overflow-auto">
         <Topbar displayName="積み上げ表示" />
         <div className="flex">
-          <Sidebar name="showDetection" />
+          <Sidebar name={PageName.SHOW_DETECTION} />
           <Body pageName={PageName.SHOW_DETECTION} />
         </div>
       </div>

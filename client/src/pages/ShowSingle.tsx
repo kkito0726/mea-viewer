@@ -9,7 +9,7 @@ export const ShowSingle = () => {
       <div className="overflow-auto">
         <Topbar displayName="1電極表示" />
         <div className="flex">
-          <Sidebar name="showSingle" />
+          <Sidebar name={PageName.SHOW_SINGLE} />
           <Body pageName={PageName.SHOW_SINGLE} />
         </div>
       </div>

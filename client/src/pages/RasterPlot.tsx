@@ -9,7 +9,7 @@ export const RasterPlot = () => {
       <div className="overflow-auto">
         <Topbar displayName={PageName.RASTER_PLOT} />
         <div className="flex">
-          <Sidebar name="rasterPlot" />
+          <Sidebar name={PageName.RASTER_PLOT} />
           <Body pageName={PageName.RASTER_PLOT} />
         </div>
       </div>
