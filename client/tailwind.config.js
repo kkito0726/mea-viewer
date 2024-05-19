@@ -9,6 +9,10 @@ export default {
       width: {
         figure: "calc(100vw-578px)",
       },
+      minWidth: {
+        input: "410px",
+        sidebar: "136px",
+      },
     },
   },
   plugins: [],

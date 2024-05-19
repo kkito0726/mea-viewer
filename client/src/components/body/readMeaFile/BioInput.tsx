@@ -27,9 +27,9 @@ export const BioInput: React.FC<BioInputProps> = ({
     }
   };
   return (
-    <div className="p-4 text-white">
+    <div className="px-4 py-2 text-white">
       <div className="flex flex-col px-4 pb-1">
-        <span className="block font-medium text-gray-300 rounded-sm">
+        <span className="block font-medium text-gray-300 rounded-sm text-sm px-1">
           .bioファイルを選択
         </span>
         <button
@@ -49,7 +49,12 @@ export const BioInput: React.FC<BioInputProps> = ({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="">開始時間 (s)</label>
+          <label
+            htmlFor=""
+            className="block text-sm font-medium text-gray-300 px-1"
+          >
+            開始時間 (s)
+          </label>
           <input
             className={barCss}
             name="start"
@@ -59,7 +64,12 @@ export const BioInput: React.FC<BioInputProps> = ({
           />
         </div>
         <div>
-          <label htmlFor="">終了時間 (s)</label>
+          <label
+            htmlFor=""
+            className="block text-sm font-medium text-gray-300 px-1"
+          >
+            終了時間 (s)
+          </label>
           <input
             className={barCss}
             name="end"

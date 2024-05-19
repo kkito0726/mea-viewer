@@ -1,19 +1,22 @@
 import { FormValues } from "../../../types/FormValues";
 import { getFormData } from "../../../hooks/getFormData";
 import { Footer } from "../../footer/Footer";
+import { PeakForm, PeakFormProps } from "./PeakForm";
 
 export type FormProps = {
   values: FormValues;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleInitialize: (e: { preventDefault: () => void }) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-};
+} & PeakFormProps;
 
 export const Form: React.FC<FormProps> = ({
   values,
   handleChange,
   handleInitialize,
   handleSubmit,
+  peakFormValue,
+  handlePeakFormChange,
 }) => {
   const barCss =
     "mt-1 block w-full px-3 py-2 text-green-300 bg-zinc-800 border-none rounded-md shadow-sm focus:outline-none";
@@ -36,12 +39,17 @@ export const Form: React.FC<FormProps> = ({
                   className={barCss}
                   value={data.value}
                   min={data.min}
+                  step={data.step}
                   onChange={handleChange}
                 />
               </div>
             );
           })}
         </div>
+        <PeakForm
+          peakFormValue={peakFormValue}
+          handlePeakFormChange={handlePeakFormChange}
+        />
         <div className="flex justify-end">
           <button
             type="button"

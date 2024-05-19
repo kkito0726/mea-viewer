@@ -32,8 +32,8 @@ export const HedInput: React.FC<BioInputProps> = ({
   return (
     <div>
       <div className="px-4 text-gray-300 max-w-2xl mx-auto">
-        <div className="flex flex-col p-4">
-          <span className="block font-medium text-gray-300 rounded-sm">
+        <div className="flex flex-col px-4 pt-2 pb-1">
+          <span className="block font-medium text-gray-300 rounded-sm text-sm px-1">
             .hedファイルから値を設定する
           </span>
           <button
@@ -54,7 +54,12 @@ export const HedInput: React.FC<BioInputProps> = ({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="sampling-rate">サンプリングレート (Hz)</label>
+            <label
+              htmlFor="sampling-rate"
+              className="block text-sm font-medium text-gray-300 px-1"
+            >
+              サンプリングレート (Hz)
+            </label>
             <select
               className={barCss}
               value={hedValue.sampling_rate}
@@ -71,7 +76,12 @@ export const HedInput: React.FC<BioInputProps> = ({
             </select>
           </div>
           <div>
-            <label htmlFor="gain">Gain</label>
+            <label
+              htmlFor="gain"
+              className="block text-sm font-medium text-gray-300 px-1"
+            >
+              Gain
+            </label>
             <select
               className={barCss}
               value={hedValue.gain}
@@ -92,7 +102,7 @@ export const HedInput: React.FC<BioInputProps> = ({
           <div className="flex items-center justify-between">
             <span>{hedName}</span>
             <button
-              className="mt-4 bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-3"
+              className="mt-2 bg-gray-400 hover:bg-gray-700 text-white font-bold p-2 rounded text-sm"
               onClick={handleRefreshHedFile}
             >
               Refresh

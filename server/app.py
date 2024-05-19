@@ -1,28 +1,12 @@
-from flask import Flask, jsonify
+from flask import Flask
+from controller.health_controller import health
+from controller.figure_controller import figure
 from flask_cors import CORS
-from service.service import showAllService, showSingleService
-
-CLIENT_URL = "https://mea-viewer.vercel.app/"
 
 app = Flask(__name__)
+app.register_blueprint(health)
+app.register_blueprint(figure)
 CORS(app)
-
-
-@app.route("/")
-def index():
-    return "Hello Flask!!"
-
-
-@app.route("/showAll", methods=["POST"])
-def plot_showAll():
-    image = showAllService()
-    return jsonify({"imgSrc": image})
-
-
-@app.route("/showSingle", methods=["POST"])
-def show_single():
-    image = showSingleService()
-    return jsonify({"imgSrc": image})
 
 
 if __name__ == "__main__":

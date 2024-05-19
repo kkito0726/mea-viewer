@@ -1,20 +1,18 @@
 import { ResFigure } from "../figure/ResFigure";
 import { Form } from "./form/Form";
 import { ReadBio } from "./readMeaFile/ReadBio";
-import { RequestEntity } from "../../types/requestEntity";
-import { ImgResponse } from "../../types/ImgResponse";
 import { ChForm } from "./form/ChForm";
 import { useFileHandler } from "../../hooks/useFileHandler";
 import { useDataSubmission } from "../../hooks/useDataSubmition";
+import { ChPad } from "../ChPad/ChPad";
+import { useChPad } from "../../hooks/useChPad";
+import { PageName } from "../../enum/PageName";
+import { usePeakFormHandler } from "../../hooks/usePeakFormHandler";
 
 type BodyProps = {
   pageName: string;
-  fetchApi: (
-    value: RequestEntity,
-    meaData: Float32Array[]
-  ) => Promise<ImgResponse>;
 };
-export const Body: React.FC<BodyProps> = ({ fetchApi, pageName }) => {
+export const Body: React.FC<BodyProps> = ({ pageName }) => {
   const {
     fileName,
     isBioRead,
@@ -30,47 +28,68 @@ export const Body: React.FC<BodyProps> = ({ fetchApi, pageName }) => {
   } = useFileHandler();
 
   const {
+    gridSize,
+    activeChs,
+    toggleButton,
+    handleClearChs,
+    handleSelectAllChs,
+  } = useChPad();
+
+  const { peakFormValue, handlePeakFormChange } = usePeakFormHandler();
+
+  const {
     values,
     imgSrc,
     isPost,
     handleChange,
     handleInitialize,
     handleSubmit,
-  } = useDataSubmission(fetchApi, meaData, hedValue);
+  } = useDataSubmission(pageName, activeChs, meaData, hedValue, peakFormValue);
+
+  const chPadPages: string[] = [PageName.SHOW_DETECTION, PageName.RASTER_PLOT];
 
   return (
-    <>
-      <div className="flex">
-        <div className="flex flex-col min-h-screen-minus-topbar bg-zinc-700">
-          <ReadBio
-            isBioRead={isBioRead}
-            hedValue={hedValue}
-            readTime={readTime}
-            fileName={fileName}
-            handleHedChange={handleHedChange}
-            handleHedFile={handleHedFile}
-            handleBioInput={handleBioInput}
-            handleReadTime={handleReadTime}
-            handleRefreshHedFile={handleRefreshHedFile}
-            handleReadBio={handleReadBio}
-            meaData={meaData}
-          />
-          <div className="flex flex-col">
-            {pageName === "showSingle" ? (
-              <ChForm values={values} handleChange={handleChange} />
-            ) : null}
-
-            <Form
-              values={values}
-              handleChange={handleChange}
-              handleInitialize={handleInitialize}
-              handleSubmit={handleSubmit}
+    <div className="flex">
+      <div className="flex flex-col min-h-screen-minus-topbar min-w-input bg-zinc-700">
+        <ReadBio
+          isBioRead={isBioRead}
+          hedValue={hedValue}
+          readTime={readTime}
+          fileName={fileName}
+          handleHedChange={handleHedChange}
+          handleHedFile={handleHedFile}
+          handleBioInput={handleBioInput}
+          handleReadTime={handleReadTime}
+          handleRefreshHedFile={handleRefreshHedFile}
+          handleReadBio={handleReadBio}
+          meaData={meaData}
+        />
+        <div className="flex flex-col">
+          {pageName === PageName.SHOW_SINGLE ? (
+            <ChForm values={values} handleChange={handleChange} />
+          ) : null}
+          {chPadPages.includes(pageName) ? (
+            <ChPad
+              gridSize={gridSize}
+              activeChs={activeChs}
+              toggleButton={toggleButton}
+              handleClearChs={handleClearChs}
+              handleSelectAllChs={handleSelectAllChs}
             />
-          </div>
-        </div>
+          ) : null}
 
-        <ResFigure isPost={isPost} imgSrc={imgSrc} />
+          <Form
+            values={values}
+            handleChange={handleChange}
+            handleInitialize={handleInitialize}
+            handleSubmit={handleSubmit}
+            peakFormValue={peakFormValue}
+            handlePeakFormChange={handlePeakFormChange}
+          />
+        </div>
       </div>
-    </>
+
+      <ResFigure isPost={isPost} imgSrc={imgSrc} />
+    </div>
   );
 };

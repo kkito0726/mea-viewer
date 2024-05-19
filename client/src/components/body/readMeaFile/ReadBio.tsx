@@ -3,6 +3,7 @@ import { HedInput } from "./HedInput";
 import { BioInput } from "./BioInput";
 import { HedValue } from "../../../types/HedValue";
 import { ReadTime } from "../../../types/ReadTime";
+import { Processing } from "../../Processing";
 type FileName = {
   hedName: string;
   bioName: string;
@@ -51,14 +52,10 @@ export const ReadBio: React.FC<ReadBioProps> = ({
         bioName={fileName.bioName}
         meaData={meaData}
       />
-      <div className="px-9 pb-4">
+      <div className="px-9 pb-2">
         <hr className="border border-zinc-600" />
       </div>
-      {isBioRead ? (
-        <div className="flex justify-center">
-          <span className="text-gray-300 text-center">MEAデータ読込中</span>
-        </div>
-      ) : null}
+      {isBioRead ? <Processing message="MEAデータ読み込み中..." /> : null}
     </>
   );
 };

@@ -8,7 +8,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ name }) => {
   const buttonCss = "p-5 cursor-pointer hover:bg-zinc-800 ";
   const selectCss = "bg-zinc-900";
   return (
-    <div className="cursor-pointer">
+    <div className="cursor-pointer min-w-sidebar">
       <ul
         key="sidebar-item"
         className="p-0 m-0 list-none text-slate-300 text-center"

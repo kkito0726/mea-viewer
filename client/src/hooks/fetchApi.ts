@@ -1,5 +1,5 @@
 import { ImgResponse } from "../types/ImgResponse";
-import { RequestEntity } from "../types/requestEntity";
+import { PeakRequestEntity, RequestEntity } from "../types/requestEntity";
 
 const ROOT_URL = "http://127.0.0.1:5001";
 
@@ -38,7 +38,7 @@ export const fetchShowSingle = async (
   const url = ROOT_URL + "/showSingle";
 
   // バイナリデータをBlobに変換
-  const buffers = [meaData[0], meaData[value.ch]].map(
+  const buffers = [meaData[0], meaData[value.chs[0]]].map(
     (v) => new Blob([v.buffer])
   );
 
@@ -47,6 +47,66 @@ export const fetchShowSingle = async (
   buffers.forEach((blob, index) => {
     formData.append(`file${index}`, blob);
   });
+  formData.append("jsonData", JSON.stringify(value));
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      body: formData, // ヘッダーのContent-TypeはFormDataに任せる
+    });
+    const resData: ImgResponse = await res.json();
+    return resData;
+  } catch (e) {
+    console.error(e);
+  }
+  return { imgSrc: "" };
+};
+
+export const fetchShowDetection = async (
+  value: RequestEntity,
+  meaData: Float32Array[],
+  activeChs: number[]
+) => {
+  const url = ROOT_URL + "/showDetection";
+  const buffers = [0, ...activeChs].map((v) => new Blob([meaData[v].buffer]));
+
+  // FormDataを使用してデータを送信
+  const formData = new FormData();
+  buffers.forEach((blob, index) => {
+    formData.append(`file${index}`, blob);
+  });
+
+  value.chs = activeChs;
+  formData.append("jsonData", JSON.stringify(value));
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      body: formData, // ヘッダーのContent-TypeはFormDataに任せる
+    });
+    const resData: ImgResponse = await res.json();
+    return resData;
+  } catch (e) {
+    console.error(e);
+  }
+  return { imgSrc: "" };
+};
+
+export const fetchRasterPlot = async (
+  value: PeakRequestEntity,
+  meaData: Float32Array[],
+  activeChs: number[]
+) => {
+  const url = ROOT_URL + "/rasterPlot";
+  const buffers = [0, ...activeChs].map((v) => new Blob([meaData[v].buffer]));
+
+  // FormDataを使用してデータを送信
+  const formData = new FormData();
+  buffers.forEach((blob, index) => {
+    formData.append(`file${index}`, blob);
+  });
+
+  value.chs = activeChs;
   formData.append("jsonData", JSON.stringify(value));
 
   try {

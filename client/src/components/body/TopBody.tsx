@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export const TopBody = () => {
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center min-h-screen-minus-topbar">
       <div className="text-slate-200 text-8xl mr-10 ">
         LaR<span className="text-green-400">Code</span>
       </div>
