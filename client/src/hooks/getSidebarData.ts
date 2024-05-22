@@ -27,4 +27,14 @@ export const sidebarData: SidebarData[] = [
     link: "/rasterPlot",
     label: "ラスタプロット",
   },
+  {
+    name: PageName.DRAW_2D,
+    link: "/draw2d",
+    label: "2Dカラーマップ",
+  },
+  {
+    name: PageName.DRAW_3D,
+    link: "/draw3d",
+    label: "3Dカラーマップ",
+  },
 ];

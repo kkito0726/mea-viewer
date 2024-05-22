@@ -4,6 +4,7 @@ from service.service import (
     showSingleService,
     showDetectionService,
     rasterPlotService,
+    draw_2d_service,
 )
 
 figure = Blueprint("figure", __name__)
@@ -27,9 +28,13 @@ def show_detection():
     return jsonify({"imgSrc": [image]})
 
 
-@figure.route("/rasterPlot", methods={"POST"})
+@figure.route("/rasterPlot", methods=["POST"])
 def raster_plot():
     image = rasterPlotService()
     return jsonify({"imgSrc": [image]})
 
 
+@figure.route("/draw2d", methods=["POST"])
+def draw2d():
+    images = draw_2d_service()
+    return jsonify({"imgSrc": images})
