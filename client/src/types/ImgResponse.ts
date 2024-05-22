@@ -1,3 +1,3 @@
 export type ImgResponse = {
-  imgSrc: string;
+  imgSrc: string[];
 };

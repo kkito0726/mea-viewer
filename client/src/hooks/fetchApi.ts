@@ -28,7 +28,7 @@ export const fetchShowAll = async (
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: "" };
+  return { imgSrc: [] };
 };
 
 export const fetchShowSingle = async (
@@ -59,7 +59,7 @@ export const fetchShowSingle = async (
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: "" };
+  return { imgSrc: [] };
 };
 
 export const fetchShowDetection = async (
@@ -89,7 +89,7 @@ export const fetchShowDetection = async (
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: "" };
+  return { imgSrc: [] };
 };
 
 export const fetchRasterPlot = async (
@@ -119,5 +119,5 @@ export const fetchRasterPlot = async (
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: "" };
+  return { imgSrc: [] };
 };
