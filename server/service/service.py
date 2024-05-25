@@ -3,7 +3,7 @@ from model.form_value import FormValue
 from model.peak_form_value import PeakFormValue
 from lib.plot import showAll, showSingle, showDetection, raster_plot
 from lib.peak_detection import detect_peak_neg, detect_peak_pos
-from lib.colormap import remove_fit_data, draw_2d
+from lib.colormap import remove_fit_data, draw_2d, draw_3d
 import numpy as np
 import json
 
@@ -107,5 +107,18 @@ def draw_2d_service() -> list[str]:
 
     popts, _ = remove_fit_data(data, peak_index, ele_dis=450)
     images = [draw_2d(popt, 450, 100, False, True) for popt in popts]
+
+    return images
+
+
+def draw_3d_service() -> list[str]:
+    data, json_data = decode_request()
+    peak_form_value = PeakFormValue(json_data=json_data)
+    peak_index = detect_peak_neg(
+        data, peak_form_value.distance, peak_form_value.threshold
+    )
+
+    popts, _ = remove_fit_data(data, peak_index, ele_dis=450)
+    images = [draw_3d(popt, 450, 100) for popt in popts]
 
     return images

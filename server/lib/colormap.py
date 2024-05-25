@@ -156,3 +156,32 @@ def draw_2d(
     bar.set_label(clabel)
     plt.xticks(np.arange(0, ele_dis * 7 + 1, ele_dis))
     plt.yticks(np.arange(0, ele_dis * 7 + 1, ele_dis))
+
+
+@output_base64
+def draw_3d(
+    popt: ndarray,
+    ele_dis: int,
+    mesh_num: int,
+    xlabel="X (μm)",
+    ylabel="Y (μm)",
+    clabel="Δt (ms)",
+    dpi=300,
+) -> None:
+    xx, yy = get_mesh(ele_dis, mesh_num)
+
+    # フィッティングした関数からデータを生成
+    z = model([xx, yy], *popt)
+    z -= np.min(z)
+    z *= 1000
+
+    # グラフにプロットする
+    fig = plt.figure(dpi=dpi)
+    ax = fig.add_subplot(111, projection="3d")
+    c = ax.plot_surface(xx, yy, z.reshape(mesh_num, mesh_num), cmap="jet")
+    bar = fig.colorbar(c)
+    bar.set_label(clabel)
+    plt.xticks(np.arange(0, ele_dis * 7 + 1, ele_dis))
+    plt.yticks(np.arange(0, ele_dis * 7 + 1, ele_dis))
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)

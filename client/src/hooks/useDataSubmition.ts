@@ -5,6 +5,7 @@ import { ChFormValue, initChFormValue } from "../types/ChFormValue";
 import { HedValue } from "../types/HedValue";
 import {
   fetchDraw2d,
+  fetchDraw3d,
   fetchRasterPlot,
   fetchShowAll,
   fetchShowDetection,
@@ -111,6 +112,16 @@ export const useDataSubmission = (
             peakFormValue,
           };
           const resData = await fetchDraw2d(peakRequestEntity, meaData);
+          setImgSrc(resData.imgSrc);
+        }
+        break;
+      case PageName.DRAW_3D:
+        {
+          const peakRequestEntity: PeakRequestEntity = {
+            ...requestEntity,
+            peakFormValue,
+          };
+          const resData = await fetchDraw3d(peakRequestEntity, meaData);
           setImgSrc(resData.imgSrc);
         }
         break;

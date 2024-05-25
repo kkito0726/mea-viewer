@@ -148,3 +148,30 @@ export const fetchDraw2d = async (
   }
   return { imgSrc: [] };
 };
+
+export const fetchDraw3d = async (
+  values: PeakRequestEntity,
+  meaData: Float32Array[]
+) => {
+  const url = ROOT_URL + "/draw3d";
+  const buffers = meaData.map((v) => new Blob([v.buffer]));
+
+  // FormDataを使用してデータを送信
+  const formData = new FormData();
+  buffers.forEach((blob, index) => {
+    formData.append(`file${index}`, blob);
+  });
+  formData.append("jsonData", JSON.stringify(values));
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      body: formData,
+    });
+    const resData: ImgResponse = await res.json();
+    return resData;
+  } catch (e) {
+    console.error(e);
+  }
+  return { imgSrc: [] };
+};
