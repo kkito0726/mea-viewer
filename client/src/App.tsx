@@ -6,19 +6,20 @@ import { RasterPlot } from "./pages/RasterPlot";
 import { ShowDetection } from "./pages/ShowDetection";
 import { Draw2D } from "./pages/Draw2d";
 import { Draw3D } from "./pages/Draw3d";
+import { PagePath } from "./enum/PagePath";
 
 function App() {
   return (
     <div>
       <Router>
         <Routes>
-          <Route path="/" element={<Toppage />} />
-          <Route path="/showAll" element={<ShowAll />} />
-          <Route path="/showSingle" element={<ShowSingle />} />
-          <Route path="/showDetection" element={<ShowDetection />} />
-          <Route path="/rasterPlot" element={<RasterPlot />} />
-          <Route path="/draw2d" element={<Draw2D />} />
-          <Route path="/draw3d" element={<Draw3D />} />
+          <Route path={PagePath.ROOT} element={<Toppage />} />
+          <Route path={PagePath.SHOW_ALL} element={<ShowAll />} />
+          <Route path={PagePath.SHOW_SINGLE} element={<ShowSingle />} />
+          <Route path={PagePath.SHOW_DETECTION} element={<ShowDetection />} />
+          <Route path={PagePath.RASTER_PLOT} element={<RasterPlot />} />
+          <Route path={PagePath.DRAW_2D} element={<Draw2D />} />
+          <Route path={PagePath.DRAW_3D} element={<Draw3D />} />
         </Routes>
       </Router>
     </div>

@@ -1,3 +1,4 @@
+import { PagePath } from "../enum/PagePath";
 import { ImgResponse } from "../types/ImgResponse";
 import { PeakRequestEntity, RequestEntity } from "../types/requestEntity";
 
@@ -7,7 +8,7 @@ export const fetchShowAll = async (
   values: RequestEntity,
   meaData: Float32Array[]
 ) => {
-  const url = ROOT_URL + "/showAll";
+  const url = ROOT_URL + PagePath.SHOW_ALL;
 
   const buffers = meaData.map((v) => new Blob([v.buffer]));
 
@@ -35,7 +36,7 @@ export const fetchShowSingle = async (
   value: RequestEntity,
   meaData: Float32Array[]
 ) => {
-  const url = ROOT_URL + "/showSingle";
+  const url = ROOT_URL + PagePath.SHOW_SINGLE;
 
   // バイナリデータをBlobに変換
   const buffers = [meaData[0], meaData[value.chs[0]]].map(
@@ -67,7 +68,7 @@ export const fetchShowDetection = async (
   meaData: Float32Array[],
   activeChs: number[]
 ) => {
-  const url = ROOT_URL + "/showDetection";
+  const url = ROOT_URL + PagePath.SHOW_DETECTION;
   const buffers = [0, ...activeChs].map((v) => new Blob([meaData[v].buffer]));
 
   // FormDataを使用してデータを送信
@@ -97,7 +98,7 @@ export const fetchRasterPlot = async (
   meaData: Float32Array[],
   activeChs: number[]
 ) => {
-  const url = ROOT_URL + "/rasterPlot";
+  const url = ROOT_URL + PagePath.RASTER_PLOT;
   const buffers = [0, ...activeChs].map((v) => new Blob([meaData[v].buffer]));
 
   // FormDataを使用してデータを送信
@@ -126,7 +127,7 @@ export const fetchDraw2d = async (
   values: PeakRequestEntity,
   meaData: Float32Array[]
 ) => {
-  const url = ROOT_URL + "/draw2d";
+  const url = ROOT_URL + PagePath.DRAW_2D;
   const buffers = meaData.map((v) => new Blob([v.buffer]));
 
   // FormDataを使用してデータを送信
@@ -153,7 +154,7 @@ export const fetchDraw3d = async (
   values: PeakRequestEntity,
   meaData: Float32Array[]
 ) => {
-  const url = ROOT_URL + "/draw3d";
+  const url = ROOT_URL + PagePath.DRAW_3D;
   const buffers = meaData.map((v) => new Blob([v.buffer]));
 
   // FormDataを使用してデータを送信
