@@ -1,4 +1,7 @@
 import { Processing } from "../Processing";
+import CancelIcon from "@mui/icons-material/Cancel";
+import DownloadIcon from "@mui/icons-material/Download";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 type FigureProps = {
   isPost: boolean;
@@ -46,22 +49,22 @@ export const ResFigure: React.FC<FigureProps> = ({
                 />
                 <button
                   onClick={() => handleRemoveImg(i)}
-                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-2 right-2 text-white rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
-                  &times;
+                  <CancelIcon className="text-red-500" />
                 </button>
                 <div className="absolute bottom-2 right-2">
                   <button
                     onClick={() => handleCopyToClipboard(baseImg)}
-                    className="mr-1 bg-blue-500 text-white rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="text-gray-400 rounded-sm px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-200 hover:text-gray-500"
                   >
-                    Copy
+                    <ContentCopyIcon />
                   </button>
                   <button
                     onClick={() => handleDownloadImage(baseImg)}
-                    className="bg-green-500 text-white rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="text-gray-400 rounded-sm px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-200 hover:text-gray-500"
                   >
-                    Download
+                    <DownloadIcon className="" />
                   </button>
                 </div>
               </div>
