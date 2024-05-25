@@ -1,9 +1,9 @@
 import { Processing } from "../Processing";
 import CancelIcon from "@mui/icons-material/Cancel";
-import DownloadIcon from "@mui/icons-material/Download";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { SaveAlt } from "@mui/icons-material";
 
 type FigureProps = {
   isPost: boolean;
@@ -76,7 +76,7 @@ export const ResFigure: React.FC<FigureProps> = ({
                       onClick={() => handleDownloadImage(baseImg)}
                       className="text-gray-400 rounded-sm px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-200 hover:text-gray-500"
                     >
-                      <DownloadIcon className="" />
+                      <SaveAlt />
                     </button>
                   </div>
                 </div>
