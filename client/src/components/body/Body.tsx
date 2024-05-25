@@ -51,7 +51,7 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
 
   return (
     <div className="flex">
-      <div className="flex flex-col min-h-screen-minus-topbar min-w-input bg-zinc-700">
+      <div className="flex flex-col min-h-screen-minus-topbar max-w-input, min-w-input bg-zinc-700">
         <ReadBio
           isBioRead={isBioRead}
           hedValue={hedValue}

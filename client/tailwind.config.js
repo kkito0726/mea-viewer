@@ -8,10 +8,15 @@ export default {
       },
       width: {
         figure: "calc(100vw-578px)",
+        input: "410px",
+        sidebar: "136px",
       },
       minWidth: {
         input: "410px",
         sidebar: "136px",
+      },
+      maxWidth: {
+        input: "410px",
       },
     },
   },

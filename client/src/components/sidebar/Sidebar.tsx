@@ -5,7 +5,7 @@ type SidebarProps = {
   name: string;
 };
 export const Sidebar: React.FC<SidebarProps> = ({ name }) => {
-  const buttonCss = "p-5 cursor-pointer hover:bg-zinc-800 ";
+  const buttonCss = "p-3 cursor-pointer hover:bg-zinc-800 ";
   const selectCss = "bg-zinc-900";
   return (
     <div className="cursor-pointer min-w-sidebar">

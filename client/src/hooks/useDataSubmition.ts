@@ -13,6 +13,7 @@ import {
 } from "./fetchApi";
 import { PageName } from "../enum/PageName";
 import { PeakFormValue } from "../types/PeakFormValue";
+import { toast } from "react-toastify";
 
 export const useDataSubmission = (
   pageName: string,
@@ -62,6 +63,11 @@ export const useDataSubmission = (
   const handleRemoveImg = (index: number) => {
     const newImgSrc = imgSrc.filter((_, i) => i !== index);
     setImgSrc(newImgSrc);
+    toast.error("Figureを削除しました", {
+      position: "top-right",
+      autoClose: 700,
+      hideProgressBar: true,
+    });
   };
 
   const handleFetch = async () => {

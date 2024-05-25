@@ -4,6 +4,7 @@ import { readHed } from "./readHed";
 import { handleFileFromChangeEvent } from "./handleEvent";
 import { readBio } from "./readBio";
 import { ReadTime } from "../types/ReadTime";
+import { toast } from "react-toastify";
 
 type MeaFile = {
   hedFile: File | undefined;
@@ -70,6 +71,11 @@ export const useFileHandler = () => {
       setMeaFile({ hedFile: meaFile?.hedFile, bioFile: file });
 
       setIsBioRead(false);
+      toast.success("MEAデータを読み込み完了", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+      });
     }
   };
 
@@ -85,6 +91,11 @@ export const useFileHandler = () => {
     if (!meaFile?.bioFile) return;
     setMeaData(await readBio(meaFile.bioFile, hedValue, readTime));
     setIsBioRead(false);
+    toast.success("MEAデータを読み込み完了", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+    });
   };
 
   return {
