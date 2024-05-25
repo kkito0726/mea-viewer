@@ -4,6 +4,8 @@ import { PeakRequestEntity, RequestEntity } from "../types/requestEntity";
 import { ChFormValue, initChFormValue } from "../types/ChFormValue";
 import { HedValue } from "../types/HedValue";
 import {
+  fetchDraw2d,
+  fetchDraw3d,
   fetchRasterPlot,
   fetchShowAll,
   fetchShowDetection,
@@ -11,6 +13,7 @@ import {
 } from "./fetchApi";
 import { PageName } from "../enum/PageName";
 import { PeakFormValue } from "../types/PeakFormValue";
+import { toast } from "react-toastify";
 
 export const useDataSubmission = (
   pageName: string,
@@ -21,7 +24,7 @@ export const useDataSubmission = (
 ) => {
   const [values, setValues] = useState<ChFormValue>(initChFormValue);
 
-  const [imgSrc, setImgSrc] = useState<string>("");
+  const [imgSrc, setImgSrc] = useState<string[]>([]);
   const [isPost, setIsPost] = useState<boolean>(false);
 
   const handleChange = (
@@ -53,12 +56,18 @@ export const useDataSubmission = (
       return;
     }
     setIsPost(true);
-    const resData = await handleFetch();
-    if (resData) {
-      setImgSrc(resData.imgSrc);
-    }
-
+    await handleFetch();
     setIsPost(false);
+  };
+
+  const handleRemoveImg = (index: number) => {
+    const newImgSrc = imgSrc.filter((_, i) => i !== index);
+    setImgSrc(newImgSrc);
+    toast.error("Figureを削除しました", {
+      position: "top-right",
+      autoClose: 700,
+      hideProgressBar: true,
+    });
   };
 
   const handleFetch = async () => {
@@ -72,13 +81,26 @@ export const useDataSubmission = (
     };
     switch (pageName) {
       case PageName.SHOW_ALL:
-        return await fetchShowAll(requestEntity, meaData);
+        {
+          const resData = await fetchShowAll(requestEntity, meaData);
+          setImgSrc(resData.imgSrc);
+        }
         break;
       case PageName.SHOW_SINGLE:
-        return await fetchShowSingle(requestEntity, meaData);
+        {
+          const resData = await fetchShowSingle(requestEntity, meaData);
+          setImgSrc((prev) => [...prev, ...resData.imgSrc]);
+        }
         break;
       case PageName.SHOW_DETECTION:
-        return await fetchShowDetection(requestEntity, meaData, activeChs);
+        {
+          const resData = await fetchShowDetection(
+            requestEntity,
+            meaData,
+            activeChs
+          );
+          setImgSrc((prev) => [...prev, ...resData.imgSrc]);
+        }
         break;
       case PageName.RASTER_PLOT:
         {
@@ -86,7 +108,32 @@ export const useDataSubmission = (
             ...requestEntity,
             peakFormValue,
           };
-          return await fetchRasterPlot(peakRequestEntity, meaData, activeChs);
+          const resData = await fetchRasterPlot(
+            peakRequestEntity,
+            meaData,
+            activeChs
+          );
+          setImgSrc(resData.imgSrc);
+        }
+        break;
+      case PageName.DRAW_2D:
+        {
+          const peakRequestEntity: PeakRequestEntity = {
+            ...requestEntity,
+            peakFormValue,
+          };
+          const resData = await fetchDraw2d(peakRequestEntity, meaData);
+          setImgSrc(resData.imgSrc);
+        }
+        break;
+      case PageName.DRAW_3D:
+        {
+          const peakRequestEntity: PeakRequestEntity = {
+            ...requestEntity,
+            peakFormValue,
+          };
+          const resData = await fetchDraw3d(peakRequestEntity, meaData);
+          setImgSrc(resData.imgSrc);
         }
         break;
     }
@@ -98,5 +145,6 @@ export const useDataSubmission = (
     handleChange,
     handleInitialize,
     handleSubmit,
+    handleRemoveImg,
   } as const;
 };

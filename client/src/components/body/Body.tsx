@@ -44,13 +44,14 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     handleChange,
     handleInitialize,
     handleSubmit,
+    handleRemoveImg,
   } = useDataSubmission(pageName, activeChs, meaData, hedValue, peakFormValue);
 
   const chPadPages: string[] = [PageName.SHOW_DETECTION, PageName.RASTER_PLOT];
 
   return (
-    <div className="flex">
-      <div className="flex flex-col min-h-screen-minus-topbar min-w-input bg-zinc-700">
+    <div className="flex h-screen-minus-topbar">
+      <div className="flex flex-col w-input bg-zinc-700 overflow-y-auto hide-scrollbar">
         <ReadBio
           isBioRead={isBioRead}
           hedValue={hedValue}
@@ -64,32 +65,35 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
           handleReadBio={handleReadBio}
           meaData={meaData}
         />
-        <div className="flex flex-col">
-          {pageName === PageName.SHOW_SINGLE ? (
-            <ChForm values={values} handleChange={handleChange} />
-          ) : null}
-          {chPadPages.includes(pageName) ? (
-            <ChPad
-              gridSize={gridSize}
-              activeChs={activeChs}
-              toggleButton={toggleButton}
-              handleClearChs={handleClearChs}
-              handleSelectAllChs={handleSelectAllChs}
-            />
-          ) : null}
-
-          <Form
-            values={values}
-            handleChange={handleChange}
-            handleInitialize={handleInitialize}
-            handleSubmit={handleSubmit}
-            peakFormValue={peakFormValue}
-            handlePeakFormChange={handlePeakFormChange}
+        {pageName === PageName.SHOW_SINGLE ? (
+          <ChForm values={values} handleChange={handleChange} />
+        ) : null}
+        {chPadPages.includes(pageName) ? (
+          <ChPad
+            gridSize={gridSize}
+            activeChs={activeChs}
+            toggleButton={toggleButton}
+            handleClearChs={handleClearChs}
+            handleSelectAllChs={handleSelectAllChs}
           />
-        </div>
-      </div>
+        ) : null}
 
-      <ResFigure isPost={isPost} imgSrc={imgSrc} />
+        <Form
+          values={values}
+          handleChange={handleChange}
+          handleInitialize={handleInitialize}
+          handleSubmit={handleSubmit}
+          peakFormValue={peakFormValue}
+          handlePeakFormChange={handlePeakFormChange}
+        />
+      </div>
+      <div className="overflow-y-auto">
+        <ResFigure
+          isPost={isPost}
+          imgSrc={imgSrc}
+          handleRemoveImg={handleRemoveImg}
+        />
+      </div>
     </div>
   );
 };
