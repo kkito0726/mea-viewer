@@ -44,6 +44,7 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     handleChange,
     handleInitialize,
     handleSubmit,
+    handleRemoveImg,
   } = useDataSubmission(pageName, activeChs, meaData, hedValue, peakFormValue);
 
   const chPadPages: string[] = [PageName.SHOW_DETECTION, PageName.RASTER_PLOT];
@@ -89,7 +90,11 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
         </div>
       </div>
 
-      <ResFigure isPost={isPost} imgSrc={imgSrc} />
+      <ResFigure
+        isPost={isPost}
+        imgSrc={imgSrc}
+        handleRemoveImg={handleRemoveImg}
+      />
     </div>
   );
 };

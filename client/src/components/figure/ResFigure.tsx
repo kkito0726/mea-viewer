@@ -3,20 +3,68 @@ import { Processing } from "../Processing";
 type FigureProps = {
   isPost: boolean;
   imgSrc: string[];
+  handleRemoveImg: (index: number) => void;
 };
-export const ResFigure: React.FC<FigureProps> = ({ isPost, imgSrc }) => {
+export const ResFigure: React.FC<FigureProps> = ({
+  isPost,
+  imgSrc,
+  handleRemoveImg,
+}) => {
+  const handleCopyToClipboard = async (baseImg: string) => {
+    try {
+      const blob = await fetch("data:image/png;base64," + baseImg).then((r) =>
+        r.blob()
+      );
+      const item = new ClipboardItem({ "image/png": blob });
+      await navigator.clipboard.write([item]);
+      alert("Image copied to clipboard!");
+    } catch (error) {
+      console.error("Failed to copy image: ", error);
+    }
+  };
+
+  const handleDownloadImage = (baseImg: string) => {
+    const link = document.createElement("a");
+    link.href = "data:image/png;base64," + baseImg;
+    link.download = "image.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   return (
     <div className="flex flex-col w-3/5">
       {isPost ? <Processing message="処理中です..." /> : null}
       {imgSrc.length > 0 ? (
         imgSrc.map((baseImg, i) => {
           return (
-            <div key={i} className="flex justify-center py-4 px-8">
-              <img
-                src={"data:image/png;base64," + baseImg}
-                className="rounded-2xl max-w-screen-sm"
-                alt=""
-              />
+            <div key={i} className="relative flex justify-center py-4 px-8">
+              <div className="relative group">
+                <img
+                  src={"data:image/png;base64," + baseImg}
+                  className="rounded-2xl max-w-screen-sm"
+                  alt=""
+                />
+                <button
+                  onClick={() => handleRemoveImg(i)}
+                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  &times;
+                </button>
+                <div className="absolute bottom-2 right-2">
+                  <button
+                    onClick={() => handleCopyToClipboard(baseImg)}
+                    className="mr-1 bg-blue-500 text-white rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    Copy
+                  </button>
+                  <button
+                    onClick={() => handleDownloadImage(baseImg)}
+                    className="bg-green-500 text-white rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    Download
+                  </button>
+                </div>
+              </div>
             </div>
           );
         })

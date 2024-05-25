@@ -59,6 +59,11 @@ export const useDataSubmission = (
     setIsPost(false);
   };
 
+  const handleRemoveImg = (index: number) => {
+    const newImgSrc = imgSrc.filter((_, i) => i !== index);
+    setImgSrc(newImgSrc);
+  };
+
   const handleFetch = async () => {
     const requestEntity: RequestEntity = {
       readTime: {
@@ -134,5 +139,6 @@ export const useDataSubmission = (
     handleChange,
     handleInitialize,
     handleSubmit,
+    handleRemoveImg,
   } as const;
 };
