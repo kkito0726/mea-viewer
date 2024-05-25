@@ -6,6 +6,9 @@ export default {
       minHeight: {
         "screen-minus-topbar": "calc(100vh - 56px)",
       },
+      height: {
+        "screen-minus-topbar": "calc(100vh - 56px)",
+      },
       width: {
         figure: "calc(100vw-578px)",
         input: "410px",

@@ -44,16 +44,19 @@ export const ResFigure: React.FC<FigureProps> = ({
     <>
       <ToastContainer />
 
-      <div className="flex flex-col w-3/5">
+      <div className="flex flex-col max-w-2xl">
         {isPost ? <Processing message="処理中です..." /> : null}
         {imgSrc.length > 0 ? (
           imgSrc.map((baseImg, i) => {
             return (
-              <div key={i} className="relative flex justify-center py-4 px-8">
+              <div
+                key={i}
+                className="flex items-center justify-center py-4 px-8"
+              >
                 <div className="relative group">
                   <img
                     src={"data:image/png;base64," + baseImg}
-                    className="rounded-2xl max-w-screen-sm"
+                    className="rounded-2xl"
                     alt=""
                   />
                   <button
