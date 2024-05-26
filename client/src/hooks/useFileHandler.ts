@@ -6,11 +6,11 @@ import { readBio } from "./readBio";
 import { ReadTime } from "../types/ReadTime";
 import { toast } from "react-toastify";
 
-type MeaFile = {
+export type MeaFile = {
   hedFile: File | undefined;
   bioFile: File | undefined;
 };
-type FileName = {
+export type FileName = {
   hedName: string;
   bioName: string;
 };

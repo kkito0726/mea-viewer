@@ -1,12 +1,12 @@
 import { ResFigure } from "../figure/ResFigure";
 import { Form } from "./form/Form";
 import { ReadBio } from "./readMeaFile/ReadBio";
-import { useFileHandler } from "../../hooks/useFileHandler";
 import { useDataSubmission } from "../../hooks/useDataSubmition";
 import { ChPad } from "../ChPad/ChPad";
 import { useChPad } from "../../hooks/useChPad";
 import { PageName } from "../../enum/PageName";
 import { usePeakFormHandler } from "../../hooks/usePeakFormHandler";
+import { useSharedMEA } from "../SharedMEA";
 
 type BodyProps = {
   pageName: string;
@@ -24,7 +24,7 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     handleBioInput,
     handleRefreshHedFile,
     handleReadBio,
-  } = useFileHandler();
+  } = useSharedMEA();
 
   const {
     gridSize,
