@@ -69,9 +69,7 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
           handleReadBio={handleReadBio}
           meaData={meaData}
         />
-        {/* {pageName === PageName.SHOW_SINGLE ? (
-          <ChForm values={values} handleChange={handleChange} />
-        ) : null} */}
+
         {chPadPages.includes(pageName) ? (
           <ChPad
             gridSize={gridSize}
