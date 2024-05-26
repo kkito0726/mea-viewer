@@ -20,7 +20,6 @@ def plot_showAll():
 @figure.route("/showSingle", methods=["POST"])
 def show_single():
     images, chs = showSingleService()
-    print(chs)
     return jsonify({"imgSrc": images, "chs": chs})
 
 
