@@ -8,11 +8,13 @@ import { SaveAlt } from "@mui/icons-material";
 type FigureProps = {
   isPost: boolean;
   imgSrc: string[];
+  resChs: number[];
   handleRemoveImg: (index: number) => void;
 };
 export const ResFigure: React.FC<FigureProps> = ({
   isPost,
   imgSrc,
+  resChs,
   handleRemoveImg,
 }) => {
   const handleCopyToClipboard = async (baseImg: string) => {
@@ -54,11 +56,15 @@ export const ResFigure: React.FC<FigureProps> = ({
                 className="flex items-center justify-center py-4 px-8"
               >
                 <div className="relative group">
+                  {resChs.length ? (
+                    <span className="absolute top-2 left-2 text-zinc-800">{`ch ${resChs[i]}`}</span>
+                  ) : null}
                   <img
                     src={"data:image/png;base64," + baseImg}
                     className="rounded-2xl"
                     alt=""
                   />
+
                   <button
                     onClick={() => handleRemoveImg(i)}
                     className="absolute top-2 right-2 text-white rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity"

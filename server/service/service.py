@@ -45,14 +45,13 @@ def showAllService() -> str:
     return image
 
 
-def showSingleService() -> str:
+def showSingleService() -> list[str]:
     data, json_data = decode_request()
-    x, y = data[0], data[1]
     form_value = FormValue(json_data=json_data)
 
-    image = showSingle(x, y, form_value)
+    images = [showSingle(data[0], data[i], form_value) for i in range(1, len(data))]
 
-    return image
+    return images, json_data["chs"]
 
 
 def showDetectionService() -> str:
