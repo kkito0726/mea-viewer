@@ -61,7 +61,7 @@ docker-compose -f ~/Workspace/mea-viewer/docker-compose.yml stop
 ```bash
 cd ~/Workspace/mea-viewer
 git pull
-docker-compose build
+docker-compose up -d --build
 ```
 
 ---
