@@ -19,8 +19,9 @@ def plot_showAll():
 
 @figure.route("/showSingle", methods=["POST"])
 def show_single():
-    image = showSingleService()
-    return jsonify({"imgSrc": [image]})
+    images, chs = showSingleService()
+    print(chs)
+    return jsonify({"imgSrc": images, "chs": chs})
 
 
 @figure.route("/showDetection", methods=["POST"])

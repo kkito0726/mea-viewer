@@ -1,7 +1,6 @@
 import { ResFigure } from "../figure/ResFigure";
 import { Form } from "./form/Form";
 import { ReadBio } from "./readMeaFile/ReadBio";
-import { ChForm } from "./form/ChForm";
 import { useFileHandler } from "../../hooks/useFileHandler";
 import { useDataSubmission } from "../../hooks/useDataSubmition";
 import { ChPad } from "../ChPad/ChPad";
@@ -40,6 +39,7 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
   const {
     values,
     imgSrc,
+    resChs,
     isPost,
     handleChange,
     handleInitialize,
@@ -47,7 +47,11 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     handleRemoveImg,
   } = useDataSubmission(pageName, activeChs, meaData, hedValue, peakFormValue);
 
-  const chPadPages: string[] = [PageName.SHOW_DETECTION, PageName.RASTER_PLOT];
+  const chPadPages: string[] = [
+    PageName.SHOW_SINGLE,
+    PageName.SHOW_DETECTION,
+    PageName.RASTER_PLOT,
+  ];
 
   return (
     <div className="flex h-screen-minus-topbar">
@@ -65,9 +69,9 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
           handleReadBio={handleReadBio}
           meaData={meaData}
         />
-        {pageName === PageName.SHOW_SINGLE ? (
+        {/* {pageName === PageName.SHOW_SINGLE ? (
           <ChForm values={values} handleChange={handleChange} />
-        ) : null}
+        ) : null} */}
         {chPadPages.includes(pageName) ? (
           <ChPad
             gridSize={gridSize}
@@ -91,6 +95,7 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
         <ResFigure
           isPost={isPost}
           imgSrc={imgSrc}
+          resChs={resChs}
           handleRemoveImg={handleRemoveImg}
         />
       </div>

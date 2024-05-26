@@ -29,25 +29,25 @@ export const fetchShowAll = async (
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: [] };
+  return { imgSrc: [], chs: [] };
 };
 
 export const fetchShowSingle = async (
   value: RequestEntity,
-  meaData: Float32Array[]
+  meaData: Float32Array[],
+  activeChs: number[]
 ) => {
   const url = ROOT_URL + PagePath.SHOW_SINGLE;
 
   // バイナリデータをBlobに変換
-  const buffers = [meaData[0], meaData[value.chs[0]]].map(
-    (v) => new Blob([v.buffer])
-  );
+  const buffers = [0, ...activeChs].map((v) => new Blob([meaData[v].buffer]));
 
   // FormDataを使用してデータを送信
   const formData = new FormData();
   buffers.forEach((blob, index) => {
     formData.append(`file${index}`, blob);
   });
+  value.chs = activeChs;
   formData.append("jsonData", JSON.stringify(value));
 
   try {
@@ -60,7 +60,7 @@ export const fetchShowSingle = async (
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: [] };
+  return { imgSrc: [], chs: [] };
 };
 
 export const fetchShowDetection = async (
@@ -90,7 +90,7 @@ export const fetchShowDetection = async (
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: [] };
+  return { imgSrc: [], chs: [] };
 };
 
 export const fetchRasterPlot = async (
@@ -120,7 +120,7 @@ export const fetchRasterPlot = async (
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: [] };
+  return { imgSrc: [], chs: [] };
 };
 
 export const fetchDraw2d = async (
@@ -147,7 +147,7 @@ export const fetchDraw2d = async (
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: [] };
+  return { imgSrc: [], chs: [] };
 };
 
 export const fetchDraw3d = async (
@@ -174,5 +174,5 @@ export const fetchDraw3d = async (
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: [] };
+  return { imgSrc: [], chs: [] };
 };

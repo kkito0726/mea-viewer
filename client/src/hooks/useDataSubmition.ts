@@ -25,6 +25,7 @@ export const useDataSubmission = (
   const [values, setValues] = useState<ChFormValue>(initChFormValue);
 
   const [imgSrc, setImgSrc] = useState<string[]>([]);
+  const [resChs, setResChs] = useState<number[]>([]);
   const [isPost, setIsPost] = useState<boolean>(false);
 
   const handleChange = (
@@ -88,8 +89,13 @@ export const useDataSubmission = (
         break;
       case PageName.SHOW_SINGLE:
         {
-          const resData = await fetchShowSingle(requestEntity, meaData);
+          const resData = await fetchShowSingle(
+            requestEntity,
+            meaData,
+            activeChs
+          );
           setImgSrc((prev) => [...prev, ...resData.imgSrc]);
+          setResChs((prev) => [...prev, ...resData.chs]);
         }
         break;
       case PageName.SHOW_DETECTION:
@@ -141,6 +147,7 @@ export const useDataSubmission = (
   return {
     values,
     imgSrc,
+    resChs,
     isPost,
     handleChange,
     handleInitialize,
