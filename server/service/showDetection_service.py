@@ -1,4 +1,9 @@
-from repository.showDetection_repository import save_image, get_images, delete_image
+from repository.showDetection_repository import (
+    save_image,
+    get_images,
+    delete_image,
+    delete_all_image,
+)
 
 
 def insert(image_url: str, filename: str):
@@ -10,4 +15,8 @@ def select(filename: str):
 
 
 def delete(id: int):
-    return delete_image(id)
+    delete_image(id)
+
+
+def delete_all(file_name):
+    delete_all_image(file_name)

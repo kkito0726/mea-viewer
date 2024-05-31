@@ -19,29 +19,16 @@ class ShowDetectionImage(db.Model):
         return self
 
     @staticmethod
-    def get_image(image_id):
-        return ShowDetectionImage.query.get(image_id)
-
-    @staticmethod
-    def get_all_images():
-        return ShowDetectionImage.query.all()
-
-    @staticmethod
-    def delete_image_by_id(image_id):
-        image = ShowDetectionImage.query.get(image_id)
-        if image:
-            db.session.delete(image)
-            db.session.commit()
-            return True
-        return False
-
-    def delete_image(self):
-        db.session.delete(self)
-        db.session.commit()
-
-    @staticmethod
     def get_images_by_file_name(file_name):
         return ShowDetectionImage.query.filter_by(file_name=file_name).all()
+
+    @staticmethod
+    def delete_image_by_id(id):
+        ShowDetectionImage.query.filter_by(id=id).delete()
+
+    @staticmethod
+    def delete_all(file_name):
+        return ShowDetectionImage.query.filter_by(file_name=file_name).delete()
 
 
 class ShowDetectionSchema(ma.SQLAlchemyAutoSchema):

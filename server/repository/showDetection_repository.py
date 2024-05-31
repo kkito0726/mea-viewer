@@ -13,5 +13,9 @@ def get_images(file_name):
     return ShowDetectionSchema().jsonify(images)
 
 
-def delete_image(image_id: int) -> bool:
-    return ShowDetectionImage.delete_image_by_id(image_id)
+def delete_image(id: int):
+    ShowDetectionImage.delete_image_by_id(id)
+
+
+def delete_all_image(file_name):
+    ShowDetectionImage.delete_all_image(file_name)
