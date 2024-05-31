@@ -4,6 +4,7 @@ from model.peak_form_value import PeakFormValue
 from lib.plot import showAll, showSingle, showDetection, raster_plot
 from lib.peak_detection import detect_peak_neg, detect_peak_pos
 from lib.colormap import remove_fit_data, draw_2d, draw_3d
+import io
 import numpy as np
 import json
 
@@ -54,14 +55,15 @@ def showSingleService() -> list[str]:
     return images, json_data["chs"]
 
 
-def showDetectionService() -> str:
+def showDetectionService() -> io.BytesIO:
     data, json_data = decode_request()
     form_value = FormValue(json_data=json_data)
     chs = json_data["chs"]
+    filename = json_data["filename"]
 
-    image = showDetection(data, form_value, chs)
+    image_buf = showDetection(data, form_value, chs)
 
-    return image
+    return image_buf, filename
 
 
 def rasterPlotService() -> str:

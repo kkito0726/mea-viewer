@@ -22,6 +22,20 @@ def output_base64(func):
     return warapper
 
 
+def output_buf(func):
+    def warapper(*args, **kwargs):
+        buf = io.BytesIO()
+        func(*args, *kwargs)
+
+        plt.savefig(buf, format="png")
+        plt.close()
+        buf.seek(0)
+
+        return buf
+
+    return warapper
+
+
 if __name__ == "__main__":
 
     @output_base64

@@ -6,7 +6,7 @@ from config import config
 import db
 import os
 from migration import migration
-from model.ShowAllImage import ShowAllImage
+from model import models
 
 
 app = Flask(__name__)

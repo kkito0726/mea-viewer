@@ -7,7 +7,7 @@ from marshmallow import fields
 class Draw3dImage(db.Model):
     __tablename__ = "draw3d_image"
     id = db.Column(db.Integer, primary_key=True)
-    image_data = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(255), nullable=False)
     file_name = db.Column(db.String(255), nullable=False)
     created_at = db.Column(
         Timestamp, server_default=current_timestamp(), nullable=False

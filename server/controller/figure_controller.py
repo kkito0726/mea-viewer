@@ -7,6 +7,8 @@ from service.service import (
     draw_2d_service,
     draw_3d_service,
 )
+from service import mino_service, showDetection_service
+from enums.FigType import FigType
 
 figure = Blueprint("figure", __name__)
 
@@ -25,8 +27,10 @@ def show_single():
 
 @figure.route("/showDetection", methods=["POST"])
 def show_detection():
-    image = showDetectionService()
-    return jsonify({"imgSrc": [image]})
+    img_buf, filename = showDetectionService()
+    img_url = mino_service.save(FigType.SHOW_DETECTION, img_buf)
+    img_response = showDetection_service.insert(img_url, filename)
+    return img_response
 
 
 @figure.route("/rasterPlot", methods=["POST"])

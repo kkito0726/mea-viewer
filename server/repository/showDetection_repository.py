@@ -1,15 +1,15 @@
-from ..model.ShowDetectionImage import ShowDetectionImage, ShowDetectionSchema
+from model.ShowDetectionImage import ShowDetectionImage, ShowDetectionSchema
 
 
-def save_image(image: str, filename: str):
+def save_image(image_url: str, filename: str):
     showDetectionImage = ShowDetectionImage(
-        image=image, filename=filename
+        image_url=image_url, filename=filename
     ).create_image()
     return ShowDetectionSchema().jsonify(showDetectionImage)
 
 
-def get_all_images():
-    images = ShowDetectionImage.get_all_images()
+def get_images(file_name):
+    images = ShowDetectionImage.get_images_by_file_name(file_name)
     return ShowDetectionSchema().jsonify(images)
 
 

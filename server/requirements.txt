@@ -1,8 +1,12 @@
 alembic==1.13.1
 altgraph==0.17.4
 appnope==0.1.3
+argon2-cffi==23.1.0
+argon2-cffi-bindings==21.2.0
 asttokens==2.4.1
 blinker==1.8.1
+certifi==2024.2.2
+cffi==1.16.0
 click==8.1.7
 comm==0.2.0
 contourpy==1.2.1
@@ -39,6 +43,7 @@ marshmallow==3.21.2
 marshmallow-sqlalchemy==1.0.0
 matplotlib==3.8.4
 matplotlib-inline==0.1.6
+minio==7.2.7
 nest-asyncio==1.5.8
 numpy==1.26.4
 opencv-python==4.8.1.78
@@ -54,6 +59,8 @@ prompt-toolkit==3.0.41
 psutil==5.9.6
 ptyprocess==0.7.0
 pure-eval==0.2.2
+pycparser==2.22
+pycryptodome==3.20.0
 Pygments==2.17.2
 pyinstaller-hooks-contrib==2024.5
 pyMEA @ git+https://github.com/kkito0726/MEA_modules.git@9ea2ef52da486d78ca2baba45fc265b164c85518
@@ -77,6 +84,7 @@ tornado==6.4
 traitlets==5.14.0
 typing_extensions==4.12.0
 tzdata==2023.3
+urllib3==2.2.1
 wcwidth==0.2.12
 Werkzeug==3.0.2
 wheel==0.43.0
