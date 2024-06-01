@@ -2,16 +2,24 @@ from db import db, ma
 from sqlalchemy.dialects.mysql import TIMESTAMP as Timestamp
 from sqlalchemy.sql.functions import current_timestamp
 from marshmallow import fields
+import json
 
 
 class RasterPlotImage(db.Model):
     __tablename__ = "rasterPlot_image"
     id = db.Column(db.Integer, primary_key=True)
-    image_data = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(255), nullable=False)
     file_name = db.Column(db.String(255), nullable=False)
     created_at = db.Column(
         Timestamp, server_default=current_timestamp(), nullable=False
     )
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "image_url": self.image_url,
+            "file_name": self.file_name,
+        }
 
     def create_image(self):
         db.session.add(self)
@@ -19,15 +27,19 @@ class RasterPlotImage(db.Model):
         return self
 
     @staticmethod
-    def get_image(image_id):
-        return RasterPlotImage.query.get(image_id)
+    def get_images_by_file_name(file_name):
+        images = RasterPlotImage.query.filter_by(file_name=file_name).all()
+        image_list = [image.serialize() for image in images]
+        return json.dumps(image_list)
 
     @staticmethod
-    def get_all_images():
-        return RasterPlotImage.query.all()
+    def delete_image_by_url(url):
+        db.session.query(RasterPlotImage).filter_by(image_url=url).delete()
+        db.session.commit()
 
-    def delete_image(self):
-        db.session.delete(self)
+    @staticmethod
+    def delete_all(file_name):
+        db.session.query(RasterPlotImage).filter_by(file_name=file_name).delete()
         db.session.commit()
 
 

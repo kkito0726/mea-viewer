@@ -10,6 +10,7 @@ from service.fig_service import (
 from service.mino_service import MinioService
 from service.showDetection_service import ShowDetectionService
 from service.showAll_service import ShowAllService
+from service.rasterPlot_service import RasterPlotService
 from enums.FigType import FigType
 
 figure = Blueprint("figure", __name__)
@@ -39,8 +40,10 @@ def show_detection():
 
 @figure.route("/rasterPlot", methods=["POST"])
 def raster_plot():
-    image = rasterPlotService()
-    return jsonify({"imgSrc": [image]})
+    img_buf, file_name = rasterPlotService()
+    img_url = MinioService.save(FigType.RASTER_PLOT.value, img_buf, file_name)
+    img_response = RasterPlotService.insert(img_url, file_name)
+    return img_response
 
 
 @figure.route("/draw2d", methods=["POST"])

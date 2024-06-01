@@ -68,7 +68,7 @@ def showDetectionService():
     return image_buf, filename
 
 
-def rasterPlotService() -> str:
+def rasterPlotService():
     data, json_data = decode_request()
     form_value = FormValue(json_data=json_data)
     chs = json_data["chs"]
