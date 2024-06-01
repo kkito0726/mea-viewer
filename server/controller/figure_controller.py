@@ -9,6 +9,7 @@ from service.fig_service import (
 )
 from service.mino_service import MinioService
 from service.showDetection_service import ShowDetectionService
+from service.showAll_service import ShowAllService
 from enums.FigType import FigType
 
 figure = Blueprint("figure", __name__)
@@ -16,8 +17,10 @@ figure = Blueprint("figure", __name__)
 
 @figure.route("/showAll", methods=["POST"])
 def plot_showAll():
-    image = showAllService()
-    return jsonify({"imgSrc": [image]})
+    img_buf, file_name = showAllService()
+    img_url = MinioService.save(FigType.SHOW_ALL.value, img_buf, file_name)
+    img_response = ShowAllService.insert(img_url, file_name)
+    return img_response
 
 
 @figure.route("/showSingle", methods=["POST"])

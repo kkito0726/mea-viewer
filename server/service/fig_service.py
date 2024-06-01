@@ -39,11 +39,12 @@ def decode_request():
 
 def showAllService() -> str:
     data, json_data = decode_request()
+    filename = json_data["filename"]
     form_value = FormValue(json_data=json_data)
 
-    image = showAll(data, form_value)
+    image_buf = showAll(data, form_value)
 
-    return image
+    return image_buf, filename
 
 
 def showSingleService() -> list[str]:
