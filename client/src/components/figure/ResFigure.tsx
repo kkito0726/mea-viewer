@@ -4,17 +4,16 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SaveAlt } from "@mui/icons-material";
+import { ImgResponse } from "../../types/ImgResponse";
 
 type FigureProps = {
   isPost: boolean;
-  imgSrc: string[];
-  resChs: number[];
+  imgs: ImgResponse[];
   handleRemoveImg: (index: number) => void;
 };
 export const ResFigure: React.FC<FigureProps> = ({
   isPost,
-  imgSrc,
-  resChs,
+  imgs,
   handleRemoveImg,
 }) => {
   const handleCopyToClipboard = async (baseImg: string) => {
@@ -48,22 +47,18 @@ export const ResFigure: React.FC<FigureProps> = ({
 
       <div className="flex flex-col max-w-2xl">
         {isPost ? <Processing message="処理中です..." /> : null}
-        {imgSrc.length > 0 ? (
-          imgSrc.map((baseImg, i) => {
+        {imgs.length > 0 ? (
+          imgs.map((img, i) => {
             return (
               <div
                 key={i}
                 className="flex items-center justify-center py-4 px-8"
               >
                 <div className="relative group">
-                  {resChs.length ? (
-                    <span className="absolute top-2 left-2 text-zinc-800">{`ch ${resChs[i]}`}</span>
+                  {img.ch ? (
+                    <span className="absolute top-2 left-2 text-zinc-800">{`ch ${img.ch}`}</span>
                   ) : null}
-                  <img
-                    src={"data:image/png;base64," + baseImg}
-                    className="rounded-2xl"
-                    alt=""
-                  />
+                  <img src={img.image_url} className="rounded-2xl" alt="" />
 
                   <button
                     onClick={() => handleRemoveImg(i)}
@@ -73,13 +68,13 @@ export const ResFigure: React.FC<FigureProps> = ({
                   </button>
                   <div className="absolute bottom-2 right-2">
                     <button
-                      onClick={() => handleCopyToClipboard(baseImg)}
+                      onClick={() => handleCopyToClipboard(img.image_url)}
                       className="text-gray-400 rounded-sm px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-200 hover:text-gray-500"
                     >
                       <ContentCopyIcon />
                     </button>
                     <button
-                      onClick={() => handleDownloadImage(baseImg)}
+                      onClick={() => handleDownloadImage(img.image_url)}
                       className="text-gray-400 rounded-sm px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-200 hover:text-gray-500"
                     >
                       <SaveAlt />

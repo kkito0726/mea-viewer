@@ -7,7 +7,8 @@ from service.service import (
     draw_2d_service,
     draw_3d_service,
 )
-from service import mino_service, showDetection_service
+from service.mino_service import MinioService
+from service.showDetection_service import ShowDetectionService
 from enums.FigType import FigType
 
 figure = Blueprint("figure", __name__)
@@ -27,9 +28,9 @@ def show_single():
 
 @figure.route("/showDetection", methods=["POST"])
 def show_detection():
-    img_buf, filename = showDetectionService()
-    img_url = mino_service.save(FigType.SHOW_DETECTION, img_buf)
-    img_response = showDetection_service.insert(img_url, filename)
+    img_buf, file_name = showDetectionService()
+    img_url = MinioService.save(FigType.SHOW_DETECTION.value, img_buf, file_name)
+    img_response = ShowDetectionService.insert(img_url, file_name)
     return img_response
 
 

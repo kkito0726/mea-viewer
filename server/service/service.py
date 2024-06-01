@@ -55,7 +55,7 @@ def showSingleService() -> list[str]:
     return images, json_data["chs"]
 
 
-def showDetectionService() -> io.BytesIO:
+def showDetectionService():
     data, json_data = decode_request()
     form_value = FormValue(json_data=json_data)
     chs = json_data["chs"]

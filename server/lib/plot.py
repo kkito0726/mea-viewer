@@ -8,7 +8,7 @@ from lib.utils import output_base64, output_buf
 import io
 
 
-@output_base64
+@output_buf
 def showAll(data, form_value: FormValue) -> str:
     plt.figure(figsize=(form_value.x_ratio, form_value.y_ratio), dpi=form_value.dpi)
     for i in range(1, 65, 1):
@@ -37,7 +37,7 @@ def showSingle(
     plt.ylabel(ylabel)
 
 
-@output_base64
+@output_buf
 def showDetection(
     data,
     form_value: FormValue,
@@ -58,7 +58,7 @@ def showDetection(
     plt.ylabel(ylabel)
 
 
-@output_base64
+@output_buf
 def raster_plot(
     MEA_data,
     form_value: FormValue,

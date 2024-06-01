@@ -2,6 +2,8 @@ from db import db, ma
 from sqlalchemy.dialects.mysql import TIMESTAMP as Timestamp
 from sqlalchemy.sql.functions import current_timestamp
 from marshmallow import fields
+import json
+from flask import jsonify
 
 
 class ShowDetectionImage(db.Model):
@@ -13,6 +15,13 @@ class ShowDetectionImage(db.Model):
         Timestamp, server_default=current_timestamp(), nullable=False
     )
 
+    def serialize(self):
+        return {
+            "id": self.id,
+            "image_url": self.image_url,
+            "file_name": self.file_name,
+        }
+
     def create_image(self):
         db.session.add(self)
         db.session.commit()
@@ -20,15 +29,19 @@ class ShowDetectionImage(db.Model):
 
     @staticmethod
     def get_images_by_file_name(file_name):
-        return ShowDetectionImage.query.filter_by(file_name=file_name).all()
+        images = ShowDetectionImage.query.filter_by(file_name=file_name).all()
+        image_list = [image.serialize() for image in images]
+        return json.dumps(image_list)
 
     @staticmethod
-    def delete_image_by_id(id):
-        ShowDetectionImage.query.filter_by(id=id).delete()
+    def delete_image_by_url(url):
+        db.session.query(ShowDetectionImage).filter_by(image_url=url).delete()
+        db.session.commit()
 
     @staticmethod
     def delete_all(file_name):
-        return ShowDetectionImage.query.filter_by(file_name=file_name).delete()
+        db.session.query(ShowDetectionImage).filter_by(file_name=file_name).delete()
+        db.session.commit()
 
 
 class ShowDetectionSchema(ma.SQLAlchemyAutoSchema):

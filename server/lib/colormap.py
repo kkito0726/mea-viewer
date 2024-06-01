@@ -6,7 +6,7 @@ from typing import Tuple, List
 from scipy.optimize import curve_fit
 import numpy as np
 from numpy import ndarray
-from lib.utils import output_base64
+from lib.utils import output_buf
 
 
 def remove_undetected_ch(
@@ -104,7 +104,7 @@ def remove_fit_data(data: ndarray, peak_index: ndarray, ele_dis: int) -> List[nd
 # 2dカラーマップを描画
 
 
-@output_base64
+@output_buf
 def draw_2d(
     popt: ndarray,
     ele_dis: int,
@@ -158,7 +158,7 @@ def draw_2d(
     plt.yticks(np.arange(0, ele_dis * 7 + 1, ele_dis))
 
 
-@output_base64
+@output_buf
 def draw_3d(
     popt: ndarray,
     ele_dis: int,
