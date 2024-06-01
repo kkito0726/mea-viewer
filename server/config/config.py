@@ -17,7 +17,7 @@ class SystemConfig:
         )
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_ECHO = True  # Print executed SQL
+    SQLALCHEMY_ECHO = False  # Print executed SQL
 
 
 Config = SystemConfig

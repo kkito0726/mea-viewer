@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from service.service import (
+from service.fig_service import (
     showAllService,
     showSingleService,
     showDetectionService,
