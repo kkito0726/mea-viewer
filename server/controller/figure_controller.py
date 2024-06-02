@@ -10,6 +10,7 @@ from service.fig_service import (
 from service.mino_service import MinioService
 from service.showDetection_service import ShowDetectionService
 from service.showAll_service import ShowAllService
+from service.showSingle_service import ShowSingleService
 from service.rasterPlot_service import RasterPlotService
 from service.draw2d_service import Draw2dService
 from service.draw3d_service import Draw3dService
@@ -28,8 +29,10 @@ def plot_showAll():
 
 @figure.route("/showSingle", methods=["POST"])
 def show_single():
-    images, chs = showSingleService()
-    return jsonify({"imgSrc": images, "chs": chs})
+    chs, image_bufs, file_name = showSingleService()
+    img_urls = MinioService.saves(FigType.SHOW_SINGLE.value, image_bufs, file_name)
+    img_responses = ShowSingleService.inserts(chs, img_urls, file_name)
+    return jsonify(img_responses), 200
 
 
 @figure.route("/showDetection", methods=["POST"])

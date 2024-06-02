@@ -47,14 +47,14 @@ def showAllService() -> tuple[io.BytesIO, str]:
     return image_buf, filename
 
 
-def showSingleService() -> tuple[io.BytesIO, int, str]:
+def showSingleService() -> tuple[list[int], io.BytesIO, str]:
     data, json_data = decode_request()
     filename = json_data["filename"]
     form_value = FormValue(json_data=json_data)
 
     image_bufs = [showSingle(data[0], data[i], form_value) for i in range(1, len(data))]
 
-    return image_bufs, json_data["chs"], filename
+    return json_data["chs"], image_bufs, filename
 
 
 def showDetectionService() -> tuple[io.BytesIO, str]:
