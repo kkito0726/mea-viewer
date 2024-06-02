@@ -103,7 +103,7 @@ export const useDataSubmission = (
             activeChs
           );
           if (resData) {
-            setImageResponses((prev) => [...prev, resData]);
+            setImageResponses((prev) => [...prev, ...resData]);
           }
         }
         break;
@@ -143,7 +143,7 @@ export const useDataSubmission = (
           };
           const resData = await fetchDraw2d(peakRequestEntity, meaData);
           if (resData) {
-            setImageResponses((prev) => [...prev, resData]);
+            setImageResponses((prev) => [...prev, ...resData]);
           }
         }
         break;
@@ -155,7 +155,7 @@ export const useDataSubmission = (
           };
           const resData = await fetchDraw3d(peakRequestEntity, meaData);
           if (resData) {
-            setImageResponses((prev) => [...prev, resData]);
+            setImageResponses((prev) => [...prev, ...resData]);
           }
         }
         break;

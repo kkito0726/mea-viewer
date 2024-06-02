@@ -9,6 +9,14 @@ class MinioService:
         return MinioRepository.save_image(file_type, image_buf, file_name)
 
     @staticmethod
+    def saves(file_type, image_bufs, file_name):
+        image_urls = [
+            MinioRepository.save_image(file_type, image_buf, file_name)
+            for image_buf in image_bufs
+        ]
+        return image_urls
+
+    @staticmethod
     def delete():
         json_data = request.get_data()
         if json_data:

@@ -54,7 +54,7 @@ export const fetchShowSingle = async (
       method: "POST",
       body: formData, // ヘッダーのContent-TypeはFormDataに任せる
     });
-    const resData: ImgResponse = await res.json();
+    const resData: ImgResponse[] = await res.json();
     return resData;
   } catch (e) {
     console.error(e);
@@ -138,7 +138,7 @@ export const fetchDraw2d = async (
       method: "POST",
       body: formData,
     });
-    const resData: ImgResponse = await res.json();
+    const resData: ImgResponse[] = await res.json();
     return resData;
   } catch (e) {
     console.error(e);
@@ -164,7 +164,7 @@ export const fetchDraw3d = async (
       method: "POST",
       body: formData,
     });
-    const resData: ImgResponse = await res.json();
+    const resData: ImgResponse[] = await res.json();
     return resData;
   } catch (e) {
     console.error(e);
