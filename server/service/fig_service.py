@@ -37,7 +37,7 @@ def decode_request():
     return data[:, int(start_frame) : int(end_frame)], json_data
 
 
-def showAllService() -> str:
+def showAllService() -> tuple[io.BytesIO, str]:
     data, json_data = decode_request()
     filename = json_data["filename"]
     form_value = FormValue(json_data=json_data)
@@ -47,7 +47,7 @@ def showAllService() -> str:
     return image_buf, filename
 
 
-def showSingleService() -> list[str]:
+def showSingleService() -> tuple[io.BytesIO, int, str]:
     data, json_data = decode_request()
     filename = json_data["filename"]
     form_value = FormValue(json_data=json_data)
@@ -57,7 +57,7 @@ def showSingleService() -> list[str]:
     return image_bufs, json_data["chs"], filename
 
 
-def showDetectionService():
+def showDetectionService() -> tuple[io.BytesIO, str]:
     data, json_data = decode_request()
     form_value = FormValue(json_data=json_data)
     chs = json_data["chs"]
@@ -68,7 +68,7 @@ def showDetectionService():
     return image_buf, filename
 
 
-def rasterPlotService():
+def rasterPlotService() -> tuple[io.BytesIO, str]:
     data, json_data = decode_request()
     form_value = FormValue(json_data=json_data)
     chs = json_data["chs"]
@@ -102,7 +102,7 @@ def rasterPlotService():
     return image_buf, filename
 
 
-def draw_2d_service() -> list[str]:
+def draw_2d_service() -> tuple[list[io.BytesIO], str]:
     data, json_data = decode_request()
     peak_form_value = PeakFormValue(json_data=json_data)
     filename = json_data["filename"]
@@ -116,7 +116,7 @@ def draw_2d_service() -> list[str]:
     return image_bufs, filename
 
 
-def draw_3d_service() -> list[str]:
+def draw_3d_service() -> tuple[list[io.BytesIO], str]:
     data, json_data = decode_request()
     filename = json_data["filename"]
     peak_form_value = PeakFormValue(json_data=json_data)

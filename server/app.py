@@ -5,6 +5,7 @@ from controller.showDetection_crud_controller import showDetection_crud
 from controller.rasterPlot_crud_controller import rasterPlot_crud
 from controller.showAll_crud_controller import showAll_crud
 from controller.draw2d_crud_controller import draw_2d_crud
+from controller.draw3d_crud_controller import draw_3d_crud
 from flask_cors import CORS
 from config import config
 import db
@@ -22,6 +23,7 @@ app.register_blueprint(showDetection_crud)
 app.register_blueprint(showAll_crud)
 app.register_blueprint(rasterPlot_crud)
 app.register_blueprint(draw_2d_crud)
+app.register_blueprint(draw_3d_crud)
 
 # DB読み込み
 app.config.from_object(config.Config)
