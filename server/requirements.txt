@@ -63,7 +63,6 @@ pycparser==2.22
 pycryptodome==3.20.0
 Pygments==2.17.2
 pyinstaller-hooks-contrib==2024.5
-pyMEA @ git+https://github.com/kkito0726/MEA_modules.git@9ea2ef52da486d78ca2baba45fc265b164c85518
 PyMySQL==1.1.1
 pyodbc==5.1.0
 pyparsing==3.1.2

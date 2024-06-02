@@ -4,6 +4,9 @@ services:
     tty: true
     ports:
       - "5001:5001"
+    depends_on:
+      - minio
+      - mysql
 
   client:
     build: ./client
