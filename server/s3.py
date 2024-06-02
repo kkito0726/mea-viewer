@@ -1,5 +1,9 @@
 from minio import Minio
+import settings
 
 minio_client = Minio(
-    "minio:9000", access_key="minio_admin", secret_key="minio_pass", secure=False
+    settings.MINIO_HOST,
+    access_key=settings.MINIO_ACCESS_KEY,
+    secret_key=settings.MINIO_SECRET_KEY,
+    secure=False,
 )

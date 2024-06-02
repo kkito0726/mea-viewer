@@ -7,6 +7,8 @@ services:
     depends_on:
       - minio
       - mysql
+    environment:
+      - FLASK_ENV=docker
 
   client:
     build: ./client
