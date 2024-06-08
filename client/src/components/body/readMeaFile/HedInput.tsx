@@ -38,7 +38,7 @@ export const HedInput: React.FC<BioInputProps> = ({
           </span>
           <button
             type="button"
-            className="mt-1 block w-full px-4 py-2 text-center text-white bg-green-500 border border-green-600 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50"
+            className="mt-1 block w-full px-4 py-2 text-center text-white bg-green-600 border border-green-600 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50"
             onClick={handleFileButtonClick}
           >
             ファイルを選択

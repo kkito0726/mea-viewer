@@ -127,7 +127,7 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
       </div>
       {imageResponses.length ? (
         <button
-          className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          className="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           onClick={handleDeleteAllFigure}
         >
           Delete All Figure
