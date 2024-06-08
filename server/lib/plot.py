@@ -4,10 +4,11 @@ from model.form_value import FormValue
 
 matplotlib.use("Agg")  # GUIバックエンドを使用しないように設定
 import matplotlib.pyplot as plt
-from lib.utils import output_base64
+from lib.utils import output_base64, output_buf
+import io
 
 
-@output_base64
+@output_buf
 def showAll(data, form_value: FormValue) -> str:
     plt.figure(figsize=(form_value.x_ratio, form_value.y_ratio), dpi=form_value.dpi)
     for i in range(1, 65, 1):
@@ -20,7 +21,7 @@ def showAll(data, form_value: FormValue) -> str:
         plt.xlim(form_value.start, form_value.end)
 
 
-@output_base64
+@output_buf
 def showSingle(
     x,
     y,
@@ -36,14 +37,14 @@ def showSingle(
     plt.ylabel(ylabel)
 
 
-@output_base64
+@output_buf
 def showDetection(
     data,
     form_value: FormValue,
     chs: list[int],
     xlabel="Time (s)",
     ylabel="Voltage (μV)",
-) -> str:
+) -> io.BytesIO:
     plt.figure(figsize=(form_value.x_ratio, form_value.y_ratio), dpi=form_value.dpi)
     for i in range(1, len(data)):
         tmp_volt = (data[i] - np.mean(data[i])) / 50
@@ -57,7 +58,7 @@ def showDetection(
     plt.ylabel(ylabel)
 
 
-@output_base64
+@output_buf
 def raster_plot(
     MEA_data,
     form_value: FormValue,

@@ -29,7 +29,6 @@ export const fetchShowAll = async (
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: [], chs: [] };
 };
 
 export const fetchShowSingle = async (
@@ -55,12 +54,11 @@ export const fetchShowSingle = async (
       method: "POST",
       body: formData, // ヘッダーのContent-TypeはFormDataに任せる
     });
-    const resData: ImgResponse = await res.json();
+    const resData: ImgResponse[] = await res.json();
     return resData;
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: [], chs: [] };
 };
 
 export const fetchShowDetection = async (
@@ -90,7 +88,6 @@ export const fetchShowDetection = async (
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: [], chs: [] };
 };
 
 export const fetchRasterPlot = async (
@@ -120,7 +117,6 @@ export const fetchRasterPlot = async (
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: [], chs: [] };
 };
 
 export const fetchDraw2d = async (
@@ -142,12 +138,11 @@ export const fetchDraw2d = async (
       method: "POST",
       body: formData,
     });
-    const resData: ImgResponse = await res.json();
+    const resData: ImgResponse[] = await res.json();
     return resData;
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: [], chs: [] };
 };
 
 export const fetchDraw3d = async (
@@ -169,10 +164,37 @@ export const fetchDraw3d = async (
       method: "POST",
       body: formData,
     });
-    const resData: ImgResponse = await res.json();
+    const resData: ImgResponse[] = await res.json();
     return resData;
   } catch (e) {
     console.error(e);
   }
-  return { imgSrc: [], chs: [] };
+};
+
+export const get_images = async (pageName: string, fileName: string) => {
+  const url = `${ROOT_URL}/crud/${pageName}/${fileName}`;
+  const res = await fetch(url);
+  const resData: ImgResponse[] = await res.json();
+  return resData;
+};
+
+export const delete_image = async (pageName: string, img_url: string) => {
+  const url = `${ROOT_URL}/crud/${pageName}`;
+  await fetch(url, {
+    method: "DELETE",
+    body: JSON.stringify({
+      image_url: img_url,
+    }),
+  });
+};
+
+export const delete_all_image = async (pageName: string, file_name: string) => {
+  const url = `${ROOT_URL}/crud/${pageName}/all`;
+  await fetch(url, {
+    method: "DELETE",
+    body: JSON.stringify({
+      directory: `images/${pageName}`,
+      file_name: file_name,
+    }),
+  });
 };

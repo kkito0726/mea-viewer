@@ -1,4 +1,6 @@
 export type ImgResponse = {
-  imgSrc: string[];
-  chs: number[];
+  id: number;
+  ch: number;
+  image_url: string;
+  file_name: string;
 };

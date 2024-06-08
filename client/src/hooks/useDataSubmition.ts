@@ -4,6 +4,7 @@ import { PeakRequestEntity, RequestEntity } from "../types/requestEntity";
 import { ChFormValue, initChFormValue } from "../types/ChFormValue";
 import { HedValue } from "../types/HedValue";
 import {
+  delete_image,
   fetchDraw2d,
   fetchDraw3d,
   fetchRasterPlot,
@@ -14,9 +15,11 @@ import {
 import { PageName } from "../enum/PageName";
 import { PeakFormValue } from "../types/PeakFormValue";
 import { toast } from "react-toastify";
+import { ImgResponse } from "../types/ImgResponse";
 
 export const useDataSubmission = (
   pageName: string,
+  fileName: string,
   activeChs: number[],
   meaData: Float32Array[],
   hedValue: HedValue,
@@ -24,8 +27,7 @@ export const useDataSubmission = (
 ) => {
   const [values, setValues] = useState<ChFormValue>(initChFormValue);
 
-  const [imgSrc, setImgSrc] = useState<string[]>([]);
-  const [resChs, setResChs] = useState<number[]>([]);
+  const [imageResponses, setImageResponses] = useState<ImgResponse[]>([]);
   const [isPost, setIsPost] = useState<boolean>(false);
 
   const handleChange = (
@@ -61,14 +63,17 @@ export const useDataSubmission = (
     setIsPost(false);
   };
 
-  const handleRemoveImg = (index: number) => {
-    const newImgSrc = imgSrc.filter((_, i) => i !== index);
-    setImgSrc(newImgSrc);
-    toast.error("Figureを削除しました", {
-      position: "top-right",
-      autoClose: 700,
-      hideProgressBar: true,
-    });
+  const handleRemoveImg = async (index: number) => {
+    if (imageResponses) {
+      await delete_image(pageName, imageResponses[index].image_url);
+      const newImgs = imageResponses.filter((_, i) => i !== index);
+      setImageResponses(newImgs);
+      toast.error("Figureを削除しました", {
+        position: "top-right",
+        autoClose: 700,
+        hideProgressBar: true,
+      });
+    }
   };
 
   const handleFetch = async () => {
@@ -78,13 +83,16 @@ export const useDataSubmission = (
         end: Math.round(meaData[0][meaData[0].length - 1]),
       },
       hedValue: hedValue,
+      filename: fileName,
       ...values,
     };
     switch (pageName) {
       case PageName.SHOW_ALL:
         {
           const resData = await fetchShowAll(requestEntity, meaData);
-          setImgSrc(resData.imgSrc);
+          if (resData) {
+            setImageResponses((prev) => [...prev, resData]);
+          }
         }
         break;
       case PageName.SHOW_SINGLE:
@@ -94,8 +102,9 @@ export const useDataSubmission = (
             meaData,
             activeChs
           );
-          setImgSrc((prev) => [...prev, ...resData.imgSrc]);
-          setResChs((prev) => [...prev, ...resData.chs]);
+          if (resData) {
+            setImageResponses((prev) => [...prev, ...resData]);
+          }
         }
         break;
       case PageName.SHOW_DETECTION:
@@ -105,7 +114,9 @@ export const useDataSubmission = (
             meaData,
             activeChs
           );
-          setImgSrc((prev) => [...prev, ...resData.imgSrc]);
+          if (resData) {
+            setImageResponses((prev) => [...prev, resData]);
+          }
         }
         break;
       case PageName.RASTER_PLOT:
@@ -119,7 +130,9 @@ export const useDataSubmission = (
             meaData,
             activeChs
           );
-          setImgSrc(resData.imgSrc);
+          if (resData) {
+            setImageResponses((prev) => [...prev, resData]);
+          }
         }
         break;
       case PageName.DRAW_2D:
@@ -129,7 +142,9 @@ export const useDataSubmission = (
             peakFormValue,
           };
           const resData = await fetchDraw2d(peakRequestEntity, meaData);
-          setImgSrc(resData.imgSrc);
+          if (resData) {
+            setImageResponses((prev) => [...prev, ...resData]);
+          }
         }
         break;
       case PageName.DRAW_3D:
@@ -139,15 +154,17 @@ export const useDataSubmission = (
             peakFormValue,
           };
           const resData = await fetchDraw3d(peakRequestEntity, meaData);
-          setImgSrc(resData.imgSrc);
+          if (resData) {
+            setImageResponses((prev) => [...prev, ...resData]);
+          }
         }
         break;
     }
   };
   return {
     values,
-    imgSrc,
-    resChs,
+    imageResponses,
+    setImageResponses,
     isPost,
     handleChange,
     handleInitialize,

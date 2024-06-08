@@ -6,6 +6,7 @@ import { ReadTime } from "./ReadTime";
 export type RequestEntity = {
   readTime: ReadTime;
   hedValue: HedValue;
+  filename: string;
 } & ChFormValue;
 
 export type PeakRequestEntity = {

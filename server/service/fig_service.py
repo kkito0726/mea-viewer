@@ -4,6 +4,7 @@ from model.peak_form_value import PeakFormValue
 from lib.plot import showAll, showSingle, showDetection, raster_plot
 from lib.peak_detection import detect_peak_neg, detect_peak_pos
 from lib.colormap import remove_fit_data, draw_2d, draw_3d
+import io
 import numpy as np
 import json
 
@@ -36,38 +37,42 @@ def decode_request():
     return data[:, int(start_frame) : int(end_frame)], json_data
 
 
-def showAllService() -> str:
+def showAllService() -> tuple[io.BytesIO, str]:
     data, json_data = decode_request()
+    filename = json_data["filename"]
     form_value = FormValue(json_data=json_data)
 
-    image = showAll(data, form_value)
+    image_buf = showAll(data, form_value)
 
-    return image
+    return image_buf, filename
 
 
-def showSingleService() -> list[str]:
+def showSingleService() -> tuple[list[int], io.BytesIO, str]:
     data, json_data = decode_request()
+    filename = json_data["filename"]
     form_value = FormValue(json_data=json_data)
 
-    images = [showSingle(data[0], data[i], form_value) for i in range(1, len(data))]
+    image_bufs = [showSingle(data[0], data[i], form_value) for i in range(1, len(data))]
 
-    return images, json_data["chs"]
-
-
-def showDetectionService() -> str:
-    data, json_data = decode_request()
-    form_value = FormValue(json_data=json_data)
-    chs = json_data["chs"]
-
-    image = showDetection(data, form_value, chs)
-
-    return image
+    return json_data["chs"], image_bufs, filename
 
 
-def rasterPlotService() -> str:
+def showDetectionService() -> tuple[io.BytesIO, str]:
     data, json_data = decode_request()
     form_value = FormValue(json_data=json_data)
     chs = json_data["chs"]
+    filename = json_data["filename"]
+
+    image_buf = showDetection(data, form_value, chs)
+
+    return image_buf, filename
+
+
+def rasterPlotService() -> tuple[io.BytesIO, str]:
+    data, json_data = decode_request()
+    form_value = FormValue(json_data=json_data)
+    chs = json_data["chs"]
+    filename = json_data["filename"]
     peak_form_value = PeakFormValue(json_data=json_data)
 
     isPos, isNeg = peak_form_value.isPositive, peak_form_value.isNegative
@@ -79,12 +84,12 @@ def rasterPlotService() -> str:
         peak_index = detect_peak_neg(
             data, peak_form_value.distance, peak_form_value.threshold
         )
-        image = raster_plot(data, form_value, chs, peak_index)
+        image_buf = raster_plot(data, form_value, chs, peak_index)
     elif isPos and not isNeg:
         peak_index = detect_peak_pos(
             data, peak_form_value.distance, peak_form_value.threshold
         )
-        image = raster_plot(data, form_value, chs, peak_index)
+        image_buf = raster_plot(data, form_value, chs, peak_index)
     else:
         pos_peak = detect_peak_pos(
             data, peak_form_value.distance, peak_form_value.threshold
@@ -92,32 +97,34 @@ def rasterPlotService() -> str:
         neg_peak = detect_peak_neg(
             data, peak_form_value.distance, peak_form_value.threshold
         )
-        image = raster_plot(data, form_value, chs, pos_peak, neg_peak)
+        image_buf = raster_plot(data, form_value, chs, pos_peak, neg_peak)
 
-    return image
+    return image_buf, filename
 
 
-def draw_2d_service() -> list[str]:
+def draw_2d_service() -> tuple[list[io.BytesIO], str]:
     data, json_data = decode_request()
+    peak_form_value = PeakFormValue(json_data=json_data)
+    filename = json_data["filename"]
+    peak_index = detect_peak_neg(
+        data, peak_form_value.distance, peak_form_value.threshold
+    )
+
+    popts, _ = remove_fit_data(data, peak_index, ele_dis=450)
+    image_bufs = [draw_2d(popt, 450, 100, False, True) for popt in popts]
+
+    return image_bufs, filename
+
+
+def draw_3d_service() -> tuple[list[io.BytesIO], str]:
+    data, json_data = decode_request()
+    filename = json_data["filename"]
     peak_form_value = PeakFormValue(json_data=json_data)
     peak_index = detect_peak_neg(
         data, peak_form_value.distance, peak_form_value.threshold
     )
 
     popts, _ = remove_fit_data(data, peak_index, ele_dis=450)
-    images = [draw_2d(popt, 450, 100, False, True) for popt in popts]
+    image_bufs = [draw_3d(popt, 450, 100) for popt in popts]
 
-    return images
-
-
-def draw_3d_service() -> list[str]:
-    data, json_data = decode_request()
-    peak_form_value = PeakFormValue(json_data=json_data)
-    peak_index = detect_peak_neg(
-        data, peak_form_value.distance, peak_form_value.threshold
-    )
-
-    popts, _ = remove_fit_data(data, peak_index, ele_dis=450)
-    images = [draw_3d(popt, 450, 100) for popt in popts]
-
-    return images
+    return image_bufs, filename
