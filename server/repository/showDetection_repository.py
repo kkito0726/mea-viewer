@@ -1,4 +1,6 @@
 from model.ShowDetectionImage import ShowDetectionImage, ShowDetectionSchema
+from db import db
+import json
 
 
 class ShowDetectionRepository:
@@ -10,14 +12,17 @@ class ShowDetectionRepository:
         return ShowDetectionSchema().jsonify(showDetectionImage)
 
     @staticmethod
-    def get_images(file_name):
-        images = ShowDetectionImage.get_images_by_file_name(file_name)
-        return images
+    def get_images(file_name: str) -> str:
+        images = ShowDetectionImage.query.filter_by(file_name=file_name).all()
+        image_list = [image.serialize() for image in images]
+        return json.dumps(image_list)
 
     @staticmethod
     def delete_image(image_url: str):
-        return ShowDetectionImage.delete_image_by_url(image_url)
+        db.session.query(ShowDetectionImage).filter_by(image_url=image_url).delete()
+        db.session.commit()
 
     @staticmethod
     def delete_all_image(file_name):
-        return ShowDetectionImage.delete_all(file_name)
+        db.session.query(ShowDetectionImage).filter_by(file_name=file_name).delete()
+        db.session.commit()

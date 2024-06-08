@@ -1,4 +1,6 @@
 from model.ShowShingleImage import ShowSingleImage, ShowSingleImageSchema
+from db import db
+import json
 
 
 class ShowSingleRepository:
@@ -11,13 +13,16 @@ class ShowSingleRepository:
 
     @staticmethod
     def get_images(file_name):
-        images = ShowSingleImage.get_images_by_file_name(file_name)
-        return images
+        images = ShowSingleImage.query.filter_by(file_name=file_name).all()
+        image_list = [image.serialize() for image in images]
+        return json.dumps(image_list)
 
     @staticmethod
     def delete_image(image_url: str):
-        return ShowSingleImage.delete_image_by_url(image_url)
+        db.session.query(ShowSingleImage).filter_by(image_url=image_url).delete()
+        db.session.commit()
 
     @staticmethod
     def delete_all_image(file_name):
-        return ShowSingleImage.delete_all(file_name)
+        db.session.query(ShowSingleImage).filter_by(file_name=file_name).delete()
+        db.session.commit()
