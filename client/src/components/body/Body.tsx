@@ -9,6 +9,7 @@ import { usePeakFormHandler } from "../../hooks/usePeakFormHandler";
 import { useSharedMEA } from "../SharedMEA";
 import { useEffect } from "react";
 import { delete_all_image, get_images } from "../../hooks/fetchApi";
+import { toast } from "react-toastify";
 
 type BodyProps = {
   pageName: string;
@@ -79,6 +80,11 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     if (isDelete) {
       delete_all_image(pageName, fileName.bioName);
       setImageResponses([]);
+      toast.error("Figureを全件削除しました", {
+        position: "top-right",
+        autoClose: 700,
+        hideProgressBar: true,
+      });
     }
   };
 
@@ -127,7 +133,7 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
       </div>
       {imageResponses.length ? (
         <button
-          className="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           onClick={handleDeleteAllFigure}
         >
           Delete All Figure
