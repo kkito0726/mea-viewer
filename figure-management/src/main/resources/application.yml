@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: figure-management
+  datasource:
+    url: jdbc:mysql://localhost:3306/mea_db
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root_pass
+  jooq:
+    sql-dialect: MYSQL
