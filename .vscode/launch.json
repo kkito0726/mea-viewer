@@ -2,6 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "java",
+      "name": "FigureManagementApplication",
+      "request": "launch",
+      "mainClass": "com.mea_viewer_backend.figure_management.FigureManagementApplication",
+      "projectName": ""
+    },
+    {
       "name": "Chrome",
       "type": "chrome",
       "request": "launch",

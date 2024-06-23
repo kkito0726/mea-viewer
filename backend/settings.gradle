@@ -1,0 +1,5 @@
+rootProject.name = 'mea-viewer'
+
+// サブプロジェクトを含める
+include 'figure-management'
+include 'generateJooq'

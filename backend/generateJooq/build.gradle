@@ -1,0 +1,48 @@
+apply plugin: 'nu.studer.jooq'
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+dependencies {
+    jooqGenerator 'mysql:mysql-connector-java:8.0.33'
+}
+
+jooq {
+    version = '3.19.10'
+    configurations {
+        main {
+            generateSchemaSourceOnCompilation = true
+            generationTool {
+                jdbc {
+                    driver = 'com.mysql.cj.jdbc.Driver'
+                    url = 'jdbc:mysql://localhost:3306/mea_db'
+                    user = 'root'
+                    password = 'root_pass'
+                }
+                generator {
+                    database {
+                        name = 'org.jooq.meta.mysql.MySQLDatabase'
+                        inputSchema = 'mea_db'
+                    }
+                    generate {
+                        daos = true
+                        pojos = true
+                    }
+                    target {
+                        packageName = 'com.jooq.generated'
+                        directory = 'src/main/java'
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.named('generateJooq') {
+    dependsOn configurations.runtimeClasspath // ランタイムクラスパスが利用可能であることを確認
+}
