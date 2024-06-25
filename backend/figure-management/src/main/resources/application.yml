@@ -2,9 +2,20 @@ spring:
   application:
     name: figure-management
   datasource:
-    url: jdbc:mysql://localhost:3306/mea_db
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/${MYSQL_DATABASE:mea_db}
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
-    password: root_pass
+    password: ${MYSQL_ROOT_PASSWORD:root_pass}
   jooq:
     sql-dialect: MYSQL
+#
+#  cors:
+#    allowed-origins:
+#      - http://localhost:5173
+#      - http://localhost:4173
+#      - https://mea-viewer.vercel.app
+
+minio:
+  endpoint: http://${MINIO_HOST:localhost}:9000
+  access-key: ${MINIO_ROOT_USER:minio_admin}
+  secret-key: ${MINIO_ROOT_PASSWORD:minio_pass}
