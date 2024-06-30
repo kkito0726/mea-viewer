@@ -44,6 +44,8 @@ subprojects {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
         implementation 'io.minio:minio:8.5.11'
+        implementation 'org.flywaydb:flyway-mysql:10.15.0'
+
     }
 }
 

@@ -6,6 +6,8 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: ${MYSQL_ROOT_PASSWORD:root_pass}
+  flyway:
+    baseline-on-migrate: true
   jooq:
     sql-dialect: MYSQL
 #
