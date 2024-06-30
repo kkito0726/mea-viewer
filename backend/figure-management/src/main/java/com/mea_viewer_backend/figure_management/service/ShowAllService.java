@@ -15,7 +15,6 @@ public class ShowAllService {
   private final MinioService minioService;
 
   public List<ShowAllEntity> getShowAllImages(String fileName) {
-    minioService.listBuckets();
     return showAllRepository.getShowAllImages(fileName);
   }
 

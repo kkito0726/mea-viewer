@@ -1,6 +1,7 @@
 package com.mea_viewer_backend.figure_management.repository;
 
-import com.jooq.generated.tables.ShowAllImage;
+import static com.jooq.generated.tables.ShowAllImage.SHOW_ALL_IMAGE;
+
 import com.mea_viewer_backend.figure_management.model.ShowAllEntity;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -16,20 +17,20 @@ public class ShowAllRepository {
 
   public List<ShowAllEntity> getShowAllImages(String fileName) {
     return dslContext.select()
-        .from(ShowAllImage.SHOW_ALL_IMAGE)
-        .where(ShowAllImage.SHOW_ALL_IMAGE.FILE_NAME.eq(fileName))
+        .from(SHOW_ALL_IMAGE)
+        .where(SHOW_ALL_IMAGE.FILE_NAME.eq(fileName))
         .fetchInto(ShowAllEntity.class);
   }
 
   public void deleteShowAllImage(String imageUrl) {
-    dslContext.delete(ShowAllImage.SHOW_ALL_IMAGE)
-        .where(ShowAllImage.SHOW_ALL_IMAGE.IMAGE_URL.eq(imageUrl))
+    dslContext.delete(SHOW_ALL_IMAGE)
+        .where(SHOW_ALL_IMAGE.IMAGE_URL.eq(imageUrl))
         .execute();
   }
 
   public void deleteAllShowAllImages(String fileName) {
-    dslContext.delete(ShowAllImage.SHOW_ALL_IMAGE)
-        .where(ShowAllImage.SHOW_ALL_IMAGE.FILE_NAME.eq(fileName))
+    dslContext.delete(SHOW_ALL_IMAGE)
+        .where(SHOW_ALL_IMAGE.FILE_NAME.eq(fileName))
         .execute();
   }
 }
