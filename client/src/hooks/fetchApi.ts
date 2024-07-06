@@ -3,6 +3,7 @@ import { ImgResponse } from "../types/ImgResponse";
 import { PeakRequestEntity, RequestEntity } from "../types/requestEntity";
 
 const ROOT_URL = "http://127.0.0.1:5001";
+const GIN_ROOT_URL = "http://localhost:8080";
 
 export const fetchShowAll = async (
   values: RequestEntity,
@@ -172,14 +173,14 @@ export const fetchDraw3d = async (
 };
 
 export const get_images = async (pageName: string, fileName: string) => {
-  const url = `${ROOT_URL}/crud/${pageName}/${fileName}`;
+  const url = `${GIN_ROOT_URL}/crud/${pageName}/${fileName}`;
   const res = await fetch(url);
   const resData: ImgResponse[] = await res.json();
   return resData;
 };
 
 export const delete_image = async (pageName: string, img_url: string) => {
-  const url = `${ROOT_URL}/crud/${pageName}`;
+  const url = `${GIN_ROOT_URL}/crud/${pageName}`;
   await fetch(url, {
     method: "DELETE",
     body: JSON.stringify({
@@ -189,7 +190,7 @@ export const delete_image = async (pageName: string, img_url: string) => {
 };
 
 export const delete_all_image = async (pageName: string, file_name: string) => {
-  const url = `${ROOT_URL}/crud/${pageName}/all`;
+  const url = `${GIN_ROOT_URL}/crud/${pageName}/all`;
   await fetch(url, {
     method: "DELETE",
     body: JSON.stringify({
