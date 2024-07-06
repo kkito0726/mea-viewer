@@ -10,6 +10,7 @@ import (
 
 const (
 	SHOW_ALL_BASE_URL       = "/crud/showAll"
+	SHOW_SINGLE_BASE_URL    = "crud/showSingle"
 	SHOW_DETECTION_BASE_URL = "/crud/showDetection"
 	RASTER_PLOT_BASE_URL    = "/crud/rasterPlot"
 	DRAW2D_BASE_URL         = "/crud/draw2d"
@@ -33,6 +34,10 @@ func SetupRouter() *gin.Engine {
 	router.GET(SHOW_ALL_BASE_URL+"/:file_name", controller.GetShowAllController)
 	router.DELETE(SHOW_ALL_BASE_URL, controller.DeleteShowAllController)
 	router.DELETE(SHOW_ALL_BASE_URL+"/all", controller.DeleteAllShowAllController)
+
+	router.GET(SHOW_SINGLE_BASE_URL+"/:file_name", controller.GetShowSingleController)
+	router.DELETE(SHOW_SINGLE_BASE_URL, controller.DeleteShowSingleController)
+	router.DELETE(SHOW_SINGLE_BASE_URL+"/all", controller.DeleteAllShowSingleController)
 
 	router.GET(SHOW_DETECTION_BASE_URL+"/:file_name", controller.GetShowDetectionController)
 	router.DELETE(SHOW_DETECTION_BASE_URL, controller.DeleteShowDetectionController)
