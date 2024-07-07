@@ -38,8 +38,9 @@ func SaveImage(fileType string, imageBuf *bytes.Buffer, fileName string) (string
 	return imageURL, nil
 }
 
-func DeleteFile(url string) error {
-	minioModel, err := extractBucketAndObject(url)
+// DeleteFile はMinIOからファイルを削除する関数
+func DeleteFile(urlStr string) error {
+	minioModel, err := ExtractBucketAndObject(urlStr)
 	if err != nil {
 		return err
 	}
@@ -82,25 +83,21 @@ func ensureBucketExists(bucketName string) {
 	}
 }
 
-func extractBucketAndObject(rawURL string) (*model.MinioModel, error) {
-	parsedURL, err := url.Parse(rawURL)
+// ExtractBucketAndObject はURLからバケット名とオブジェクト名を抽出する関数
+func ExtractBucketAndObject(urlStr string) (model.MinioModel, error) {
+	parsedURL, err := url.Parse(urlStr)
 	if err != nil {
-		return nil, err
+		return model.MinioModel{}, fmt.Errorf("invalid URL: %v", err)
 	}
 
-	if parsedURL.Scheme != "http" && parsedURL.Scheme != "https" {
-		return nil, fmt.Errorf("invalid URL scheme. Only 'http' and 'https' schemes are supported")
+	parts := parsedURL.Path[1:]
+	splitParts := strings.SplitN(parts, "/", 2)
+	if len(splitParts) < 2 {
+		return model.MinioModel{}, fmt.Errorf("invalid URL format. Bucket name and object name are missing")
 	}
 
-	parts := strings.SplitN(parsedURL.Path, "/", 3)
-	if len(parts) < 3 {
-		return nil, fmt.Errorf("invalid URL format. Bucket name and object name are missing")
-	}
-
-	minioModel := model.MinioModel{
-		BucketName: parts[1],
-		ObjectName: parts[2],
-	}
-
-	return &minioModel, nil
+	return model.MinioModel{
+		BucketName: splitParts[0],
+		ObjectName: splitParts[1],
+	}, nil
 }

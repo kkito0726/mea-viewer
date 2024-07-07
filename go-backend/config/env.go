@@ -43,12 +43,12 @@ func ParseEnv(env *Env) {
 	}
 	minioRootUser, ok := os.LookupEnv("MINIO_ROOT_USER")
 	if !ok {
-		env.MINIO_ROOT_USER = "minio_admin"
+		minioRootUser = "minio_admin"
 	}
 
 	minioRootPassword, ok := os.LookupEnv("MINIO_ROOT_PASSWORD")
 	if !ok {
-		env.MYSQL_ROOT_PASSWORD = minioRootPassword
+		minioRootPassword = "minio_pass"
 	}
 
 	env.MYSQL_ROOT_PASSWORD = pass
