@@ -1,0 +1,24 @@
+FROM golang:1.21.6-alpine3.19 AS build
+
+# set the working dir.
+WORKDIR /app
+
+# copy the go module dependency files.
+COPY ./go-backend/go.mod ./go-backend/go.sum ./
+
+# download the go module dependencies.
+RUN go mod download
+
+# copy the app source code.
+COPY ./go-backend .
+
+RUN go build -o go-server-backend
+
+FROM ubuntu:22.04
+
+WORKDIR /app
+
+# copy the built app binary from the build-env.
+COPY --from=build /app/go-server-backend .
+
+CMD [ "/app/go-server-backend" ]
