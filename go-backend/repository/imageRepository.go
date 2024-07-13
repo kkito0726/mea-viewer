@@ -9,6 +9,14 @@ type ImageRepository struct {
 	TableName string
 }
 
+func NewImageRepository(tableName string) *ImageRepository {
+	return &ImageRepository{TableName: tableName}
+}
+
+func (repo *ImageRepository) CreateImage(image *model.Image) error {
+	return db.DB.Table(repo.TableName).Create(image).Error
+}
+
 func (repo *ImageRepository) GetImages(getImageRequest *model.GetImageRequest) []model.Image {
 	var images []model.Image
 	db.DB.Table(repo.TableName).Where("file_name = ?", getImageRequest.FileName).Scan(&images)

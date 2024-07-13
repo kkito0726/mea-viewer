@@ -9,7 +9,7 @@ export const fetchShowAll = async (
   values: RequestEntity,
   meaData: Float32Array[]
 ) => {
-  const url = ROOT_URL + PagePath.SHOW_ALL;
+  const url = GIN_ROOT_URL + PagePath.SHOW_ALL;
 
   const buffers = meaData.map((v) => new Blob([v.buffer]));
 

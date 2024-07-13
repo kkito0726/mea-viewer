@@ -1,0 +1,38 @@
+package model
+
+type FormValue struct {
+	XRatio  int
+	YRatio  int
+	DPI     int
+	VoltMin float64
+	VoltMax float64
+	Start   float64
+	End     float64
+}
+
+type JsonData struct {
+	Start    float64  `json:"start"`
+	End      float64  `json:"end"`
+	ReadTime ReadTime `json:"readTime"`
+	HedValue HedValue `json:"hedValue"`
+	Filename string   `json:"filename"`
+	DPI      int      `json:"dpi"`
+	VoltMin  float64  `json:"volt_min"`
+	VoltMax  float64  `json:"volt_max"`
+	XRatio   int      `json:"x_ratio"`
+	YRatio   int      `json:"y_ratio"`
+}
+
+type ReadTime struct {
+	Start float64 `json:"start"`
+	End   float64 `json:"end"`
+}
+
+type HedValue struct {
+	SamplingRate float64 `json:"sampling_rate"`
+}
+
+type ReadFrame struct {
+	StartFrame float64
+	EndFrame   float64
+}
