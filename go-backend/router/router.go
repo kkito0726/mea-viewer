@@ -15,6 +15,7 @@ const (
 	RASTER_PLOT_BASE_URL    = "/crud/rasterPlot"
 	DRAW2D_BASE_URL         = "/crud/draw2d"
 	DRAW3D_BASE_URL         = "/crud/draw3d"
+	USER_BASE_URL           = "/user"
 )
 
 func SetupRouter() *gin.Engine {
@@ -30,6 +31,12 @@ func SetupRouter() *gin.Engine {
 	}))
 
 	router.GET("", controller.HealthController)
+
+	router.POST(USER_BASE_URL, controller.CreateUserController)
+	router.POST(USER_BASE_URL+"/login", controller.LoginUserController)
+	router.DELETE(USER_BASE_URL+"/logout", controller.LogoutUserController)
+	router.PUT(USER_BASE_URL, controller.UpdateUserController)
+	router.DELETE(USER_BASE_URL, controller.DeleteUserController)
 
 	router.GET(SHOW_ALL_BASE_URL+"/:file_name", controller.GetShowAllController)
 	router.DELETE(SHOW_ALL_BASE_URL, controller.DeleteShowAllController)

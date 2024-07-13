@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/kkito0726/mea-viewer/config"
+	"github.com/kkito0726/mea-viewer/model"
 )
 
 var DB *gorm.DB
@@ -28,4 +29,9 @@ func init() {
 		log.Fatalf("Got error when connect database, the error is '%v'", err)
 	}
 	DB = db
+}
+
+func Migrate() {
+	DB.AutoMigrate(&model.User{})
+	DB.AutoMigrate(&model.UserAuthToken{})
 }

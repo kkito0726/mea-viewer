@@ -9,8 +9,9 @@ import (
 )
 
 func main() {
-	db := db.DB
-	defer db.Close()
+	dbInstance := db.DB
+	defer dbInstance.Close()
+	db.Migrate()
 
 	router := router.SetupRouter()
 
