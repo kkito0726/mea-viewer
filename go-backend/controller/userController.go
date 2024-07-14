@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +23,8 @@ func CreateUserController(c *gin.Context) {
 
 	userResponse, err := userService.CreateUser(&newUser)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		log.Println("error:", fmt.Sprintf("ErrorCode: %s Message: %s", err.ErrorCode, err.Message))
+		c.JSON(err.StatusCode, gin.H{"error": err})
 		return
 	}
 
@@ -37,7 +40,8 @@ func LoginUserController(c *gin.Context) {
 
 	userResponse, err := userService.LoginUser(&req)
 	if err != nil {
-		c.JSON(http.StatusForbidden, gin.H{"error": err.Error()})
+		log.Println("error:", fmt.Sprintf("ErrorCode: %s Message: %s", err.ErrorCode, err.Message))
+		c.JSON(err.StatusCode, gin.H{"error": err})
 	}
 
 	c.JSON(http.StatusOK, userResponse)
@@ -50,7 +54,8 @@ func LogoutUserController(c *gin.Context) {
 		return
 	}
 	if err := userService.LogoutUser(&header); err != nil {
-		c.JSON(http.StatusForbidden, gin.H{"error": err.Error()})
+		log.Println("error:", fmt.Sprintf("ErrorCode: %s Message: %s", err.ErrorCode, err.Message))
+		c.JSON(err.StatusCode, gin.H{"error": err})
 	}
 	c.JSON(http.StatusNoContent, nil)
 }
@@ -68,7 +73,8 @@ func UpdateUserController(c *gin.Context) {
 	}
 	userResponse, err := userService.UpdateUser(&header, newUser)
 	if err != nil {
-		c.JSON(http.StatusForbidden, gin.H{"message": "ユーザー情報の編集権限がありません"})
+		log.Println("error:", fmt.Sprintf("ErrorCode: %s Message: %s", err.ErrorCode, err.Message))
+		c.JSON(err.StatusCode, gin.H{"error": err})
 	}
 
 	c.JSON(http.StatusOK, userResponse)
@@ -81,7 +87,8 @@ func DeleteUserController(c *gin.Context) {
 		return
 	}
 	if err := userService.DeleteUser(&header); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		log.Println("error:", fmt.Sprintf("ErrorCode: %s Message: %s", err.ErrorCode, err.Message))
+		c.JSON(err.StatusCode, gin.H{"error": err})
 		return
 	}
 
