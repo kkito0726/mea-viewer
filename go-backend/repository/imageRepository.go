@@ -15,12 +15,17 @@ func (repo *ImageRepository) GetImages(getImageRequest *model.GetImageRequest) [
 	return images
 }
 
-func (repo *ImageRepository) DeleteImage(deleteRequest *model.DeleteRequest) {
-	db.DB.Table(repo.TableName).Where("image_url=?", deleteRequest.ImageURL).Delete(nil)
-	DeleteFile(deleteRequest.ImageURL)
+func (repo *ImageRepository) DeleteImage(deleteRequest *model.DeleteRequest) error {
+	if err := db.DB.Table(repo.TableName).Where("image_url=?", deleteRequest.ImageURL).Delete(nil).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
-func (repo *ImageRepository) DeleteAllImages(deleteAllRequest *model.DeleteAllRequest) {
-	db.DB.Table(repo.TableName).Where("file_name=?", deleteAllRequest.FileName).Delete(nil)
+func (repo *ImageRepository) DeleteAllImages(deleteAllRequest *model.DeleteAllRequest) error {
+	if err := db.DB.Table(repo.TableName).Where("file_name=?", deleteAllRequest.FileName).Delete(nil).Error; err != nil {
+		return err
+	}
 	DeleteObjectsInDirectory(deleteAllRequest.Directory)
+	return nil
 }

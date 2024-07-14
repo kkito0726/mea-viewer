@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +21,7 @@ func CreateUserController(c *gin.Context) {
 
 	userResponse, err := userService.CreateUser(&newUser)
 	if err != nil {
-		log.Println("error:", fmt.Sprintf("ErrorCode: %s Message: %s", err.ErrorCode, err.Message))
+		err.Logging()
 		c.JSON(err.StatusCode, gin.H{"error": err})
 		return
 	}
@@ -40,7 +38,7 @@ func LoginUserController(c *gin.Context) {
 
 	userResponse, err := userService.LoginUser(&req)
 	if err != nil {
-		log.Println("error:", fmt.Sprintf("ErrorCode: %s Message: %s", err.ErrorCode, err.Message))
+		err.Logging()
 		c.JSON(err.StatusCode, gin.H{"error": err})
 	}
 
@@ -54,7 +52,7 @@ func LogoutUserController(c *gin.Context) {
 		return
 	}
 	if err := userService.LogoutUser(&header); err != nil {
-		log.Println("error:", fmt.Sprintf("ErrorCode: %s Message: %s", err.ErrorCode, err.Message))
+		err.Logging()
 		c.JSON(err.StatusCode, gin.H{"error": err})
 	}
 	c.JSON(http.StatusNoContent, nil)
@@ -73,7 +71,7 @@ func UpdateUserController(c *gin.Context) {
 	}
 	userResponse, err := userService.UpdateUser(&header, newUser)
 	if err != nil {
-		log.Println("error:", fmt.Sprintf("ErrorCode: %s Message: %s", err.ErrorCode, err.Message))
+		err.Logging()
 		c.JSON(err.StatusCode, gin.H{"error": err})
 	}
 
@@ -87,7 +85,7 @@ func DeleteUserController(c *gin.Context) {
 		return
 	}
 	if err := userService.DeleteUser(&header); err != nil {
-		log.Println("error:", fmt.Sprintf("ErrorCode: %s Message: %s", err.ErrorCode, err.Message))
+		err.Logging()
 		c.JSON(err.StatusCode, gin.H{"error": err})
 		return
 	}
