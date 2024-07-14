@@ -4,9 +4,9 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	Name          string        `json:"name" gorm:"unique"`
-	Email         string        `json:"email"`
-	Password      string        `json:"password"`
+	Name          string        `json:"name" gorm:"unique" binding:"required"`
+	Email         string        `json:"email" binding:"required,email"`
+	Password      string        `json:"password" binding:"required"`
 	UserAuthToken UserAuthToken `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
