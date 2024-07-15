@@ -5,24 +5,19 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kkito0726/mea-viewer/model"
-	"github.com/kkito0726/mea-viewer/repository"
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-const RASTER_PLOT_TABLE = "rasterPlot_image"
+const RASTER_PLOT_TABLE = "raster_plot_images"
+
+var rasterPlotService = service.NewImageService(RASTER_PLOT_TABLE)
 
 func GetRasterPlotController(c *gin.Context) {
 	getImageRequest := model.GetImageRequest{
 		FileName: c.Param("file_name"),
 	}
 
-	service := service.ImageService{
-		ImageRepository: &repository.ImageRepository{
-			TableName: RASTER_PLOT_TABLE,
-		},
-	}
-
-	images := service.GetImages(&getImageRequest)
+	images := rasterPlotService.GetImages(&getImageRequest)
 
 	c.JSON(http.StatusOK, images)
 }
@@ -35,13 +30,11 @@ func DeleteRasterPlotController(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	service := service.ImageService{
-		ImageRepository: &repository.ImageRepository{
-			TableName: SHOW_DETECTION_TABLE,
-		},
-	}
 
-	service.DeleteImage(&deleteImageRequest)
+	if err := rasterPlotService.DeleteImage(&deleteImageRequest); err != nil {
+		err.Logging()
+		c.JSON(err.StatusCode, gin.H{"error": err})
+	}
 	c.Status(http.StatusNoContent)
 }
 
@@ -53,12 +46,10 @@ func DeleteAllRasterPlotController(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	service := service.ImageService{
-		ImageRepository: &repository.ImageRepository{
-			TableName: RASTER_PLOT_TABLE,
-		},
-	}
 
-	service.DeleteAllImage(&deleteAllRequest)
+	if err := rasterPlotService.DeleteAllImage(&deleteAllRequest); err != nil {
+		err.Logging()
+		c.JSON(err.StatusCode, gin.H{"error": err})
+	}
 	c.Status(http.StatusNoContent)
 }

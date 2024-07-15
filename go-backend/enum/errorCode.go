@@ -14,6 +14,9 @@ const (
 	C008
 	C009
 	C010
+
+	F001
+	F002
 )
 
 // iotaを用いて生成した連番に対して、別名を与えて定義する
@@ -39,6 +42,11 @@ func (ec ErrorCode) Code() string {
 		return "C-009"
 	case C010:
 		return "C-010"
+
+	case F001:
+		return "F-001"
+	case F002:
+		return "F-002"
 	default:
 		return "未定義"
 	}
@@ -67,6 +75,11 @@ func (ec ErrorCode) Message() string {
 		return "ユーザー更新に失敗しました"
 	case C010:
 		return "ユーザー削除に失敗しました"
+
+	case F001:
+		return "画像ストレージの削除に失敗しました"
+	case F002:
+		return "DBから該当レコードの削除に失敗しました"
 	default:
 		return "未定義"
 	}

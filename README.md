@@ -51,7 +51,7 @@ PC 再起動や Docker Desktop を再起動した場合はこのコマンドを�
 ### Docker コンテナを停止したい場合
 
 ```bash
-docker-compose -f ~/Workspace/mea-viewer/docker-compose.yml stop
+docker compose -f ~/Workspace/mea-viewer/docker-compose.yml stop
 ```
 
 ## 3. アプリのアップデートをする場合
@@ -61,7 +61,7 @@ docker-compose -f ~/Workspace/mea-viewer/docker-compose.yml stop
 ```bash
 cd ~/Workspace/mea-viewer
 git pull
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
 ---
@@ -70,7 +70,7 @@ docker-compose up -d --build
 
 ### 1. フロントエンド
 
-- Vite+React+TypeScript
+- Vite + React + TypeScript
 - Tailwind css
 
 #### デプロイ
@@ -79,7 +79,7 @@ docker-compose up -d --build
 
 ### 2. バックエンド
 
-- Python+Flask
+- Python + Flask
 - [pyMEA](https://github.com/kkito0726/MEA_modules), Matplotlib, etc...
-- Go+Gin+Gorm
+- Go + Gin + Gorm
 - mysql + minio

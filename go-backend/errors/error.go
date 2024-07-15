@@ -1,6 +1,8 @@
 package errors
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/kkito0726/mea-viewer/enum"
@@ -14,6 +16,10 @@ type CustomError struct {
 
 func (c *CustomError) Error() string {
 	return c.Message
+}
+
+func (c *CustomError) Logging() {
+	log.Println("error:", fmt.Sprintf("ErrorCode: %s Message: %s", c.ErrorCode, c.Message))
 }
 
 // Status: 403

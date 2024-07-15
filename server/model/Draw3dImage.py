@@ -1,17 +1,12 @@
 from db import db, ma
-from sqlalchemy.dialects.mysql import TIMESTAMP as Timestamp
-from sqlalchemy.sql.functions import current_timestamp
 from marshmallow import fields
 
 
 class Draw3dImage(db.Model):
-    __tablename__ = "draw3d_image"
+    __tablename__ = "draw3d_images"
     id = db.Column(db.Integer, primary_key=True)
     image_url = db.Column(db.String(255), nullable=False)
     file_name = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(
-        Timestamp, server_default=current_timestamp(), nullable=False
-    )
 
     def serialize(self):
         return {
@@ -29,6 +24,3 @@ class Draw3dImage(db.Model):
 class Draw3dImageSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Draw3dImage
-
-    # `created_at` フィールドを除外する
-    created_at = fields.DateTime(dump_only=True)
