@@ -8,7 +8,7 @@ import (
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-const SHOW_ALL_TABLE = "show_all_image"
+const SHOW_ALL_TABLE = "show_all_images"
 
 var ShowAllService = service.NewImageService(SHOW_ALL_TABLE)
 

@@ -33,13 +33,19 @@ db.init_db(app)
 db.init_ma(app)
 db.init_seeder(app)
 
-CORS(app)
+CORS(
+    app,
+    resources={
+        r"/*": {
+            "origins": [
+                "http://localhost:5173",
+                "http://localhost:4173",
+                "https://mea-viewer.vercel.app",
+            ]
+        }
+    },
+)
 
 
 if __name__ == "__main__":
-    if not os.path.exists("./migrations"):
-        migration.initialize_migration()
-    migration.exec_migration()
-    migration.exec_seed()
-
     app.run(host="0.0.0.0", port=5001)

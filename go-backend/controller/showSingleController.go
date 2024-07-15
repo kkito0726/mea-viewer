@@ -8,7 +8,7 @@ import (
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-const SHOW_SINGLE_TABLE = "show_single_image"
+const SHOW_SINGLE_TABLE = "show_single_images"
 
 var ShowSingleService = service.NewImageService(SHOW_SINGLE_TABLE)
 

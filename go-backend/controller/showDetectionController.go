@@ -8,7 +8,7 @@ import (
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-const SHOW_DETECTION_TABLE = "showDetection_Image"
+const SHOW_DETECTION_TABLE = "show_detection_images"
 
 var showDetectionService = service.NewImageService(SHOW_DETECTION_TABLE)
 

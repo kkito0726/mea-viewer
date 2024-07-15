@@ -34,4 +34,10 @@ func init() {
 func Migrate() {
 	DB.AutoMigrate(&model.User{})
 	DB.AutoMigrate(&model.UserAuthToken{})
+	DB.AutoMigrate(&model.ShowAllImage{})
+	DB.AutoMigrate(&model.ShowSingleImage{})
+	DB.AutoMigrate(&model.ShowDetectionImage{})
+	DB.AutoMigrate(&model.RasterPlotImage{})
+	DB.AutoMigrate(&model.Draw2dImage{})
+	DB.AutoMigrate(&model.Draw3dImage{})
 }

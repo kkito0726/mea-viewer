@@ -1,17 +1,12 @@
 from db import db, ma
-from sqlalchemy.dialects.mysql import TIMESTAMP as Timestamp
-from sqlalchemy.sql.functions import current_timestamp
 from marshmallow import fields
 
 
 class ShowDetectionImage(db.Model):
-    __tablename__ = "showDetection_image"
+    __tablename__ = "show_detection_images"
     id = db.Column(db.Integer, primary_key=True)
     image_url = db.Column(db.String(255), nullable=False)
     file_name = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(
-        Timestamp, server_default=current_timestamp(), nullable=False
-    )
 
     def serialize(self):
         return {
@@ -29,6 +24,3 @@ class ShowDetectionImage(db.Model):
 class ShowDetectionSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = ShowDetectionImage
-
-    # `created_at` フィールドを除外する
-    created_at = fields.DateTime(dump_only=True)

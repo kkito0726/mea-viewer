@@ -8,7 +8,7 @@ import (
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-const RASTER_PLOT_TABLE = "rasterPlot_image"
+const RASTER_PLOT_TABLE = "raster_plot_images"
 
 var rasterPlotService = service.NewImageService(RASTER_PLOT_TABLE)
 

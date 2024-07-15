@@ -8,7 +8,7 @@ import (
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-const DRAW3D_TABLE = "draw3d_image"
+const DRAW3D_TABLE = "draw3d_images"
 
 var draw3dService = service.NewImageService(DRAW3D_TABLE)
 
