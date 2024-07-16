@@ -29,9 +29,8 @@ type ShowSingleImage struct {
 
 type ShowDetectionImage struct {
 	gorm.Model
-	ImageUrl  string    `json:"image_url"`
-	FileName  string    `json:"file_name"`
-	CreatedAt time.Time `json:"created_at"`
+	ImageUrl string `json:"image_url"`
+	FileName string `json:"file_name"`
 }
 
 type RasterPlotImage struct {

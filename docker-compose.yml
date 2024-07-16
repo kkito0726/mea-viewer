@@ -7,6 +7,7 @@ services:
     depends_on:
       - minio
       - mysql
+      - go-backend
     environment:
       - FLASK_ENV=docker
 
@@ -36,7 +37,6 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      - server
       - mysql
       - minio
     environment:
