@@ -4,13 +4,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kkito0726/mea-viewer/enum"
 	"github.com/kkito0726/mea-viewer/model"
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-const DRAW3D_TABLE = "draw3d_images"
-
-var draw3dService = service.NewImageService(DRAW3D_TABLE)
+var draw3dService = service.NewImageService(enum.Draw3dTable)
 
 func GetDraw3dController(c *gin.Context) {
 	getImageRequest := model.GetImageRequest{

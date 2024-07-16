@@ -4,13 +4,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kkito0726/mea-viewer/enum"
 	"github.com/kkito0726/mea-viewer/model"
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-const SHOW_ALL_TABLE = "show_all_images"
-
-var ShowAllService = service.NewImageService(SHOW_ALL_TABLE)
+var ShowAllService = service.NewImageService(enum.ShowAllTable)
 
 func GetShowAllController(c *gin.Context) {
 	getImageRequest := model.GetImageRequest{
