@@ -10,9 +10,6 @@ from controller.draw3d_crud_controller import draw_3d_crud
 from flask_cors import CORS
 from config import config
 import db
-import os
-from migration import migration
-from model import models
 
 
 app = Flask(__name__)
@@ -30,8 +27,7 @@ app.register_blueprint(draw_3d_crud)
 # DB読み込み
 app.config.from_object(config.Config)
 db.init_db(app)
-db.init_ma(app)
-db.init_seeder(app)
+
 
 CORS(
     app,
