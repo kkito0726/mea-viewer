@@ -7,7 +7,7 @@ import (
 	"github.com/kkito0726/mea-viewer/repository"
 )
 
-func NewImageService(tableName string) *ImageService {
+func NewImageService(tableName enum.ImageTable) *ImageService {
 	return &ImageService{
 		ImageRepository: &repository.ImageRepository{
 			TableName: tableName,

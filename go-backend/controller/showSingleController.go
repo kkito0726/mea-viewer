@@ -4,13 +4,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kkito0726/mea-viewer/enum"
 	"github.com/kkito0726/mea-viewer/model"
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-const SHOW_SINGLE_TABLE = "show_single_images"
-
-var ShowSingleService = service.NewImageService(SHOW_SINGLE_TABLE)
+var ShowSingleService = service.NewImageService(enum.ShowSingleTable)
 
 func GetShowSingleController(c *gin.Context) {
 	getImageRequest := model.GetImageRequest{

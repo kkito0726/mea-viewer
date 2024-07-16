@@ -4,13 +4,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kkito0726/mea-viewer/enum"
 	"github.com/kkito0726/mea-viewer/model"
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-const SHOW_DETECTION_TABLE = "show_detection_images"
-
-var showDetectionService = service.NewImageService(SHOW_DETECTION_TABLE)
+var showDetectionService = service.NewImageService(enum.ShowDetectionTable)
 
 func GetShowDetectionController(c *gin.Context) {
 	getImageRequest := model.GetImageRequest{

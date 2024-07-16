@@ -4,13 +4,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kkito0726/mea-viewer/enum"
 	"github.com/kkito0726/mea-viewer/model"
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-const RASTER_PLOT_TABLE = "raster_plot_images"
-
-var rasterPlotService = service.NewImageService(RASTER_PLOT_TABLE)
+var rasterPlotService = service.NewImageService(enum.RasterPlotTable)
 
 func GetRasterPlotController(c *gin.Context) {
 	getImageRequest := model.GetImageRequest{

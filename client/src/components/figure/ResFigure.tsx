@@ -16,11 +16,9 @@ export const ResFigure: React.FC<FigureProps> = ({
   imgs,
   handleRemoveImg,
 }) => {
-  const handleCopyToClipboard = async (baseImg: string) => {
+  const handleCopyToClipboard = async (img_url: string) => {
     try {
-      const blob = await fetch("data:image/png;base64," + baseImg).then((r) =>
-        r.blob()
-      );
+      const blob = await fetch(img_url).then((r) => r.blob());
       const item = new ClipboardItem({ "image/png": blob });
       await navigator.clipboard.write([item]);
       toast.success("コピーしました", {
@@ -33,9 +31,9 @@ export const ResFigure: React.FC<FigureProps> = ({
     }
   };
 
-  const handleDownloadImage = (baseImg: string) => {
+  const handleDownloadImage = (img_url: string) => {
     const link = document.createElement("a");
-    link.href = "data:image/png;base64," + baseImg;
+    link.href = img_url;
     link.download = "image.png";
     document.body.appendChild(link);
     link.click();
