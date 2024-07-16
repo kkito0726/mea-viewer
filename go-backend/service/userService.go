@@ -8,6 +8,8 @@ import (
 	"github.com/kkito0726/mea-viewer/repository"
 )
 
+var userDomainService = NewUserDomainService(&repository.UserRepository{})
+
 type UserService struct {
 	UserRepository *repository.UserRepository
 }
@@ -19,14 +21,9 @@ func NewUserService(repo *repository.UserRepository) *UserService {
 }
 
 func (s *UserService) CreateUser(newUser *model.User) (*model.UserResponse, *errors.CustomError) {
-	// ユーザーネームの重複確認
-	if s.UserRepository.FindNameExist(newUser.Name) {
-		return nil, errors.ConflictError(enum.C001)
-	}
-
-	// emailの重複確認
-	if s.UserRepository.FindEmailExist(newUser.Email) {
-		return nil, errors.ConflictError(enum.C002)
+	// ユーザーの重複チェック
+	if err := userDomainService.CheckUserConflict(newUser); err != nil {
+		return nil, err
 	}
 
 	// Insert
@@ -119,6 +116,11 @@ func (s *UserService) UpdateUser(header *model.Header, newUser model.User) (*mod
 	user.Name = newUser.Name
 	user.Email = newUser.Email
 	user.Password = newUser.Password
+
+	// ユーザーの重複チェック
+	if err := userDomainService.CheckUserConflict(user); err != nil {
+		return nil, err
+	}
 
 	// データベースに保存
 	if err := s.UserRepository.UpdateUser(user); err != nil {
