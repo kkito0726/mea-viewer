@@ -10,12 +10,12 @@ type ImageRepository struct {
 	TableName enum.ImageTable
 }
 
-func NewImageRepository(tableName string) *ImageRepository {
+func NewImageRepository(tableName enum.ImageTable) *ImageRepository {
 	return &ImageRepository{TableName: tableName}
 }
 
 func (repo *ImageRepository) CreateImage(image *model.Image) error {
-	return db.DB.Table(repo.TableName).Create(image).Error
+	return db.DB.Table(repo.TableName.String()).Create(image).Error
 }
 
 func (repo *ImageRepository) GetImages(getImageRequest *model.GetImageRequest) []model.Image {

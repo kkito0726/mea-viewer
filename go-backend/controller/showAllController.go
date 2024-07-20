@@ -7,9 +7,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kkito0726/mea-viewer/enum"
-	"github.com/kkito0726/mea-viewer/enum"
 	"github.com/kkito0726/mea-viewer/lib"
 	"github.com/kkito0726/mea-viewer/model"
+	"github.com/kkito0726/mea-viewer/repository"
 	"github.com/kkito0726/mea-viewer/service"
 )
 
@@ -69,7 +69,7 @@ func CreateShowAllController(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "画像のアップロードに失敗しました"})
 	}
 
-	imageRepository := *repository.NewImageRepository(SHOW_ALL_TABLE)
+	imageRepository := *repository.NewImageRepository(enum.ShowAllTable)
 	image := model.Image{
 		ImageUrl: image_url,
 		Filename: data.Filename,
