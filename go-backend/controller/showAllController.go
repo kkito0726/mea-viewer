@@ -7,13 +7,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kkito0726/mea-viewer/enum"
+	"github.com/kkito0726/mea-viewer/enum"
 	"github.com/kkito0726/mea-viewer/lib"
 	"github.com/kkito0726/mea-viewer/model"
-	"github.com/kkito0726/mea-viewer/repository"
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-const SHOW_ALL_TABLE = "show_all_image"
+var ShowAllService = service.NewImageService(enum.ShowAllTable)
 
 func CreateShowAllController(c *gin.Context) {
 	form, err := c.MultipartForm()
@@ -84,13 +84,7 @@ func GetShowAllController(c *gin.Context) {
 		FileName: c.Param("file_name"),
 	}
 
-	service := service.ImageService{
-		ImageRepository: &repository.ImageRepository{
-			TableName: SHOW_ALL_TABLE,
-		},
-	}
-
-	images := service.GetImages(&getImageRequest)
+	images := ShowAllService.GetImages(&getImageRequest)
 
 	c.JSON(http.StatusOK, images)
 }
@@ -103,13 +97,11 @@ func DeleteShowAllController(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	service := service.ImageService{
-		ImageRepository: &repository.ImageRepository{
-			TableName: SHOW_ALL_TABLE,
-		},
-	}
 
-	service.DeleteImage(&deleteImageRequest)
+	if err := ShowAllService.DeleteImage(&deleteImageRequest); err != nil {
+		err.Logging()
+		c.JSON(err.StatusCode, gin.H{"error": err})
+	}
 	c.Status(http.StatusNoContent)
 }
 
@@ -121,12 +113,9 @@ func DeleteAllShowAllController(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	service := service.ImageService{
-		ImageRepository: &repository.ImageRepository{
-			TableName: SHOW_ALL_TABLE,
-		},
+	if err := ShowAllService.DeleteAllImage(&deleteAllRequest); err != nil {
+		err.Logging()
+		c.JSON(err.StatusCode, gin.H{"error": err})
 	}
-
-	service.DeleteAllImage(&deleteAllRequest)
 	c.Status(http.StatusNoContent)
 }
