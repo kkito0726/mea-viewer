@@ -1,9 +1,10 @@
 package model
 
+import "github.com/kkito0726/mea-viewer/enum"
+
 type FormValue struct {
 	XRatio  int
 	YRatio  int
-	DPI     int
 	VoltMin float64
 	VoltMax float64
 	Start   float64
@@ -35,4 +36,10 @@ type HedValue struct {
 type ReadFrame struct {
 	StartFrame float64
 	EndFrame   float64
+}
+
+type FormDto struct {
+	FormValue *FormValue
+	FileName  string
+	FigType   enum.FigType
 }

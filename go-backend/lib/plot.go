@@ -1,51 +1,121 @@
 package lib
 
 import (
-	"bytes"
-	"image/color"
-	"image/png"
-
 	"github.com/kkito0726/mea-viewer/model"
 	"gonum.org/v1/plot"
+	"gonum.org/v1/plot/font"
 	"gonum.org/v1/plot/plotter"
 	"gonum.org/v1/plot/vg"
 	"gonum.org/v1/plot/vg/draw"
 	"gonum.org/v1/plot/vg/vgimg"
 )
 
-func ShowAll(data [][]float32, formValue model.FormValue) *bytes.Buffer {
-	width := vg.Length(formValue.XRatio)
-	height := vg.Length(formValue.YRatio)
+type MeaPlot struct {
+	MeaData [][]float32
+}
 
+func NewMeaPlot(meaData [][]float32) *MeaPlot {
+	return &MeaPlot{
+		MeaData: meaData,
+	}
+}
+
+func (mp *MeaPlot) ShowSingle(ch int, formValue *model.FormValue) *vgimg.Canvas {
+	width := vg.Length(font.Length(formValue.XRatio) * vg.Inch)
+	height := vg.Length(font.Length(formValue.YRatio) * vg.Inch)
+	img := vgimg.New(width, height)
+	dc := draw.New(img)
 	p := plot.New()
+
+	p.X.Label.Text = "Time (s)"
+	p.Y.Label.Text = "Voltage (μV)"
+
+	SetFontSize(p)
+
+	points := make(plotter.XYs, len(mp.MeaData[0]))
+	for i := range points {
+		points[i].X = float64(mp.MeaData[0][i])
+		points[i].Y = float64(mp.MeaData[ch][i])
+	}
+
+	line, err := plotter.NewLine(points)
+	if err != nil {
+		panic(err)
+	}
+
+	p.Add(line)
 
 	p.X.Min = formValue.Start
 	p.X.Max = formValue.End
 	p.Y.Min = formValue.VoltMin
 	p.Y.Max = formValue.VoltMax
 
-	for i := 1; i < 65; i++ {
-		lineData := make(plotter.XYs, len(data[0]))
-		for j := range data[0] {
-			lineData[j].X = float64(data[0][j])
-			lineData[j].Y = float64(data[i][j])
-		}
-		line, err := plotter.NewLine(lineData)
-		if err != nil {
-			panic(err)
-		}
-		line.Color = color.RGBA{R: uint8(i * 4), G: uint8(i * 2), B: uint8(i * 3), A: 255}
-		p.Add(line)
-	}
-
-	img := vgimg.New(width, height)
-	dc := draw.New(img)
+	// p.Draw(draw.Canvas{Canvas: dc.Canvas})
 	p.Draw(dc)
 
-	buf := new(bytes.Buffer)
-	if err := png.Encode(buf, img.Image()); err != nil {
-		panic(err)
-	}
+	return img
+}
 
-	return buf
+func (mp *MeaPlot) ShowAll(formValue *model.FormValue) *vgimg.Canvas {
+	// キャンバスのサイズを設定
+	const rows, cols = 8, 8
+	width := vg.Length(16 * vg.Inch)
+	height := vg.Length(16 * vg.Inch)
+	img := vgimg.New(width, height)
+	dc := draw.New(img)
+
+	// サブプロットのサイズを計算
+	subPlotWidth := width / vg.Length(cols)
+	subPlotHeight := height / vg.Length(rows)
+
+	// 各サブプロットを描画
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			// サブプロットを作成
+			subPlot := plot.New()
+
+			// データポイントの作成
+			channel := row*cols + col + 1
+			if channel >= len(mp.MeaData) {
+				continue
+			}
+			points := make(plotter.XYs, len(mp.MeaData[0]))
+			for i := range points {
+				points[i].X = float64(mp.MeaData[0][i])
+				points[i].Y = float64(mp.MeaData[channel][i])
+			}
+
+			line, err := plotter.NewLine(points)
+			if err != nil {
+				panic(err)
+			}
+			subPlot.Add(line)
+			subPlot.X.Min = formValue.Start
+			subPlot.X.Max = formValue.End
+			subPlot.Y.Min = formValue.VoltMin
+			subPlot.Y.Max = formValue.VoltMax
+
+			// サブプロットの描画位置を計算
+			x := vg.Length(col) * subPlotWidth
+			y := height - vg.Length(row+1)*subPlotHeight
+
+			// サブプロットを描画
+			subPlot.Draw(draw.Canvas{
+				Canvas: dc.Canvas,
+				Rectangle: vg.Rectangle{
+					Min: vg.Point{X: x, Y: y},
+					Max: vg.Point{X: x + subPlotWidth, Y: y + subPlotHeight},
+				},
+			})
+
+		}
+	}
+	return img
+}
+
+func SetFontSize(p *plot.Plot) {
+	p.X.Label.TextStyle.Font.Size = vg.Points(20) // X軸ラベルのフォントサイズ
+	p.Y.Label.TextStyle.Font.Size = vg.Points(20) // Y軸ラベルのフォントサイズ
+	p.X.Tick.Label.Font.Size = vg.Points(16)      // X軸目盛りラベルのフォントサイズ
+	p.Y.Tick.Label.Font.Size = vg.Points(16)      // Y軸目盛りラベルのフォントサイズ
 }

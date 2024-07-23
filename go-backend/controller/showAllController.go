@@ -9,7 +9,6 @@ import (
 	"github.com/kkito0726/mea-viewer/enum"
 	"github.com/kkito0726/mea-viewer/lib"
 	"github.com/kkito0726/mea-viewer/model"
-	"github.com/kkito0726/mea-viewer/repository"
 	"github.com/kkito0726/mea-viewer/service"
 )
 
@@ -17,6 +16,7 @@ var ShowAllService = service.NewImageService(enum.ShowAllTable)
 
 func CreateShowAllController(c *gin.Context) {
 	form, err := c.MultipartForm()
+
 	if err != nil {
 		c.String(http.StatusBadRequest, "Failed to get multipart form: %s", err)
 		return
@@ -31,7 +31,7 @@ func CreateShowAllController(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "MEAデータを読み込めませんでした"})
 		return
 	}
-	meaData, err := lib.DecodeRequest(files)
+	meaData, err := lib.DecodeRequest(form.File)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "MEAデータを読み込めませんでした"})
 	}
@@ -54,27 +54,22 @@ func CreateShowAllController(c *gin.Context) {
 		sliceMeaData[i] = mea[int(readFrame.StartFrame):int(readFrame.EndFrame)]
 	}
 
-	buf := lib.ShowAll(sliceMeaData, model.FormValue{
-		XRatio:  data.XRatio,
-		YRatio:  data.YRatio,
-		DPI:     data.DPI,
-		VoltMin: data.VoltMin,
-		VoltMax: data.VoltMax,
-		Start:   data.ReadTime.Start,
-		End:     data.ReadTime.End,
+	image, customErr := ShowAllService.CreateImage(meaData, &model.FormDto{
+		FormValue: &model.FormValue{
+			XRatio:  data.XRatio,
+			YRatio:  data.YRatio,
+			VoltMin: data.VoltMin,
+			VoltMax: data.VoltMax,
+			Start:   data.ReadTime.Start,
+			End:     data.ReadTime.End,
+		},
+		FileName: data.Filename,
+		FigType:  enum.ShowAll,
 	})
-
-	image_url, err := repository.SaveImage(enum.ShowAll.String(), buf, data.Filename)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "画像のアップロードに失敗しました"})
+	if customErr != nil {
+		customErr.Logging()
+		c.JSON(customErr.StatusCode, gin.H{"error": customErr})
 	}
-
-	imageRepository := *repository.NewImageRepository(enum.ShowAllTable)
-	image := model.Image{
-		ImageUrl: image_url,
-		Filename: data.Filename,
-	}
-	imageRepository.CreateImage(&image)
 
 	c.JSON(http.StatusOK, image)
 }

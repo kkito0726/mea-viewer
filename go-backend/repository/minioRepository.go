@@ -10,17 +10,18 @@ import (
 	"time"
 
 	"github.com/kkito0726/mea-viewer/db"
+	"github.com/kkito0726/mea-viewer/enum"
 	"github.com/kkito0726/mea-viewer/model"
 	"github.com/minio/minio-go/v7"
 )
 
 const BUCKET_NAME = "plot-figure"
 
-func SaveImage(fileType string, imageBuf *bytes.Buffer, fileName string) (string, error) {
+func SaveImage(fileType enum.FigType, imageBuf *bytes.Buffer, fileName string) (string, error) {
 	ensureBucketExists(BUCKET_NAME)
 
 	now := time.Now().Format("2006-01-02-15-04-05")
-	objName := fmt.Sprintf("images/%s/%s_%s_%s.png", fileType, fileName, fileType, now)
+	objName := fmt.Sprintf("images/%s/%s_%s_%s.png", fileType.String(), fileName, fileType.String(), now)
 
 	_, err := db.MinioClient.PutObject(
 		context.Background(),

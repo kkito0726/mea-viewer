@@ -1,41 +1,41 @@
 package lib
 
 import (
-	"encoding/binary"
+	"fmt"
 	"io"
-	"math"
 	"mime/multipart"
+	"unsafe"
 
 	"github.com/kkito0726/mea-viewer/model"
 )
 
-func DecodeRequest(files [][]*multipart.FileHeader) (*[][]float32, error) {
-	var data [][]float32
-	for _, fileHeaders := range files {
-		for _, fileHeader := range fileHeaders {
-			file, err := fileHeader.Open()
+func DecodeRequest(formFiles map[string][]*multipart.FileHeader) (*[][]float32, error) {
+	var meaData [][]float32
+	for _, files := range formFiles {
+		// Assuming file keys are in the format "file0", "file1", etc.
+		if len(files) > 0 {
+			file, err := files[0].Open()
 			if err != nil {
 				return nil, err
 			}
 			defer file.Close()
 
-			fileData, err := io.ReadAll(file)
+			buf, err := io.ReadAll(file)
 			if err != nil {
 				return nil, err
 			}
 
-			// Convert byte slice to float32 slice
-			floatData := make([]float32, len(fileData)/4)
-			for i := 0; i < len(floatData); i++ {
-				floatData[i] = math.Float32frombits(binary.LittleEndian.Uint32(fileData[i*4 : (i+1)*4]))
+			var floatArray []float32
+			err = decodeFloat32Array(buf, &floatArray)
+			if err != nil {
+				return nil, err
 			}
 
-			data = append(data, floatData)
+			meaData = append(meaData, floatArray)
 		}
-
 	}
 
-	return &data, nil
+	return &meaData, nil
 }
 
 func CalcReadFrame(data *model.JsonData) *model.ReadFrame {
@@ -56,4 +56,17 @@ func CalcReadFrame(data *model.JsonData) *model.ReadFrame {
 		StartFrame: startFrame,
 		EndFrame:   endFrame,
 	}
+}
+
+func decodeFloat32Array(data []byte, out *[]float32) error {
+	if len(data)%4 != 0 {
+		return fmt.Errorf("data length is not a multiple of 4")
+	}
+	var float32Data []float32
+	for i := 0; i < len(data); i += 4 {
+		bits := uint32(data[i]) | uint32(data[i+1])<<8 | uint32(data[i+2])<<16 | uint32(data[i+3])<<24
+		float32Data = append(float32Data, *(*float32)(unsafe.Pointer(&bits)))
+	}
+	*out = float32Data
+	return nil
 }
