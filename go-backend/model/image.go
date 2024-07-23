@@ -10,12 +10,13 @@ type Image struct {
 	ID        int       `json:"id"`
 	Ch        int       `json:"ch"`
 	ImageUrl  string    `json:"image_url"`
-	Filename  string    `json:"file_name"`
+	FileName  string    `json:"file_name"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
 type ShowAllImage struct {
 	gorm.Model
+	Ch       int    `json:"ch"`
 	ImageUrl string `json:"image_url"`
 	FileName string `json:"file_name"`
 }
@@ -29,24 +30,28 @@ type ShowSingleImage struct {
 
 type ShowDetectionImage struct {
 	gorm.Model
+	Ch       int    `json:"ch"`
 	ImageUrl string `json:"image_url"`
 	FileName string `json:"file_name"`
 }
 
 type RasterPlotImage struct {
 	gorm.Model
+	Ch       int    `json:"ch"`
 	ImageUrl string `json:"image_url"`
 	FileName string `json:"file_name"`
 }
 
 type Draw2dImage struct {
 	gorm.Model
+	Ch       int    `json:"ch"`
 	ImageUrl string `json:"image_url"`
 	FileName string `json:"file_name"`
 }
 
 type Draw3dImage struct {
 	gorm.Model
+	Ch       int    `json:"ch"`
 	ImageUrl string `json:"image_url"`
 	FileName string `json:"file_name"`
 }

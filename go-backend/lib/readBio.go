@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"mime/multipart"
+	"strconv"
 	"unsafe"
 
 	"github.com/kkito0726/mea-viewer/model"
@@ -11,8 +12,9 @@ import (
 
 func DecodeRequest(formFiles map[string][]*multipart.FileHeader) (*[][]float32, error) {
 	var meaData [][]float32
-	for _, files := range formFiles {
+	for i := 0; i <= len(formFiles); i++ {
 		// Assuming file keys are in the format "file0", "file1", etc.
+		files := formFiles[fmt.Sprintf("file%s", strconv.Itoa(i))]
 		if len(files) > 0 {
 			file, err := files[0].Open()
 			if err != nil {

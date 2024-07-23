@@ -54,14 +54,14 @@ func CreateShowAllController(c *gin.Context) {
 		sliceMeaData[i] = mea[int(readFrame.StartFrame):int(readFrame.EndFrame)]
 	}
 
-	image, customErr := ShowAllService.CreateImage(meaData, &model.FormDto{
+	image, customErr := ShowAllService.CreateImage(&sliceMeaData, &model.FormDto{
 		FormValue: &model.FormValue{
 			XRatio:  data.XRatio,
 			YRatio:  data.YRatio,
 			VoltMin: data.VoltMin,
 			VoltMax: data.VoltMax,
-			Start:   data.ReadTime.Start,
-			End:     data.ReadTime.End,
+			Start:   data.Start,
+			End:     data.End,
 		},
 		FileName: data.Filename,
 		FigType:  enum.ShowAll,

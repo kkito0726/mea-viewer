@@ -40,6 +40,6 @@ type ReadFrame struct {
 
 type FormDto struct {
 	FormValue *FormValue
-	FileName  string
+	FileName  string `json:"file_name"`
 	FigType   enum.FigType
 }

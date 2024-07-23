@@ -40,7 +40,7 @@ func (s *ImageService) CreateImage(meaData *[][]float32, formDto *model.FormDto)
 	}
 
 	// DBへレコードInsert
-	image := &model.Image{ImageUrl: imageUrl, Filename: formDto.FileName}
+	image := &model.Image{ImageUrl: imageUrl, FileName: formDto.FileName}
 	if err := s.ImageRepository.CreateImage(image); err != nil {
 		return nil, errors.ServerError(enum.F004)
 	}
