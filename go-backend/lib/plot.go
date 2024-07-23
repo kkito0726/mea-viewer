@@ -30,7 +30,7 @@ func (mp *MeaPlot) ShowSingle(ch int, formValue *model.FormValue) *vgimg.Canvas 
 	p.X.Label.Text = "Time (s)"
 	p.Y.Label.Text = "Voltage (μV)"
 
-	SetFontSize(p)
+	SetFontSize(p, 20, 30)
 
 	points := make(plotter.XYs, len(mp.MeaData[0]))
 	for i := range points {
@@ -95,6 +95,8 @@ func (mp *MeaPlot) ShowAll(formValue *model.FormValue) *vgimg.Canvas {
 			subPlot.Y.Min = formValue.VoltMin
 			subPlot.Y.Max = formValue.VoltMax
 
+			SetFontSize(subPlot, 20, 16)
+
 			// サブプロットの描画位置を計算
 			x := vg.Length(col) * subPlotWidth
 			y := height - vg.Length(row+1)*subPlotHeight
@@ -113,9 +115,9 @@ func (mp *MeaPlot) ShowAll(formValue *model.FormValue) *vgimg.Canvas {
 	return img
 }
 
-func SetFontSize(p *plot.Plot) {
-	p.X.Label.TextStyle.Font.Size = vg.Points(20) // X軸ラベルのフォントサイズ
-	p.Y.Label.TextStyle.Font.Size = vg.Points(20) // Y軸ラベルのフォントサイズ
-	p.X.Tick.Label.Font.Size = vg.Points(16)      // X軸目盛りラベルのフォントサイズ
-	p.Y.Tick.Label.Font.Size = vg.Points(16)      // Y軸目盛りラベルのフォントサイズ
+func SetFontSize(p *plot.Plot, textFontSize int, labelFontSize int) {
+	p.X.Label.TextStyle.Font.Size = vg.Points(float64(textFontSize))  // X軸ラベルのフォントサイズ
+	p.Y.Label.TextStyle.Font.Size = vg.Points(float64(labelFontSize)) // Y軸ラベルのフォントサイズ
+	p.X.Tick.Label.Font.Size = vg.Points(float64(labelFontSize))      // X軸目盛りラベルのフォントサイズ
+	p.Y.Tick.Label.Font.Size = vg.Points(float64(labelFontSize))      // Y軸目盛りラベルのフォントサイズ
 }

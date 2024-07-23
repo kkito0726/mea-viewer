@@ -22,6 +22,15 @@ func (c *CustomError) Logging() {
 	log.Println("error:", fmt.Sprintf("ErrorCode: %s Message: %s", c.ErrorCode, c.Message))
 }
 
+// Status: 400
+func BadRequest(errorCode enum.ErrorCode) *CustomError {
+	return &CustomError{
+		StatusCode: http.StatusBadRequest,
+		ErrorCode:  errorCode.Code(),
+		Message:    errorCode.Message(),
+	}
+}
+
 // Status: 403
 func ForbiddenError(errorCode enum.ErrorCode) *CustomError {
 	return &CustomError{

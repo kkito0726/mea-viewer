@@ -21,6 +21,8 @@ const (
 	F003
 	F004
 	F005
+	F006
+	F007
 )
 
 // iotaを用いて生成した連番に対して、別名を与えて定義する
@@ -57,6 +59,10 @@ func (ec ErrorCode) Code() string {
 		return "F-004"
 	case F005:
 		return "F-005"
+	case F006:
+		return "F-006"
+	case F007:
+		return "F-007"
 	default:
 		return "未定義"
 	}
@@ -96,6 +102,10 @@ func (ec ErrorCode) Message() string {
 		return "DBへのレコードの追加に失敗しました"
 	case F005:
 		return "画像のエンコーディングに失敗しました"
+	case F006:
+		return "MEAデータを読み込めませんでした"
+	case F007:
+		return "Jsonを読み込めませんでした"
 	default:
 		return "未定義"
 	}
