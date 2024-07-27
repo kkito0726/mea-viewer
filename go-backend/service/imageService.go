@@ -23,24 +23,22 @@ type ImageService struct {
 	ImageRepository *repository.ImageRepository
 }
 
-func (s *ImageService) CreateImage(meaData *[][]float32, formDto *model.FormDto) (*model.Image, *errors.CustomError) {
-	meaPlot := lib.NewMeaPlot(*meaData)
-
+func (s *ImageService) CreateImage(f lib.PlotMethod, formDto *model.FormDto) (*model.Image, *errors.CustomError) {
 	// Figの描画
-	img := meaPlot.ShowAll(formDto.FormValue)
+	img := f(formDto.FormValue)
 	buf := new(bytes.Buffer)
 	if err := png.Encode(buf, img.Image()); err != nil {
 		return nil, errors.ServerError(enum.F005)
 	}
 
 	// minioへの保存
-	imageUrl, err := repository.SaveImage(formDto.FigType, buf, formDto.FileName)
+	imageUrl, err := repository.SaveImage(buf, formDto)
 	if err != nil {
 		return nil, errors.ServerError(enum.F003)
 	}
 
 	// DBへレコードInsert
-	image := &model.Image{ImageUrl: imageUrl, FileName: formDto.FileName}
+	image := &model.Image{ImageUrl: imageUrl, FileName: formDto.FileName, Ch: formDto.Ch}
 	if err := s.ImageRepository.CreateImage(image); err != nil {
 		return nil, errors.ServerError(enum.F004)
 	}

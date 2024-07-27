@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kkito0726/mea-viewer/enum"
+	"github.com/kkito0726/mea-viewer/lib"
 	"github.com/kkito0726/mea-viewer/model"
 	"github.com/kkito0726/mea-viewer/service"
 )
@@ -32,8 +33,9 @@ func CreateShowAllController(c *gin.Context) {
 	if customErr != nil {
 		c.JSON(customErr.StatusCode, gin.H{"error": customErr})
 	}
+	meaPlot := lib.NewMeaPlot(requestModel.SliceMeaData)
 
-	image, customErr := ShowAllService.CreateImage(requestModel.SliceMeaData, &model.FormDto{
+	image, customErr := ShowAllService.CreateImage(meaPlot.ShowAll, &model.FormDto{
 		FormValue: &model.FormValue{
 			XRatio:  requestModel.JsonData.XRatio,
 			YRatio:  requestModel.JsonData.YRatio,

@@ -14,13 +14,16 @@ type MeaPlot struct {
 	MeaData [][]float32
 }
 
+type PlotMethod func(*model.FormValue) *vgimg.Canvas
+
 func NewMeaPlot(meaData [][]float32) *MeaPlot {
 	return &MeaPlot{
 		MeaData: meaData,
 	}
 }
 
-func (mp *MeaPlot) ShowSingle(ch int, formValue *model.FormValue) *vgimg.Canvas {
+// 時刻データ+1電極データを受け取る想定
+func (mp *MeaPlot) ShowSingle(formValue *model.FormValue) *vgimg.Canvas {
 	width := vg.Length(font.Length(formValue.XRatio) * vg.Inch)
 	height := vg.Length(font.Length(formValue.YRatio) * vg.Inch)
 	img := vgimg.New(width, height)
@@ -30,12 +33,12 @@ func (mp *MeaPlot) ShowSingle(ch int, formValue *model.FormValue) *vgimg.Canvas 
 	p.X.Label.Text = "Time (s)"
 	p.Y.Label.Text = "Voltage (μV)"
 
-	SetFontSize(p, 20, 30)
+	SetFontSize(p, 20, 16)
 
 	points := make(plotter.XYs, len(mp.MeaData[0]))
 	for i := range points {
 		points[i].X = float64(mp.MeaData[0][i])
-		points[i].Y = float64(mp.MeaData[ch][i])
+		points[i].Y = float64(mp.MeaData[1][i])
 	}
 
 	line, err := plotter.NewLine(points)
@@ -56,6 +59,7 @@ func (mp *MeaPlot) ShowSingle(ch int, formValue *model.FormValue) *vgimg.Canvas 
 	return img
 }
 
+// 時刻データ+64電極データを受け取る想定
 func (mp *MeaPlot) ShowAll(formValue *model.FormValue) *vgimg.Canvas {
 	// キャンバスのサイズを設定
 	const rows, cols = 8, 8
@@ -69,16 +73,12 @@ func (mp *MeaPlot) ShowAll(formValue *model.FormValue) *vgimg.Canvas {
 	subPlotHeight := height / vg.Length(rows)
 
 	// 各サブプロットを描画
+	channel := 1
 	for row := 0; row < rows; row++ {
 		for col := 0; col < cols; col++ {
 			// サブプロットを作成
 			subPlot := plot.New()
 
-			// データポイントの作成
-			channel := row*cols + col + 1
-			if channel >= len(mp.MeaData) {
-				continue
-			}
 			points := make(plotter.XYs, len(mp.MeaData[0]))
 			for i := range points {
 				points[i].X = float64(mp.MeaData[0][i])
@@ -109,7 +109,7 @@ func (mp *MeaPlot) ShowAll(formValue *model.FormValue) *vgimg.Canvas {
 					Max: vg.Point{X: x + subPlotWidth, Y: y + subPlotHeight},
 				},
 			})
-
+			channel++
 		}
 	}
 	return img

@@ -35,12 +35,12 @@ func (dms *DecodeMeaService) HandleRequest() (*RequestModel, *errors.CustomError
 	}
 
 	return &RequestModel{
-		SliceMeaData: &sliceMeaData,
+		SliceMeaData: sliceMeaData,
 		JsonData:     &data,
 	}, nil
 }
 
 type RequestModel struct {
-	SliceMeaData *[][]float32
+	SliceMeaData [][]float32
 	JsonData     *model.JsonData
 }

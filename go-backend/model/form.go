@@ -1,6 +1,8 @@
 package model
 
-import "github.com/kkito0726/mea-viewer/enum"
+import (
+	"github.com/kkito0726/mea-viewer/enum"
+)
 
 type FormValue struct {
 	XRatio  int
@@ -22,6 +24,7 @@ type JsonData struct {
 	VoltMax  float64  `json:"volt_max"`
 	XRatio   int      `json:"x_ratio"`
 	YRatio   int      `json:"y_ratio"`
+	Chs      []int    `json:"chs"`
 }
 
 type ReadTime struct {
@@ -42,4 +45,5 @@ type FormDto struct {
 	FormValue *FormValue
 	FileName  string `json:"file_name"`
 	FigType   enum.FigType
+	Ch        int
 }

@@ -37,7 +37,7 @@ export const fetchShowSingle = async (
   meaData: Float32Array[],
   activeChs: number[]
 ) => {
-  const url = ROOT_URL + PagePath.SHOW_SINGLE;
+  const url = GIN_ROOT_URL + PagePath.SHOW_SINGLE;
 
   // バイナリデータをBlobに変換
   const buffers = [0, ...activeChs].map((v) => new Blob([meaData[v].buffer]));
