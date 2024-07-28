@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kkito0726/mea-viewer/enum"
@@ -35,31 +36,46 @@ func CreateShowSingleController(c *gin.Context) {
 		c.JSON(customErr.StatusCode, gin.H{"error": customErr})
 	}
 
-	var images []*model.Image
-	for i, ch := range requestModel.JsonData.Chs {
-		singleChannelMeaData := [][]float32{requestModel.SliceMeaData[0], requestModel.SliceMeaData[i+1]}
-		meaPlot := lib.NewMeaPlot(singleChannelMeaData)
+	var wg sync.WaitGroup
+	ch := make(chan bool, 8)
+	images := make([]*model.Image, len(requestModel.JsonData.Chs))
+	var mu sync.Mutex
+	for i, meaCh := range requestModel.JsonData.Chs {
+		wg.Add(1)
+		ch <- true
+		go func(i, meaCh int) {
+			defer wg.Done()
+			singleChannelMeaData := [][]float32{requestModel.SliceMeaData[0], requestModel.SliceMeaData[i+1]}
+			meaPlot := lib.NewMeaPlot(singleChannelMeaData)
 
-		image, customErr := ShowSingleService.CreateImage(meaPlot.ShowSingle, &model.FormDto{
-			FormValue: &model.FormValue{
-				XRatio:  requestModel.JsonData.XRatio,
-				YRatio:  requestModel.JsonData.YRatio,
-				VoltMin: requestModel.JsonData.VoltMin,
-				VoltMax: requestModel.JsonData.VoltMax,
-				Start:   requestModel.JsonData.Start,
-				End:     requestModel.JsonData.End,
-			},
-			FileName: requestModel.JsonData.Filename,
-			FigType:  enum.ShowSingle,
-			Ch:       ch,
-		})
-		if customErr != nil {
-			customErr.Logging()
-			c.JSON(customErr.StatusCode, gin.H{"error": customErr})
-		}
-		images = append(images, image)
+			image, customErr := ShowSingleService.CreateImage(meaPlot.ShowSingle, &model.FormDto{
+				FormValue: &model.FormValue{
+					XRatio:  requestModel.JsonData.XRatio,
+					YRatio:  requestModel.JsonData.YRatio,
+					VoltMin: requestModel.JsonData.VoltMin,
+					VoltMax: requestModel.JsonData.VoltMax,
+					Start:   requestModel.JsonData.Start,
+					End:     requestModel.JsonData.End,
+				},
+				FileName: requestModel.JsonData.Filename,
+				FigType:  enum.ShowSingle,
+				Ch:       meaCh,
+			})
+			if customErr != nil {
+				mu.Lock()
+				customErr.Logging()
+				c.JSON(customErr.StatusCode, gin.H{"error": customErr})
+				mu.Unlock()
+				<-ch
+			}
+			mu.Lock()
+			images[i] = image
+			mu.Unlock()
+			<-ch
+		}(i, meaCh)
+
 	}
-
+	wg.Wait()
 	c.JSON(http.StatusOK, images)
 }
 

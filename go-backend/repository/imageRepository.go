@@ -20,7 +20,7 @@ func (repo *ImageRepository) CreateImage(image *model.Image) error {
 
 func (repo *ImageRepository) GetImages(getImageRequest *model.GetImageRequest) []model.Image {
 	var images []model.Image
-	db.DB.Table(repo.TableName.String()).Where("file_name = ?", getImageRequest.FileName).Scan(&images)
+	db.DB.Table(repo.TableName.String()).Where("file_name = ?", getImageRequest.FileName).Order("ch").Scan(&images)
 	return images
 }
 

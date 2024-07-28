@@ -11,6 +11,8 @@ import {
   fetchShowAll,
   fetchShowDetection,
   fetchShowSingle,
+  FLASK_ROOT_URL,
+  GIN_ROOT_URL,
 } from "./fetchApi";
 import { PageName } from "../enum/PageName";
 import { PeakFormValue } from "../types/PeakFormValue";
@@ -23,12 +25,14 @@ export const useDataSubmission = (
   activeChs: number[],
   meaData: Float32Array[],
   hedValue: HedValue,
-  peakFormValue: PeakFormValue
+  peakFormValue: PeakFormValue,
+  isPython: boolean
 ) => {
   const [values, setValues] = useState<ChFormValue>(initChFormValue);
 
   const [imageResponses, setImageResponses] = useState<ImgResponse[]>([]);
   const [isPost, setIsPost] = useState<boolean>(false);
+  // const [isPython, setIsPython] = useState(true);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -77,6 +81,8 @@ export const useDataSubmission = (
   };
 
   const handleFetch = async () => {
+    let root_url: string;
+
     const requestEntity: RequestEntity = {
       readTime: {
         start: Math.floor(meaData[0][0]),
@@ -89,7 +95,8 @@ export const useDataSubmission = (
     switch (pageName) {
       case PageName.SHOW_ALL:
         {
-          const resData = await fetchShowAll(requestEntity, meaData);
+          isPython ? (root_url = FLASK_ROOT_URL) : (root_url = GIN_ROOT_URL);
+          const resData = await fetchShowAll(root_url, requestEntity, meaData);
           if (resData) {
             setImageResponses((prev) => [...prev, resData]);
           }
@@ -97,7 +104,9 @@ export const useDataSubmission = (
         break;
       case PageName.SHOW_SINGLE:
         {
+          isPython ? (root_url = FLASK_ROOT_URL) : (root_url = GIN_ROOT_URL);
           const resData = await fetchShowSingle(
+            root_url,
             requestEntity,
             meaData,
             activeChs
@@ -161,6 +170,9 @@ export const useDataSubmission = (
         break;
     }
   };
+  // const togglePython = () => {
+  //   setIsPython(!isPython);
+  // };
   return {
     values,
     imageResponses,

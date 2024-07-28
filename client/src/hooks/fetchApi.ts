@@ -2,14 +2,15 @@ import { PagePath } from "../enum/PagePath";
 import { ImgResponse } from "../types/ImgResponse";
 import { PeakRequestEntity, RequestEntity } from "../types/requestEntity";
 
-const ROOT_URL = "http://127.0.0.1:5001";
-const GIN_ROOT_URL = "http://localhost:8080";
+export const FLASK_ROOT_URL = "http://127.0.0.1:5001";
+export const GIN_ROOT_URL = "http://localhost:8080";
 
 export const fetchShowAll = async (
+  rootUrl: string,
   values: RequestEntity,
   meaData: Float32Array[]
 ) => {
-  const url = GIN_ROOT_URL + PagePath.SHOW_ALL;
+  const url = rootUrl + PagePath.SHOW_ALL;
 
   const buffers = meaData.map((v) => new Blob([v.buffer]));
 
@@ -33,11 +34,12 @@ export const fetchShowAll = async (
 };
 
 export const fetchShowSingle = async (
+  rootUrl: string,
   value: RequestEntity,
   meaData: Float32Array[],
   activeChs: number[]
 ) => {
-  const url = GIN_ROOT_URL + PagePath.SHOW_SINGLE;
+  const url = rootUrl + PagePath.SHOW_SINGLE;
 
   // バイナリデータをBlobに変換
   const buffers = [0, ...activeChs].map((v) => new Blob([meaData[v].buffer]));
@@ -67,7 +69,7 @@ export const fetchShowDetection = async (
   meaData: Float32Array[],
   activeChs: number[]
 ) => {
-  const url = ROOT_URL + PagePath.SHOW_DETECTION;
+  const url = FLASK_ROOT_URL + PagePath.SHOW_DETECTION;
   const buffers = [0, ...activeChs].map((v) => new Blob([meaData[v].buffer]));
 
   // FormDataを使用してデータを送信
@@ -96,7 +98,7 @@ export const fetchRasterPlot = async (
   meaData: Float32Array[],
   activeChs: number[]
 ) => {
-  const url = ROOT_URL + PagePath.RASTER_PLOT;
+  const url = FLASK_ROOT_URL + PagePath.RASTER_PLOT;
   const buffers = [0, ...activeChs].map((v) => new Blob([meaData[v].buffer]));
 
   // FormDataを使用してデータを送信
@@ -124,7 +126,7 @@ export const fetchDraw2d = async (
   values: PeakRequestEntity,
   meaData: Float32Array[]
 ) => {
-  const url = ROOT_URL + PagePath.DRAW_2D;
+  const url = FLASK_ROOT_URL + PagePath.DRAW_2D;
   const buffers = meaData.map((v) => new Blob([v.buffer]));
 
   // FormDataを使用してデータを送信
@@ -150,7 +152,7 @@ export const fetchDraw3d = async (
   values: PeakRequestEntity,
   meaData: Float32Array[]
 ) => {
-  const url = ROOT_URL + PagePath.DRAW_3D;
+  const url = FLASK_ROOT_URL + PagePath.DRAW_3D;
   const buffers = meaData.map((v) => new Blob([v.buffer]));
 
   // FormDataを使用してデータを送信
