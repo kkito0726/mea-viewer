@@ -14,17 +14,17 @@ const (
 func (ft FigType) String() string {
 	switch ft {
 	case ShowAll:
-		return "ShowAll"
+		return "showAll"
 	case ShowSingle:
-		return "ShowSingle"
+		return "showSingle"
 	case ShowDetection:
-		return "ShowDetection"
+		return "showDetection"
 	case RasterPlot:
-		return "RasterPlot"
+		return "rasterPlot"
 	case Draw2d:
-		return "Draw2d"
+		return "draw2d"
 	case Draw3d:
-		return "Draw3d"
+		return "draw3d"
 	default:
 		return "未定義"
 	}

@@ -6,10 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kkito0726/mea-viewer/enum"
 	"github.com/kkito0726/mea-viewer/model"
+	"github.com/kkito0726/mea-viewer/repository"
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-var draw3dService = service.NewImageService(enum.Draw3dTable)
+var draw3dService = service.NewImageService(enum.Draw3dTable, repository.MinioRepository{})
 
 func GetDraw3dController(c *gin.Context) {
 	getImageRequest := model.GetImageRequest{

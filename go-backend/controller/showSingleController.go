@@ -7,10 +7,11 @@ import (
 	"github.com/kkito0726/mea-viewer/enum"
 	"github.com/kkito0726/mea-viewer/lib"
 	"github.com/kkito0726/mea-viewer/model"
+	"github.com/kkito0726/mea-viewer/repository"
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-var ShowSingleService = service.NewImageService(enum.ShowSingleTable)
+var ShowSingleService = service.NewImageService(enum.ShowSingleTable, repository.MinioRepository{})
 
 func CreateShowSingleController(c *gin.Context) {
 	form, err := c.MultipartForm()

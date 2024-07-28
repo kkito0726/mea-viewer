@@ -35,6 +35,5 @@ func (repo *ImageRepository) DeleteAllImages(deleteAllRequest *model.DeleteAllRe
 	if err := db.DB.Table(repo.TableName.String()).Where("file_name=?", deleteAllRequest.FileName).Delete(nil).Error; err != nil {
 		return err
 	}
-	DeleteObjectsInDirectory(deleteAllRequest.Directory)
 	return nil
 }

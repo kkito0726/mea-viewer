@@ -16,7 +16,9 @@ import (
 
 const BUCKET_NAME = "plot-figure"
 
-func SaveImage(imageBuf *bytes.Buffer, formDto *model.FormDto) (string, error) {
+type MinioRepository struct{}
+
+func (mr *MinioRepository) SaveImage(imageBuf *bytes.Buffer, formDto *model.FormDto) (string, error) {
 	ensureBucketExists(BUCKET_NAME)
 
 	now := time.Now().Format("2006-01-02-15-04-05")
@@ -39,8 +41,8 @@ func SaveImage(imageBuf *bytes.Buffer, formDto *model.FormDto) (string, error) {
 }
 
 // DeleteFile はMinIOからファイルを削除する関数
-func DeleteFile(urlStr string) error {
-	minioModel, err := ExtractBucketAndObject(urlStr)
+func (mr *MinioRepository) DeleteFile(urlStr string) error {
+	minioModel, err := extractBucketAndObject(urlStr)
 	if err != nil {
 		return err
 	}
@@ -52,7 +54,7 @@ func DeleteFile(urlStr string) error {
 	return nil
 }
 
-func DeleteObjectsInDirectory(directory string) error {
+func (mr *MinioRepository) DeleteObjectsInDirectory(directory string) error {
 	objectCh := db.MinioClient.ListObjects(context.Background(), BUCKET_NAME, minio.ListObjectsOptions{
 		Prefix:    directory,
 		Recursive: true,
@@ -83,8 +85,8 @@ func ensureBucketExists(bucketName string) {
 	}
 }
 
-// ExtractBucketAndObject はURLからバケット名とオブジェクト名を抽出する関数
-func ExtractBucketAndObject(urlStr string) (model.MinioModel, error) {
+// extractBucketAndObject はURLからバケット名とオブジェクト名を抽出する関数
+func extractBucketAndObject(urlStr string) (model.MinioModel, error) {
 	parsedURL, err := url.Parse(urlStr)
 	if err != nil {
 		return model.MinioModel{}, fmt.Errorf("invalid URL: %v", err)

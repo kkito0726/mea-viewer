@@ -14,7 +14,7 @@ type MeaPlot struct {
 	MeaData [][]float32
 }
 
-type PlotMethod func(*model.FormValue) *vgimg.Canvas
+type PlotMethod func(*model.FormValue) (*vgimg.Canvas, error)
 
 func NewMeaPlot(meaData [][]float32) *MeaPlot {
 	return &MeaPlot{
@@ -23,7 +23,7 @@ func NewMeaPlot(meaData [][]float32) *MeaPlot {
 }
 
 // 時刻データ+1電極データを受け取る想定
-func (mp *MeaPlot) ShowSingle(formValue *model.FormValue) *vgimg.Canvas {
+func (mp *MeaPlot) ShowSingle(formValue *model.FormValue) (*vgimg.Canvas, error) {
 	width := vg.Length(font.Length(formValue.XRatio) * vg.Inch)
 	height := vg.Length(font.Length(formValue.YRatio) * vg.Inch)
 	img := vgimg.New(width, height)
@@ -43,7 +43,7 @@ func (mp *MeaPlot) ShowSingle(formValue *model.FormValue) *vgimg.Canvas {
 
 	line, err := plotter.NewLine(points)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	p.Add(line)
@@ -56,11 +56,11 @@ func (mp *MeaPlot) ShowSingle(formValue *model.FormValue) *vgimg.Canvas {
 	// p.Draw(draw.Canvas{Canvas: dc.Canvas})
 	p.Draw(dc)
 
-	return img
+	return img, nil
 }
 
 // 時刻データ+64電極データを受け取る想定
-func (mp *MeaPlot) ShowAll(formValue *model.FormValue) *vgimg.Canvas {
+func (mp *MeaPlot) ShowAll(formValue *model.FormValue) (*vgimg.Canvas, error) {
 	// キャンバスのサイズを設定
 	const rows, cols = 8, 8
 	width := vg.Length(16 * vg.Inch)
@@ -87,7 +87,7 @@ func (mp *MeaPlot) ShowAll(formValue *model.FormValue) *vgimg.Canvas {
 
 			line, err := plotter.NewLine(points)
 			if err != nil {
-				panic(err)
+				return nil, err
 			}
 			subPlot.Add(line)
 			subPlot.X.Min = formValue.Start
@@ -112,7 +112,7 @@ func (mp *MeaPlot) ShowAll(formValue *model.FormValue) *vgimg.Canvas {
 			channel++
 		}
 	}
-	return img
+	return img, nil
 }
 
 func SetFontSize(p *plot.Plot, textFontSize int, labelFontSize int) {
