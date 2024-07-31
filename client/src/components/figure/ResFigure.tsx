@@ -43,7 +43,7 @@ export const ResFigure: React.FC<FigureProps> = ({
     <>
       <ToastContainer />
 
-      <div className="flex flex-col max-w-2xl">
+      <div className="flex flex-col">
         {isPost ? <Processing message="処理中です..." /> : null}
         {imgs.length > 0 ? (
           imgs.map((img, i) => {
@@ -56,7 +56,11 @@ export const ResFigure: React.FC<FigureProps> = ({
                   {img.ch ? (
                     <span className="absolute top-2 left-2 text-zinc-800">{`ch ${img.ch}`}</span>
                   ) : null}
-                  <img src={img.image_url} className="rounded-2xl" alt="" />
+                  <img
+                    src={img.image_url}
+                    className="rounded max-w-screen-md"
+                    alt=""
+                  />
 
                   <button
                     onClick={() => handleRemoveImg(i)}

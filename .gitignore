@@ -3,3 +3,5 @@ data
 minio_data
 migrations
 backend
+
+.idea

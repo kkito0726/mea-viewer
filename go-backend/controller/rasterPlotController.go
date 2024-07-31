@@ -6,10 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kkito0726/mea-viewer/enum"
 	"github.com/kkito0726/mea-viewer/model"
+	"github.com/kkito0726/mea-viewer/repository"
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-var rasterPlotService = service.NewImageService(enum.RasterPlotTable)
+var rasterPlotService = service.NewImageService(enum.RasterPlotTable, repository.MinioRepository{})
 
 func GetRasterPlotController(c *gin.Context) {
 	getImageRequest := model.GetImageRequest{

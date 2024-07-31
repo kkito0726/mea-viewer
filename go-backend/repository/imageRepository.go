@@ -10,9 +10,17 @@ type ImageRepository struct {
 	TableName enum.ImageTable
 }
 
+func NewImageRepository(tableName enum.ImageTable) *ImageRepository {
+	return &ImageRepository{TableName: tableName}
+}
+
+func (repo *ImageRepository) CreateImage(image *model.Image) error {
+	return db.DB.Table(repo.TableName.String()).Create(image).Error
+}
+
 func (repo *ImageRepository) GetImages(getImageRequest *model.GetImageRequest) []model.Image {
 	var images []model.Image
-	db.DB.Table(repo.TableName.String()).Where("file_name = ?", getImageRequest.FileName).Scan(&images)
+	db.DB.Table(repo.TableName.String()).Where("file_name = ?", getImageRequest.FileName).Order("ch").Scan(&images)
 	return images
 }
 
@@ -27,6 +35,5 @@ func (repo *ImageRepository) DeleteAllImages(deleteAllRequest *model.DeleteAllRe
 	if err := db.DB.Table(repo.TableName.String()).Where("file_name=?", deleteAllRequest.FileName).Delete(nil).Error; err != nil {
 		return err
 	}
-	DeleteObjectsInDirectory(deleteAllRequest.Directory)
 	return nil
 }
