@@ -37,14 +37,15 @@ func CreateShowSingleController(c *gin.Context) {
 	}
 
 	var wg sync.WaitGroup
-	ch := make(chan bool, 8)
+	ch := make(chan struct{}, 8)
 	images := make([]*model.Image, len(requestModel.JsonData.Chs))
 	var mu sync.Mutex
 	for i, meaCh := range requestModel.JsonData.Chs {
 		wg.Add(1)
-		ch <- true
+		ch <- struct{}{}
 		go func(i, meaCh int) {
 			defer wg.Done()
+			defer func() { <-ch }()
 			singleChannelMeaData := [][]float32{requestModel.SliceMeaData[0], requestModel.SliceMeaData[i+1]}
 			meaPlot := lib.NewMeaPlot(singleChannelMeaData)
 
@@ -66,12 +67,11 @@ func CreateShowSingleController(c *gin.Context) {
 				customErr.Logging()
 				c.JSON(customErr.StatusCode, gin.H{"error": customErr})
 				mu.Unlock()
-				<-ch
+				return
 			}
 			mu.Lock()
 			images[i] = image
 			mu.Unlock()
-			<-ch
 		}(i, meaCh)
 
 	}
