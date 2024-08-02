@@ -52,6 +52,7 @@ func SetupRouter() *gin.Engine {
 	router.DELETE(SHOW_DETECTION_BASE_URL, controller.DeleteShowDetectionController)
 	router.DELETE(SHOW_DETECTION_BASE_URL+"/all", controller.DeleteAllShowDetectionController)
 
+	router.POST("rasterPlot", controller.CreateRasterPlotController)
 	router.GET(RASTER_PLOT_BASE_URL+"/:file_name", controller.GetRasterPlotController)
 	router.DELETE(RASTER_PLOT_BASE_URL, controller.DeleteRasterPlotController)
 	router.DELETE(RASTER_PLOT_BASE_URL+"/all", controller.DeleteAllRasterPlotController)

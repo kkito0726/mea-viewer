@@ -94,11 +94,12 @@ export const fetchShowDetection = async (
 };
 
 export const fetchRasterPlot = async (
+  root_url: string,
   value: PeakRequestEntity,
   meaData: Float32Array[],
   activeChs: number[]
 ) => {
-  const url = FLASK_ROOT_URL + PagePath.RASTER_PLOT;
+  const url = root_url + PagePath.RASTER_PLOT;
   const buffers = [0, ...activeChs].map((v) => new Blob([meaData[v].buffer]));
 
   // FormDataを使用してデータを送信

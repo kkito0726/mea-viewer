@@ -1,6 +1,8 @@
 package lib
 
 import (
+	"fmt"
+
 	"github.com/kkito0726/mea-viewer/model"
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/font"
@@ -112,6 +114,62 @@ func (mp *MeaPlot) ShowAll(formValue *model.FormValue) (*vgimg.Canvas, error) {
 			channel++
 		}
 	}
+	return img, nil
+}
+
+func (mp *MeaPlot) RasterPlot(formValue *model.FormValue) (*vgimg.Canvas, error) {
+	width := vg.Length(font.Length(formValue.XRatio) * vg.Inch)
+	height := vg.Length(font.Length(formValue.YRatio) * vg.Inch)
+	img := vgimg.New(width, height)
+	dc := draw.New(img)
+	p := plot.New()
+
+	p.X.Label.Text = "Time (s)"
+	p.Y.Label.Text = "Electrode Number"
+
+	peakIndex := DetectPeakNeg(mp.MeaData, formValue.PeakFormValue.Distance, formValue.PeakFormValue.Threshold, 10)
+
+	// 各電極のピークインデックスをプロット
+	for i := 1; i < len(peakIndex); i++ {
+		points := make(plotter.XYs, len(peakIndex[i]))
+		for j, idx := range peakIndex[i] {
+			points[j].X = float64(mp.MeaData[0][idx])
+			points[j].Y = float64(i)
+		}
+
+		line, err := plotter.NewScatter(points)
+		if err != nil {
+			return nil, err
+		}
+
+		// line.GlyphStyle.Shape = plot.BoxGlyph{}
+		// line.GlyphStyle.Color = color.RGBA{R: 255, G: 255, B: 255}
+		line.GlyphStyle.Radius = vg.Points(2)
+		p.Add(line)
+	}
+	// 縦軸の目盛りを電極番号に変更
+	eleLabel := make([]string, len(formValue.Chs))
+	for i, ch := range formValue.Chs {
+		eleLabel[i] = fmt.Sprintf("%d", ch)
+	}
+
+	// カスタムティッカーの作成
+	ticks := plot.TickerFunc(func(min, max float64) []plot.Tick {
+		t := make([]plot.Tick, len(eleLabel))
+		for i := 0; i < len(eleLabel); i++ {
+			t[i] = plot.Tick{Value: float64(i + 1), Label: eleLabel[i]}
+		}
+		return t
+	})
+
+	p.Y.Tick.Marker = ticks
+	p.X.Min = formValue.Start
+	p.X.Max = formValue.End
+	p.Y.Min = -1
+	p.Y.Max = float64(len(mp.MeaData))
+
+	p.Draw(dc)
+
 	return img, nil
 }
 

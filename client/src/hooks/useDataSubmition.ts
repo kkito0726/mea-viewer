@@ -130,11 +130,13 @@ export const useDataSubmission = (
         break;
       case PageName.RASTER_PLOT:
         {
+          isPython ? (root_url = FLASK_ROOT_URL) : (root_url = GIN_ROOT_URL);
           const peakRequestEntity: PeakRequestEntity = {
             ...requestEntity,
             peakFormValue,
           };
           const resData = await fetchRasterPlot(
+            root_url,
             peakRequestEntity,
             meaData,
             activeChs
