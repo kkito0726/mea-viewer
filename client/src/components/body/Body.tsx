@@ -66,7 +66,11 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     PageName.RASTER_PLOT,
   ];
 
-  const pythonAndGoPages: string[] = [PageName.SHOW_ALL, PageName.SHOW_SINGLE];
+  const pythonAndGoPages: string[] = [
+    PageName.SHOW_ALL,
+    PageName.SHOW_SINGLE,
+    PageName.RASTER_PLOT,
+  ];
 
   useEffect(() => {
     if (fileName.bioName) {
