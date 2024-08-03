@@ -153,7 +153,7 @@ func (mp *MeaPlot) ShowDetection(formValue *model.FormValue) (*vgimg.Canvas, err
 			if err != nil {
 				return
 			}
-			line.Color = COLOR_SET[i%len(COLOR_SET)]
+			line.Color = COLOR_SET[(i-1)%len(COLOR_SET)]
 
 			mu.Lock()
 			p.Add(line)
