@@ -69,6 +69,7 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
   const pythonAndGoPages: string[] = [
     PageName.SHOW_ALL,
     PageName.SHOW_SINGLE,
+    PageName.SHOW_DETECTION,
     PageName.RASTER_PLOT,
   ];
 

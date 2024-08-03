@@ -2,8 +2,11 @@ package lib
 
 import (
 	"fmt"
+	"image/color"
+	"sync"
 
 	"github.com/kkito0726/mea-viewer/model"
+	"gonum.org/v1/gonum/stat"
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/font"
 	"gonum.org/v1/plot/plotter"
@@ -117,6 +120,76 @@ func (mp *MeaPlot) ShowAll(formValue *model.FormValue) (*vgimg.Canvas, error) {
 	return img, nil
 }
 
+func (mp *MeaPlot) ShowDetection(formValue *model.FormValue) (*vgimg.Canvas, error) {
+	width := vg.Length(font.Length(formValue.XRatio) * vg.Inch)
+	height := vg.Length(font.Length(formValue.YRatio) * vg.Inch)
+	img := vgimg.New(width, height)
+	dc := draw.New(img)
+	p := plot.New()
+
+	p.X.Label.Text = "Time (s)"
+	p.Y.Label.Text = "Voltage (μV)"
+
+	var wg sync.WaitGroup
+	ch := make(chan struct{}, 8)
+	var mu sync.Mutex
+	for i := 1; i < len(mp.MeaData); i++ {
+		wg.Add(1)
+		ch <- struct{}{}
+		go func(i int) {
+			defer wg.Done()
+			defer func() { <-ch }()
+			data := make([]float64, len(mp.MeaData[0]))
+			for id, volt := range mp.MeaData[i] {
+				data[id] = float64(volt)
+			}
+			mean := stat.Mean(data, nil)
+			points := make(plotter.XYs, len(mp.MeaData[i]))
+			for j := range points {
+				points[j].X = float64(mp.MeaData[0][j])
+				points[j].Y = (data[j]-mean)/50 + float64(i)
+			}
+			line, err := plotter.NewLine(points)
+			if err != nil {
+				return
+			}
+			line.Color = COLOR_SET[i%len(COLOR_SET)]
+
+			mu.Lock()
+			p.Add(line)
+			mu.Unlock()
+		}(i)
+
+	}
+	wg.Wait()
+
+	// 縦軸の目盛りを電極番号に変更
+	eleLabel := make([]string, len(formValue.Chs))
+	for i, ch := range formValue.Chs {
+		eleLabel[i] = fmt.Sprintf("%d", ch)
+	}
+
+	// カスタムティッカーの作成
+	ticks := plot.TickerFunc(func(min, max float64) []plot.Tick {
+		t := make([]plot.Tick, len(eleLabel))
+		for i := 0; i < len(eleLabel); i++ {
+			t[i] = plot.Tick{Value: float64(i + 1), Label: eleLabel[i]}
+		}
+		return t
+	})
+
+	p.Y.Min = 0
+	p.Y.Max = float64(len(formValue.Chs)) + 1
+	p.Y.Tick.Marker = ticks
+	p.X.Min = formValue.Start
+	p.X.Max = formValue.End
+
+	// p.Draw(draw.Canvas{Canvas: dc.Canvas})
+	p.Draw(dc)
+
+	return img, nil
+}
+
 func (mp *MeaPlot) RasterPlot(formValue *model.FormValue) (*vgimg.Canvas, error) {
 	width := vg.Length(font.Length(formValue.XRatio) * vg.Inch)
 	height := vg.Length(font.Length(formValue.YRatio) * vg.Inch)
@@ -196,4 +269,17 @@ func rasterPlot(p *plot.Plot, peakIndex [][]int, meaData [][]float32) error {
 		p.Add(line)
 	}
 	return nil
+}
+
+var COLOR_SET = []color.RGBA{
+	{R: 59, G: 117, B: 175, A: 255},
+	{R: 234, G: 134, B: 59, A: 255},
+	{R: 81, G: 158, B: 62, A: 255},
+	{R: 197, G: 58, B: 50, A: 255},
+	{R: 141, G: 105, B: 184, A: 255},
+	{R: 132, G: 88, B: 78, A: 255},
+	{R: 213, G: 125, B: 190, A: 255},
+	{R: 127, G: 127, B: 127, A: 255},
+	{R: 69, G: 189, B: 69, A: 255},
+	{R: 88, G: 187, B: 204, A: 255},
 }

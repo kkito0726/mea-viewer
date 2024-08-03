@@ -65,11 +65,12 @@ export const fetchShowSingle = async (
 };
 
 export const fetchShowDetection = async (
+  rootUrl: string,
   value: RequestEntity,
   meaData: Float32Array[],
   activeChs: number[]
 ) => {
-  const url = FLASK_ROOT_URL + PagePath.SHOW_DETECTION;
+  const url = rootUrl + PagePath.SHOW_DETECTION;
   const buffers = [0, ...activeChs].map((v) => new Blob([meaData[v].buffer]));
 
   // FormDataを使用してデータを送信
