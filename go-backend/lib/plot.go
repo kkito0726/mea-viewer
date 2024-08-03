@@ -127,26 +127,22 @@ func (mp *MeaPlot) RasterPlot(formValue *model.FormValue) (*vgimg.Canvas, error)
 	p.X.Label.Text = "Time (s)"
 	p.Y.Label.Text = "Electrode Number"
 
-	peakIndex := DetectPeakNeg(mp.MeaData, formValue.PeakFormValue.Distance, formValue.PeakFormValue.Threshold, 10)
+	peakDetection := NewPeakDetection(mp.MeaData)
 
-	// 各電極のピークインデックスをプロット
-	for i := 1; i < len(peakIndex); i++ {
-		points := make(plotter.XYs, len(peakIndex[i]))
-		for j, idx := range peakIndex[i] {
-			points[j].X = float64(mp.MeaData[0][idx])
-			points[j].Y = float64(i)
-		}
-
-		line, err := plotter.NewScatter(points)
-		if err != nil {
+	if formValue.PeakFormValue.IsNegative {
+		negPeakIndex := peakDetection.DetectPeakNeg(formValue.PeakFormValue.Distance, formValue.PeakFormValue.Threshold, 10)
+		if err := rasterPlot(p, negPeakIndex, mp.MeaData); err != nil {
 			return nil, err
 		}
-
-		// line.GlyphStyle.Shape = plot.BoxGlyph{}
-		// line.GlyphStyle.Color = color.RGBA{R: 255, G: 255, B: 255}
-		line.GlyphStyle.Radius = vg.Points(2)
-		p.Add(line)
 	}
+
+	if formValue.PeakFormValue.IsPositive {
+		posPeakIndex := peakDetection.DetectPeakPos(formValue.PeakFormValue.Distance, formValue.PeakFormValue.Threshold, 10)
+		if err := rasterPlot(p, posPeakIndex, mp.MeaData); err != nil {
+			return nil, err
+		}
+	}
+
 	// 縦軸の目盛りを電極番号に変更
 	eleLabel := make([]string, len(formValue.Chs))
 	for i, ch := range formValue.Chs {
@@ -178,4 +174,26 @@ func SetFontSize(p *plot.Plot, textFontSize int, labelFontSize int) {
 	p.Y.Label.TextStyle.Font.Size = vg.Points(float64(labelFontSize)) // Y軸ラベルのフォントサイズ
 	p.X.Tick.Label.Font.Size = vg.Points(float64(labelFontSize))      // X軸目盛りラベルのフォントサイズ
 	p.Y.Tick.Label.Font.Size = vg.Points(float64(labelFontSize))      // Y軸目盛りラベルのフォントサイズ
+}
+
+func rasterPlot(p *plot.Plot, peakIndex [][]int, meaData [][]float32) error {
+
+	for i := 1; i < len(peakIndex); i++ {
+		points := make(plotter.XYs, len(peakIndex[i]))
+		for j, idx := range peakIndex[i] {
+			points[j].X = float64(meaData[0][idx])
+			points[j].Y = float64(i)
+		}
+
+		line, err := plotter.NewScatter(points)
+		if err != nil {
+			return err
+		}
+
+		// line.GlyphStyle.Shape = plot.BoxGlyph{}
+		// line.GlyphStyle.Color = color.RGBA{R: 255, G: 255, B: 255}
+		line.GlyphStyle.Radius = vg.Points(1)
+		p.Add(line)
+	}
+	return nil
 }
