@@ -10,6 +10,7 @@ import (
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/font"
 	"gonum.org/v1/plot/plotter"
+	"gonum.org/v1/plot/plotutil"
 	"gonum.org/v1/plot/vg"
 	"gonum.org/v1/plot/vg/draw"
 	"gonum.org/v1/plot/vg/vgimg"
@@ -263,9 +264,9 @@ func rasterPlot(p *plot.Plot, peakIndex [][]int, meaData [][]float32) error {
 			return err
 		}
 
-		// line.GlyphStyle.Shape = plot.BoxGlyph{}
-		// line.GlyphStyle.Color = color.RGBA{R: 255, G: 255, B: 255}
 		line.GlyphStyle.Radius = vg.Points(1)
+		line.GlyphStyle.Shape = plotutil.DefaultGlyphShapes[6]
+
 		p.Add(line)
 	}
 	return nil
