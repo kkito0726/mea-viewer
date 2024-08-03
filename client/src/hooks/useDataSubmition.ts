@@ -118,7 +118,9 @@ export const useDataSubmission = (
         break;
       case PageName.SHOW_DETECTION:
         {
+          isPython ? (root_url = FLASK_ROOT_URL) : (root_url = GIN_ROOT_URL);
           const resData = await fetchShowDetection(
+            root_url,
             requestEntity,
             meaData,
             activeChs

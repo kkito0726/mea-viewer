@@ -43,7 +43,7 @@ export const SharedMeaProvider: React.FC<SharedMeaProviderProps> = ({
     handleRefreshHedFile,
     handleReadBio,
   } = useFileHandler();
-  const [isPython, setIsPython] = useState(true);
+  const [isPython, setIsPython] = useState(false);
   const togglePython = () => {
     setIsPython(!isPython);
   };

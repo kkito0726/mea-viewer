@@ -48,6 +48,7 @@ func SetupRouter() *gin.Engine {
 	router.DELETE(SHOW_SINGLE_BASE_URL, controller.DeleteShowSingleController)
 	router.DELETE(SHOW_SINGLE_BASE_URL+"/all", controller.DeleteAllShowSingleController)
 
+	router.POST("/showDetection", controller.CreateShowDetectionController)
 	router.GET(SHOW_DETECTION_BASE_URL+"/:file_name", controller.GetShowDetectionController)
 	router.DELETE(SHOW_DETECTION_BASE_URL, controller.DeleteShowDetectionController)
 	router.DELETE(SHOW_DETECTION_BASE_URL+"/all", controller.DeleteAllShowDetectionController)
