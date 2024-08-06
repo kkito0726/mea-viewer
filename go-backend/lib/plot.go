@@ -243,6 +243,56 @@ func (mp *MeaPlot) RasterPlot(formValue *model.FormValue) (*vgimg.Canvas, error)
 	return img, nil
 }
 
+func (mp *MeaPlot) PlotPeaks(formValue *model.FormValue) (*vgimg.Canvas, error) {
+	width := vg.Length(font.Length(formValue.XRatio) * vg.Inch)
+	height := vg.Length(font.Length(formValue.YRatio) * vg.Inch)
+	img := vgimg.New(width, height)
+	dc := draw.New(img)
+	p := plot.New()
+
+	p.X.Label.Text = "Time (s)"
+	p.Y.Label.Text = "Voltage (μV)"
+
+	SetFontSize(p, 20, 16)
+
+	points := make(plotter.XYs, len(mp.MeaData[0]))
+	for i := range points {
+		points[i].X = float64(mp.MeaData[0][i])
+		points[i].Y = float64(mp.MeaData[1][i])
+	}
+
+	line, err := plotter.NewLine(points)
+	if err != nil {
+		return nil, err
+	}
+
+	p.Add(line)
+
+	peakDetection := NewPeakDetection(mp.MeaData)
+	if formValue.PeakFormValue.IsNegative {
+		negPeakIndex := peakDetection.DetectPeakNeg(formValue.PeakFormValue.Distance, formValue.PeakFormValue.Threshold, 10)[1]
+		if err := plotPeak(p, negPeakIndex, mp.MeaData, COLOR_SET[1]); err != nil {
+			return nil, err
+		}
+	}
+
+	if formValue.PeakFormValue.IsPositive {
+		posPeakIndex := peakDetection.DetectPeakPos(formValue.PeakFormValue.Distance, formValue.PeakFormValue.Threshold, 10)[1]
+		if err := plotPeak(p, posPeakIndex, mp.MeaData, COLOR_SET[2]); err != nil {
+			return nil, err
+		}
+	}
+	p.X.Min = formValue.Start
+	p.X.Max = formValue.End
+	p.Y.Min = formValue.VoltMin
+	p.Y.Max = formValue.VoltMax
+
+	// p.Draw(draw.Canvas{Canvas: dc.Canvas})
+	p.Draw(dc)
+
+	return img, nil
+}
+
 func SetFontSize(p *plot.Plot, textFontSize int, labelFontSize int) {
 	p.X.Label.TextStyle.Font.Size = vg.Points(float64(textFontSize))  // X軸ラベルのフォントサイズ
 	p.Y.Label.TextStyle.Font.Size = vg.Points(float64(labelFontSize)) // Y軸ラベルのフォントサイズ
@@ -269,6 +319,26 @@ func rasterPlot(p *plot.Plot, peakIndex [][]int, meaData [][]float32) error {
 
 		p.Add(line)
 	}
+	return nil
+}
+
+func plotPeak(p *plot.Plot, peakIndex []int, meaData [][]float32, color color.RGBA) error {
+	points := make(plotter.XYs, len(peakIndex))
+	for j, idx := range peakIndex {
+		points[j].X = float64(meaData[0][idx])
+		points[j].Y = float64(meaData[1][idx])
+	}
+
+	sc, err := plotter.NewScatter(points)
+	if err != nil {
+		return err
+	}
+
+	sc.GlyphStyle.Radius = vg.Points(3)
+	sc.GlyphStyle.Shape = plotutil.DefaultGlyphShapes[6]
+	sc.Color = color
+
+	p.Add(sc)
 	return nil
 }
 

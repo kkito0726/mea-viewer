@@ -9,6 +9,7 @@ const (
 	RasterPlotTable
 	Draw2dTable
 	Draw3dTable
+	PlotPeaksTable
 )
 
 func (i ImageTable) String() string {
@@ -25,6 +26,8 @@ func (i ImageTable) String() string {
 		return "draw2d_images"
 	case Draw3dTable:
 		return "draw3d_images"
+	case PlotPeaksTable:
+		return "plot_peaks_images"
 	default:
 		return "xxx"
 	}
