@@ -176,6 +176,36 @@ export const fetchDraw3d = async (
   }
 };
 
+export const fetchPlotPeaks = async (
+  rootUrl: string,
+  value: RequestEntity,
+  meaData: Float32Array[],
+  activeChs: number[]
+) => {
+  const url = rootUrl + PagePath.PlotPeaks;
+  // バイナリデータをBlobに変換
+  const buffers = [0, ...activeChs].map((v) => new Blob([meaData[v].buffer]));
+
+  // FormDataを使用してデータを送信
+  const formData = new FormData();
+  buffers.forEach((blob, index) => {
+    formData.append(`file${index}`, blob);
+  });
+  value.chs = activeChs;
+  formData.append("jsonData", JSON.stringify(value));
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      body: formData, // ヘッダーのContent-TypeはFormDataに任せる
+    });
+    const resData: ImgResponse[] = await res.json();
+    return resData;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const get_images = async (pageName: string, fileName: string) => {
   const url = `${GIN_ROOT_URL}/crud/${pageName}/${fileName}`;
   const res = await fetch(url);

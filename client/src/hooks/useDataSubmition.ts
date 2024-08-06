@@ -7,6 +7,7 @@ import {
   delete_image,
   fetchDraw2d,
   fetchDraw3d,
+  fetchPlotPeaks,
   fetchRasterPlot,
   fetchShowAll,
   fetchShowDetection,
@@ -167,6 +168,24 @@ export const useDataSubmission = (
             peakFormValue,
           };
           const resData = await fetchDraw3d(peakRequestEntity, meaData);
+          if (resData) {
+            setImageResponses((prev) => [...prev, ...resData]);
+          }
+        }
+        break;
+      case PageName.PlotPeaks:
+        {
+          isPython ? (root_url = FLASK_ROOT_URL) : (root_url = GIN_ROOT_URL);
+          const peakRequestEntity: PeakRequestEntity = {
+            ...requestEntity,
+            peakFormValue,
+          };
+          const resData = await fetchPlotPeaks(
+            root_url,
+            peakRequestEntity,
+            meaData,
+            activeChs
+          );
           if (resData) {
             setImageResponses((prev) => [...prev, ...resData]);
           }

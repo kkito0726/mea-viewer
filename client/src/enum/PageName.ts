@@ -5,4 +5,5 @@ export const enum PageName {
   RASTER_PLOT = "rasterPlot",
   DRAW_2D = "draw2d",
   DRAW_3D = "draw3d",
+  PlotPeaks = "plotPeaks",
 }

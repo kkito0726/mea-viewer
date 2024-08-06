@@ -38,4 +38,9 @@ export const sidebarData: SidebarData[] = [
     link: PagePath.DRAW_3D,
     label: "3Dカラーマップ",
   },
+  {
+    name: PageName.PlotPeaks,
+    link: PagePath.PlotPeaks,
+    label: "ピーク抽出",
+  },
 ];
