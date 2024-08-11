@@ -17,6 +17,14 @@
       "sourceMapPathOverrides": {
         "webpack:///src/*": "${webRoot}/*"
       }
+    },
+
+    {
+      "name": "Go Backend API",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "./go-backend"
     }
   ]
 }

@@ -1,6 +1,7 @@
 import matplotlib
 import numpy as np
 from model.form_value import FormValue
+from model.peak_form_value import PeakFormValue
 
 matplotlib.use("Agg")  # GUIバックエンドを使用しないように設定
 import matplotlib.pyplot as plt
@@ -88,3 +89,16 @@ def raster_plot(
     plt.xlabel("Time (s)")
     plt.ylabel("Electrode Number")
     plt.tight_layout()
+
+
+@output_buf
+def plotPeaks(MEA_data, form_value: FormValue, id: int, *peak_index) -> None:
+    plt.figure(figsize=(form_value.x_ratio, form_value.y_ratio), dpi=form_value.dpi)
+    plt.plot(MEA_data[0], MEA_data[id])
+    for peak in peak_index:
+        if len(peak):
+            plt.plot(MEA_data[0][peak[id]], MEA_data[id][peak[id]], ".")
+            plt.xlim(form_value.start, form_value.end)
+    plt.ylim(form_value.volt_min, form_value.volt_max)
+    plt.xlabel("Time (s)")
+    plt.ylabel("Voltage (μV)")

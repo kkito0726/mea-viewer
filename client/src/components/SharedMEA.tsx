@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext } from "react";
+import React, { createContext, ReactNode, useContext, useState } from "react";
 import { FileName, useFileHandler } from "../hooks/useFileHandler";
 import { HedValue } from "../types/HedValue";
 import { ReadTime } from "../types/ReadTime";
@@ -15,6 +15,8 @@ interface SharedMeaContextType {
   handleBioInput: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
   handleRefreshHedFile: () => void;
   handleReadBio: () => Promise<void>;
+  isPython: boolean;
+  togglePython: () => void;
 }
 
 const SharedMeaContext = createContext<SharedMeaContextType | undefined>(
@@ -41,6 +43,10 @@ export const SharedMeaProvider: React.FC<SharedMeaProviderProps> = ({
     handleRefreshHedFile,
     handleReadBio,
   } = useFileHandler();
+  const [isPython, setIsPython] = useState(false);
+  const togglePython = () => {
+    setIsPython(!isPython);
+  };
 
   return (
     <SharedMeaContext.Provider
@@ -56,6 +62,8 @@ export const SharedMeaProvider: React.FC<SharedMeaProviderProps> = ({
         handleBioInput,
         handleRefreshHedFile,
         handleReadBio,
+        isPython,
+        togglePython,
       }}
     >
       {children}

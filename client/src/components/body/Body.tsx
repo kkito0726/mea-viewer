@@ -27,6 +27,8 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     handleBioInput,
     handleRefreshHedFile,
     handleReadBio,
+    isPython,
+    togglePython,
   } = useSharedMEA();
 
   const {
@@ -54,13 +56,23 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     activeChs,
     meaData,
     hedValue,
-    peakFormValue
+    peakFormValue,
+    isPython
   );
 
   const chPadPages: string[] = [
     PageName.SHOW_SINGLE,
     PageName.SHOW_DETECTION,
     PageName.RASTER_PLOT,
+    PageName.PlotPeaks,
+  ];
+
+  const pythonAndGoPages: string[] = [
+    PageName.SHOW_ALL,
+    PageName.SHOW_SINGLE,
+    PageName.SHOW_DETECTION,
+    PageName.RASTER_PLOT,
+    PageName.PlotPeaks,
   ];
 
   useEffect(() => {
@@ -138,6 +150,30 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
         >
           Delete All Figure
         </button>
+      ) : null}
+      {pythonAndGoPages.includes(pageName) ? (
+        <div className="flex justify-end p-2">
+          <div>
+            <img
+              onClick={togglePython}
+              src="python.svg"
+              className={`h-10 px-2 d rounded-full ${
+                isPython ? "bg-slate-500 border-slate-600" : null
+              }`}
+              alt=""
+            />
+          </div>
+          <div>
+            <img
+              onClick={togglePython}
+              src="golang.svg"
+              className={`h-10 px-2 rounded-full ${
+                !isPython ? "bg-slate-600" : null
+              }`}
+              alt=""
+            />
+          </div>
+        </div>
       ) : null}
     </div>
   );
