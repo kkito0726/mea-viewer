@@ -2,8 +2,9 @@ package com.mea_viewer_backend.figure_management.controller;
 
 import com.mea_viewer_backend.figure_management.dto.DeleteAllRequestDto;
 import com.mea_viewer_backend.figure_management.dto.DeleteRequestDto;
-import com.mea_viewer_backend.figure_management.model.ShowAllEntity;
-import com.mea_viewer_backend.figure_management.service.ShowAllService;
+import com.mea_viewer_backend.figure_management.enums.FigType;
+import com.mea_viewer_backend.figure_management.model.ImageModel;
+import com.mea_viewer_backend.figure_management.service.ImageService;
 import java.net.MalformedURLException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ShowAllController {
 
   public static final String BASE_URL = "crud/showAll";
-  private final ShowAllService showAllService;
+  private final ImageService imageService;
 
   @GetMapping("")
   public ResponseEntity<String> health() {
@@ -29,21 +30,21 @@ public class ShowAllController {
   }
 
   @GetMapping("/{fileName}")
-  public ResponseEntity<List<ShowAllEntity>> getShowAllImages(@PathVariable String fileName) {
-    return ResponseEntity.ok(showAllService.getShowAllImages(fileName));
+  public ResponseEntity<List<ImageModel>> getShowAllImages(@PathVariable String fileName) {
+    return ResponseEntity.ok(imageService.getImages(FigType.SHOW_ALL, fileName));
   }
 
   @DeleteMapping("")
   public ResponseEntity<Void> deleteShowAllImage(@RequestBody DeleteRequestDto deleteRequestDto)
       throws MalformedURLException {
-    showAllService.deleteShowAllImage(deleteRequestDto.getImageUrl());
+    imageService.deleteImage(FigType.SHOW_ALL, deleteRequestDto.getImageUrl());
     return ResponseEntity.noContent().build();
   }
 
   @DeleteMapping("/all")
   public ResponseEntity<Void> deleteAllShowAllImages(
       @RequestBody DeleteAllRequestDto deleteAllRequestDto) {
-    showAllService.deleteAllShowAllImages(deleteAllRequestDto);
+    imageService.deleteAllImages(FigType.SHOW_ALL, deleteAllRequestDto);
     return ResponseEntity.noContent().build();
   }
 

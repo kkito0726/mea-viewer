@@ -2,8 +2,9 @@ package com.mea_viewer_backend.figure_management.controller;
 
 import com.mea_viewer_backend.figure_management.dto.DeleteAllRequestDto;
 import com.mea_viewer_backend.figure_management.dto.DeleteRequestDto;
-import com.mea_viewer_backend.figure_management.model.RasterPlotEntity;
-import com.mea_viewer_backend.figure_management.service.RasterPlotService;
+import com.mea_viewer_backend.figure_management.enums.FigType;
+import com.mea_viewer_backend.figure_management.model.ImageModel;
+import com.mea_viewer_backend.figure_management.service.ImageService;
 import java.net.MalformedURLException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,23 +22,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RasterPlotController {
 
   public static final String BASE_URL = "crud/rasterPlot";
-  private final RasterPlotService rasterPlotService;
+  private final ImageService imageService;
 
   @GetMapping("/{fileName}")
-  public ResponseEntity<List<RasterPlotEntity>> getRasterPlotImages(@PathVariable String fileName) {
-    return ResponseEntity.ok(rasterPlotService.getRasterPlotImages(fileName));
+  public ResponseEntity<List<ImageModel>> getRasterPlotImages(@PathVariable String fileName) {
+    return ResponseEntity.ok(imageService.getImages(FigType.RASTER_PLOT, fileName));
   }
 
   @DeleteMapping("")
   public ResponseEntity<Void> deleteRasterPlotImage(@RequestBody DeleteRequestDto deleteRequestDto)
       throws MalformedURLException {
-    rasterPlotService.deleteRasterPlotImage(deleteRequestDto.getImageUrl());
+    imageService.deleteImage(FigType.RASTER_PLOT, deleteRequestDto.getImageUrl());
     return ResponseEntity.noContent().build();
   }
 
   @DeleteMapping("/all")
   public ResponseEntity<Void> deleteAllRasterPlotImages(@RequestBody DeleteAllRequestDto deleteAllRequestDto) {
-    rasterPlotService.deleteAllRasterPlotImage(deleteAllRequestDto);
+    imageService.deleteAllImages(FigType.RASTER_PLOT, deleteAllRequestDto);
     return ResponseEntity.noContent().build();
   }
 
