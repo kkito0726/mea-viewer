@@ -20,11 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping(path = Draw2dController.BASE_URL)
 public class Draw2dController {
+
   public static final String BASE_URL = "crud/draw2d";
   private final ImageService imageService;
 
   @GetMapping("/{fileName}")
-  public ResponseEntity<List<ImageModel>> getDraw2dImages(@PathVariable String  fileName) {
+  public ResponseEntity<List<ImageModel>> getDraw2dImages(@PathVariable String fileName) {
     return ResponseEntity.ok(imageService.getImages(FigType.DRAW_2D, fileName));
   }
 
@@ -36,7 +37,8 @@ public class Draw2dController {
   }
 
   @DeleteMapping("/all")
-  public ResponseEntity<Void> deleteAllDraw2dImages(@RequestBody DeleteAllRequestDto deleteAllRequestDto) {
+  public ResponseEntity<Void> deleteAllDraw2dImages(
+      @RequestBody DeleteAllRequestDto deleteAllRequestDto) {
     imageService.deleteAllImages(FigType.DRAW_2D, deleteAllRequestDto);
     return ResponseEntity.noContent().build();
   }

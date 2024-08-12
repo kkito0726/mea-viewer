@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ImageService {
+
   private final ImageRepositoryFactory imageRepositoryFactory;
   private final MinioService minioService;
 
@@ -26,6 +27,7 @@ public class ImageService {
 
   public void deleteAllImages(FigType figType, DeleteAllRequestDto deleteAllRequestDto) {
     minioService.deleteObjectsInDirectory(deleteAllRequestDto.getDirectory());
-    imageRepositoryFactory.getRepository(figType).deleteAllImages(deleteAllRequestDto.getFileName());
+    imageRepositoryFactory.getRepository(figType)
+        .deleteAllImages(deleteAllRequestDto.getFileName());
   }
 }

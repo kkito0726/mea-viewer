@@ -37,7 +37,8 @@ public class RasterPlotController {
   }
 
   @DeleteMapping("/all")
-  public ResponseEntity<Void> deleteAllRasterPlotImages(@RequestBody DeleteAllRequestDto deleteAllRequestDto) {
+  public ResponseEntity<Void> deleteAllRasterPlotImages(
+      @RequestBody DeleteAllRequestDto deleteAllRequestDto) {
     imageService.deleteAllImages(FigType.RASTER_PLOT, deleteAllRequestDto);
     return ResponseEntity.noContent().build();
   }

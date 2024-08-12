@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ImageRepositoryFactory {
+
   private final ShowAllRepository showAllRepository;
   private final ShowSingleRepository showSingleRepository;
   private final ShowDetectionRepository showDetectionRepository;
@@ -32,6 +33,4 @@ public class ImageRepositoryFactory {
       default -> throw new IllegalArgumentException("引数が適切ではありません");
     };
   }
-
-
 }
