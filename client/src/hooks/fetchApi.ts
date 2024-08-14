@@ -217,6 +217,9 @@ export const delete_image = async (pageName: string, img_url: string) => {
   const url = `${GIN_ROOT_URL}/crud/${pageName}`;
   await fetch(url, {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       image_url: img_url,
     }),
@@ -227,6 +230,9 @@ export const delete_all_image = async (pageName: string, file_name: string) => {
   const url = `${GIN_ROOT_URL}/crud/${pageName}/all`;
   await fetch(url, {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       directory: `images/${pageName}`,
       file_name: file_name,
