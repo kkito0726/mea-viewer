@@ -15,6 +15,11 @@ public class RasterPlotRepository implements ImageRepository {
 
   private final DSLContext dslContext;
 
+  @Override
+  public void insertImage(ImageModel imageModel) {
+
+  }
+
   public List<ImageModel> getImages(String fileName) {
     return dslContext.select()
         .from(RASTER_PLOT_IMAGES)

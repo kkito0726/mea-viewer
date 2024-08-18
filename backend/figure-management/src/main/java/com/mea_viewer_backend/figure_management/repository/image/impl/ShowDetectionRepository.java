@@ -15,6 +15,11 @@ public class ShowDetectionRepository implements ImageRepository {
 
   private final DSLContext dslContext;
 
+  @Override
+  public void insertImage(ImageModel imageModel) {
+
+  }
+
   public List<ImageModel> getImages(String fileName) {
     return dslContext.select()
         .from(SHOW_DETECTION_IMAGES)

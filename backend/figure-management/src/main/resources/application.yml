@@ -1,6 +1,11 @@
 spring:
   application:
     name: figure-management
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 1000MB
+      max-request-size: 1000MB
   datasource:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/${MYSQL_DATABASE:mea_db}
     driverClassName: com.mysql.cj.jdbc.Driver

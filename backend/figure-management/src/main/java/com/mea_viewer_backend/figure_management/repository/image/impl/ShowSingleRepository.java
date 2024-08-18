@@ -7,6 +7,7 @@ import com.mea_viewer_backend.figure_management.repository.image.ImageRepository
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -14,6 +15,11 @@ import org.springframework.stereotype.Repository;
 public class ShowSingleRepository implements ImageRepository {
 
   private final DSLContext dslContext;
+
+  public void insertImage(ImageModel imageModel) {
+    Record record = dslContext.newRecord(SHOW_SINGLE_IMAGES, imageModel);
+    record.formatInsert();
+  }
 
   public List<ImageModel> getImages(String fileName) {
     return dslContext.select()
