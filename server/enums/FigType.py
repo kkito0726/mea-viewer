@@ -8,3 +8,4 @@ class FigType(Enum):
     RASTER_PLOT = "rasterPlot"
     DRAW_2D = "draw2d"
     DRAW_3D = "draw3d"
+    PLOT_PEAKS = "plotPeaks"

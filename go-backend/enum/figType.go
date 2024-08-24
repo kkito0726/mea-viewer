@@ -9,6 +9,7 @@ const (
 	RasterPlot
 	Draw2d
 	Draw3d
+	PlotPeaks
 )
 
 func (ft FigType) String() string {
@@ -25,6 +26,8 @@ func (ft FigType) String() string {
 		return "draw2d"
 	case Draw3d:
 		return "draw3d"
+	case PlotPeaks:
+		return "plotPeaks"
 	default:
 		return "未定義"
 	}

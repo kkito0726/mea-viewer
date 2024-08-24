@@ -1,7 +1,7 @@
 from flask import request
 from model.form_value import FormValue
 from model.peak_form_value import PeakFormValue
-from lib.plot import showAll, showSingle, showDetection, raster_plot
+from lib.plot import showAll, showSingle, showDetection, raster_plot, plotPeaks
 from lib.peak_detection import detect_peak_neg, detect_peak_pos
 from lib.colormap import remove_fit_data, draw_2d, draw_3d
 import io
@@ -128,3 +128,29 @@ def draw_3d_service() -> tuple[list[io.BytesIO], str]:
     image_bufs = [draw_3d(popt, 450, 100) for popt in popts]
 
     return image_bufs, filename
+
+
+def plot_peaks_service():
+    data, json_data = decode_request()
+    filename = json_data["filename"]
+    peak_form_value = PeakFormValue(json_data=json_data)
+    form_value = FormValue(json_data=json_data)
+
+    neg_peak_index, pos_peak_index = [], []
+
+    if peak_form_value.isNegative:
+        neg_peak_index = detect_peak_neg(
+            data, peak_form_value.distance, peak_form_value.threshold
+        )
+
+    if peak_form_value.isPositive:
+        pos_peak_index = detect_peak_pos(
+            data, peak_form_value.distance, peak_form_value.threshold
+        )
+
+    image_bufs = [
+        plotPeaks(data, form_value, i, neg_peak_index, pos_peak_index)
+        for i in range(1, len(data))
+    ]
+
+    return json_data["chs"], image_bufs, filename

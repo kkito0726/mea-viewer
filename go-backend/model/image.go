@@ -56,6 +56,13 @@ type Draw3dImage struct {
 	FileName string `json:"file_name"`
 }
 
+type PlotPeaksImage struct {
+	gorm.Model
+	Ch       int    `json:"ch"`
+	ImageUrl string `json:"image_url"`
+	FileName string `json:"file_name"`
+}
+
 type GetImageRequest struct {
 	FileName string `json:"file_name" binding:"required"`
 }

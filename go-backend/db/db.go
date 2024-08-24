@@ -40,4 +40,5 @@ func Migrate() {
 	DB.AutoMigrate(&model.RasterPlotImage{})
 	DB.AutoMigrate(&model.Draw2dImage{})
 	DB.AutoMigrate(&model.Draw3dImage{})
+	DB.AutoMigrate(&model.PlotPeaksImage{})
 }

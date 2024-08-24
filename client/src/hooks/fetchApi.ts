@@ -176,6 +176,36 @@ export const fetchDraw3d = async (
   }
 };
 
+export const fetchPlotPeaks = async (
+  rootUrl: string,
+  value: RequestEntity,
+  meaData: Float32Array[],
+  activeChs: number[]
+) => {
+  const url = rootUrl + PagePath.PlotPeaks;
+  // バイナリデータをBlobに変換
+  const buffers = [0, ...activeChs].map((v) => new Blob([meaData[v].buffer]));
+
+  // FormDataを使用してデータを送信
+  const formData = new FormData();
+  buffers.forEach((blob, index) => {
+    formData.append(`file${index}`, blob);
+  });
+  value.chs = activeChs;
+  formData.append("jsonData", JSON.stringify(value));
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      body: formData, // ヘッダーのContent-TypeはFormDataに任せる
+    });
+    const resData: ImgResponse[] = await res.json();
+    return resData;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const get_images = async (pageName: string, fileName: string) => {
   const url = `${GIN_ROOT_URL}/crud/${pageName}/${fileName}`;
   const res = await fetch(url);
@@ -187,6 +217,9 @@ export const delete_image = async (pageName: string, img_url: string) => {
   const url = `${GIN_ROOT_URL}/crud/${pageName}`;
   await fetch(url, {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       image_url: img_url,
     }),
@@ -197,6 +230,9 @@ export const delete_all_image = async (pageName: string, file_name: string) => {
   const url = `${GIN_ROOT_URL}/crud/${pageName}/all`;
   await fetch(url, {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       directory: `images/${pageName}`,
       file_name: file_name,

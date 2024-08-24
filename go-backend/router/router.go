@@ -15,6 +15,7 @@ const (
 	RASTER_PLOT_BASE_URL    = "/crud/rasterPlot"
 	DRAW2D_BASE_URL         = "/crud/draw2d"
 	DRAW3D_BASE_URL         = "/crud/draw3d"
+	PLOT_PEAKS_BASE_URL     = "/crud/plotPeaks"
 	USER_BASE_URL           = "/user"
 )
 
@@ -65,6 +66,11 @@ func SetupRouter() *gin.Engine {
 	router.GET(DRAW3D_BASE_URL+"/:file_name", controller.GetDraw3dController)
 	router.DELETE(DRAW3D_BASE_URL, controller.DeleteDraw3dController)
 	router.DELETE(DRAW3D_BASE_URL+"/all", controller.DeleteAllDraw3dController)
+
+	router.POST("/plotPeaks", controller.CreatePlotPeaksController)
+	router.GET(PLOT_PEAKS_BASE_URL+"/:file_name", controller.GetPlotPeaksController)
+	router.DELETE(PLOT_PEAKS_BASE_URL, controller.DeletePlotPeaksController)
+	router.DELETE(PLOT_PEAKS_BASE_URL+"/all", controller.DeleteAllPlotPeaksController)
 
 	return router
 }
