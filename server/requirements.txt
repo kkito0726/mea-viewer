@@ -90,3 +90,4 @@ wcwidth==0.2.12
 Werkzeug==3.0.2
 wheel==0.43.0
 wrapt==1.16.0
+git+https://github.com/kkito0726/MEA_modules.git
