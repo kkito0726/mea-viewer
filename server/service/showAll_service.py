@@ -1,6 +1,8 @@
-from repository.showAll_repository import ShowAllRepository
-from flask import request
 import json
+
+from flask import request
+
+from repository.showAll_repository import ShowAllRepository
 
 
 class ShowAllService:

@@ -1,16 +1,16 @@
 from flask import Flask
-from controller.health_controller import health
-from controller.figure_controller import figure
-from controller.showDetection_crud_controller import showDetection_crud
-from controller.rasterPlot_crud_controller import rasterPlot_crud
-from controller.showAll_crud_controller import showAll_crud
-from controller.showSingle_crud_controller import showSingle_crud
+from flask_cors import CORS
+
+import db
+from config import config
 from controller.draw2d_crud_controller import draw_2d_crud
 from controller.draw3d_crud_controller import draw_3d_crud
-from flask_cors import CORS
-from config import config
-import db
-
+from controller.figure_controller import figure
+from controller.health_controller import health
+from controller.rasterPlot_crud_controller import rasterPlot_crud
+from controller.showAll_crud_controller import showAll_crud
+from controller.showDetection_crud_controller import showDetection_crud
+from controller.showSingle_crud_controller import showSingle_crud
 
 app = Flask(__name__)
 

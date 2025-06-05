@@ -1,6 +1,7 @@
-from model.RasterPlotImage import RasterPlotImage, RasterPlotImageSchema
 import json
+
 from db import db
+from model.RasterPlotImage import RasterPlotImage, RasterPlotImageSchema
 
 
 class RasterPlotRepository:

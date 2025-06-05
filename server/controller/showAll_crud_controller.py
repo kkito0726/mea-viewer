@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
-from service.showAll_service import ShowAllService
-from service.mino_service import MinioService
 
+from service.mino_service import MinioService
+from service.showAll_service import ShowAllService
 
 showAll_crud = Blueprint("showAll_crud", __name__)
 

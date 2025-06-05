@@ -1,7 +1,8 @@
-from db import db, ma
+from marshmallow import fields
 from sqlalchemy.dialects.mysql import TIMESTAMP as Timestamp
 from sqlalchemy.sql.functions import current_timestamp
-from marshmallow import fields
+
+from db import db, ma
 
 
 class ShowAllImage(db.Model):

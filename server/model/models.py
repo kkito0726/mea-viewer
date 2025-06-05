@@ -1,9 +1,9 @@
-from model.ShowAllImage import ShowAllImage
-from model.ShowShingleImage import ShowSingleImage
-from model.ShowDetectionImage import ShowDetectionImage
-from model.RasterPlotImage import RasterPlotImage
 from model.Draw2dImage import Draw2dImage
 from model.Draw3dImage import Draw3dImage
+from model.RasterPlotImage import RasterPlotImage
+from model.ShowAllImage import ShowAllImage
+from model.ShowDetectionImage import ShowDetectionImage
+from model.ShowShingleImage import ShowSingleImage
 
 __all__ = [
     ShowAllImage,

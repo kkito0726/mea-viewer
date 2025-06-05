@@ -1,6 +1,7 @@
-from s3 import minio_client
 from datetime import datetime
 from urllib.parse import urlparse
+
+from s3 import minio_client
 
 BUCKET_NAME = "plot-figure"
 
