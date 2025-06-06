@@ -2,7 +2,6 @@ import matplotlib
 import numpy as np
 
 from model.form_value import FormValue
-from model.peak_form_value import PeakFormValue
 
 matplotlib.use("Agg")  # GUIバックエンドを使用しないように設定
 import io
@@ -19,7 +18,7 @@ def showDetection(
     chs: list[int],
     xlabel="Time (s)",
     ylabel="Voltage (μV)",
-) -> io.BytesIO:
+) -> io.BytesIO | None:
     plt.figure(figsize=(form_value.x_ratio, form_value.y_ratio), dpi=form_value.dpi)
     for i in range(1, len(data)):
         tmp_volt = (data[i] - np.mean(data[i])) / 50
@@ -31,6 +30,7 @@ def showDetection(
     plt.xlim(form_value.start, form_value.end)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
+    return
 
 
 @output_buf
@@ -40,7 +40,7 @@ def raster_plot(
     chs: list[int],
     *peak_index,
     tick_ch=1,
-) -> None:
+) -> io.BytesIO | None:
     plt.figure(figsize=(form_value.x_ratio, form_value.y_ratio), dpi=form_value.dpi)
     for peak in peak_index:
         for i in range(len(chs)):
@@ -64,14 +64,16 @@ def raster_plot(
     plt.ylabel("Electrode Number")
     plt.tight_layout()
 
+    return
+
 
 @output_buf
-def plotPeaks(MEA_data, form_value: FormValue, id: int, *peak_index) -> None:
+def plotPeaks(MEA_data, form_value: FormValue, index: int, *peak_index) -> None:
     plt.figure(figsize=(form_value.x_ratio, form_value.y_ratio), dpi=form_value.dpi)
-    plt.plot(MEA_data[0], MEA_data[id])
+    plt.plot(MEA_data[0], MEA_data[index])
     for peak in peak_index:
         if len(peak):
-            plt.plot(MEA_data[0][peak[id]], MEA_data[id][peak[id]], ".")
+            plt.plot(MEA_data[0][peak[index]], MEA_data[index][peak[index]], ".")
             plt.xlim(form_value.start, form_value.end)
     plt.ylim(form_value.volt_min, form_value.volt_max)
     plt.xlabel("Time (s)")

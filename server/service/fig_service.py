@@ -38,7 +38,6 @@ def clean_data(data):
 
 def showAllService() -> tuple[io.BytesIO, str]:
     data, json_data = decode_request()
-    filename = json_data["filename"]
     form_value = FormValue(json_data=json_data)
     fm = create_figMEA(data, form_value)
 
@@ -52,12 +51,11 @@ def showAllService() -> tuple[io.BytesIO, str]:
         isBuf=True,
     )
 
-    return image_buf, filename
+    return image_buf, form_value.filename
 
 
-def showSingleService() -> tuple[list[int], io.BytesIO, str]:
+def showSingleService() -> tuple[list[int], list[io.BytesIO], str]:
     data, json_data = decode_request()
-    filename = json_data["filename"]
     form_value = FormValue(json_data=json_data)
 
     fm = create_figMEA(data, form_value)
@@ -75,42 +73,38 @@ def showSingleService() -> tuple[list[int], io.BytesIO, str]:
         for ch in range(1, len(data))
     ]
 
-    return form_value.chs, image_bufs, filename
+    return form_value.chs, image_bufs, form_value.filename
 
 
 def showDetectionService() -> tuple[io.BytesIO, str]:
     data, json_data = decode_request()
     form_value = FormValue(json_data=json_data)
-    chs = json_data["chs"]
-    filename = json_data["filename"]
 
-    image_buf = showDetection(data, form_value, chs)
+    image_buf = showDetection(data, form_value, form_value.chs)
 
-    return image_buf, filename
+    return image_buf, form_value.filename
 
 
 def rasterPlotService() -> tuple[io.BytesIO, str]:
     data, json_data = decode_request()
     form_value = FormValue(json_data=json_data)
-    chs = json_data["chs"]
-    filename = json_data["filename"]
     peak_form_value = PeakFormValue(json_data=json_data)
 
     isPos, isNeg = peak_form_value.isPositive, peak_form_value.isNegative
 
     if not isPos and not isNeg:
-        return ""
+        return io.BytesIO(), ""
 
     if not isPos and isNeg:
         peak_index = detect_peak_neg(
             data, peak_form_value.distance, peak_form_value.threshold
         )
-        image_buf = raster_plot(data, form_value, chs, peak_index)
+        image_buf = raster_plot(data, form_value, form_value.chs, peak_index)
     elif isPos and not isNeg:
         peak_index = detect_peak_pos(
             data, peak_form_value.distance, peak_form_value.threshold
         )
-        image_buf = raster_plot(data, form_value, chs, peak_index)
+        image_buf = raster_plot(data, form_value, form_value.chs, peak_index)
     else:
         pos_peak = detect_peak_pos(
             data, peak_form_value.distance, peak_form_value.threshold
@@ -118,16 +112,15 @@ def rasterPlotService() -> tuple[io.BytesIO, str]:
         neg_peak = detect_peak_neg(
             data, peak_form_value.distance, peak_form_value.threshold
         )
-        image_buf = raster_plot(data, form_value, chs, pos_peak, neg_peak)
+        image_buf = raster_plot(data, form_value, form_value.chs, pos_peak, neg_peak)
 
-    return image_buf, filename
+    return image_buf, form_value.filename
 
 
 def draw_2d_service() -> tuple[list[io.BytesIO], str]:
     data, json_data = decode_request()
     form_value = FormValue(json_data)
     peak_form_value = PeakFormValue(json_data=json_data)
-    filename = json_data["filename"]
 
     fm = create_figMEA(data, form_value)
     peak_index = pyMEA.detect_peak_neg(
@@ -135,13 +128,12 @@ def draw_2d_service() -> tuple[list[io.BytesIO], str]:
     )
     image_buf_list = fm.draw_2d(peak_index, dpi=form_value.dpi, isBuf=True)
 
-    return image_buf_list, filename
+    return image_buf_list, form_value.filename
 
 
 def draw_3d_service() -> tuple[list[io.BytesIO], str]:
     data, json_data = decode_request()
     form_value = FormValue(json_data)
-    filename = json_data["filename"]
     peak_form_value = PeakFormValue(json_data)
 
     fm = create_figMEA(data, form_value)
@@ -150,12 +142,11 @@ def draw_3d_service() -> tuple[list[io.BytesIO], str]:
     )
     image_bufs = fm.draw_3d(peak_index, dpi=form_value.dpi, isBuf=True)
 
-    return image_bufs, filename
+    return image_bufs, form_value.filename
 
 
 def plot_peaks_service():
     data, json_data = decode_request()
-    filename = json_data["filename"]
     peak_form_value = PeakFormValue(json_data=json_data)
     form_value = FormValue(json_data=json_data)
 
@@ -176,7 +167,7 @@ def plot_peaks_service():
         for i in range(1, len(data))
     ]
 
-    return json_data["chs"], image_bufs, filename
+    return form_value.chs, image_bufs, form_value.filename
 
 
 def create_figMEA(data, form_value: FormValue):

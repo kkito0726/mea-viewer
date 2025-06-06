@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 class FormValue:
     def __init__(self, json_data: dict) -> None:
+        self.filename = json_data["filename"]
         self.readTime = ReadTime(**json_data["readTime"])
         self.start = float(json_data["start"])
         self.end = float(json_data["end"])
