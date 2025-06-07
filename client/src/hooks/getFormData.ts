@@ -59,5 +59,12 @@ export const getFormData = (values: FormValues): FormData[] => {
       min: 0,
       step: 1,
     },
+    {
+      name: "electrode_distance",
+      label: "電極間距離 (μm)",
+      value: values.electrode_distance,
+      min: 0,
+      step: 1,
+    },
   ];
 };
