@@ -1,5 +1,6 @@
-from db import db, ma
 from marshmallow import fields
+
+from db import db, ma
 
 
 class RasterPlotImage(db.Model):

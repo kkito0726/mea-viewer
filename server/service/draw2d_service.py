@@ -1,6 +1,8 @@
-from repository.draw2d_repository import Draw2dRepository
-from flask import request
 import json
+
+from flask import request
+
+from repository.draw2d_repository import Draw2dRepository
 
 
 class Draw2dService:

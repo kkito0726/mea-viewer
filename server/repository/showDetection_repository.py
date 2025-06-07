@@ -1,6 +1,7 @@
-from model.ShowDetectionImage import ShowDetectionImage, ShowDetectionSchema
-from db import db
 import json
+
+from db import db
+from model.ShowDetectionImage import ShowDetectionImage, ShowDetectionSchema
 
 
 class ShowDetectionRepository:

@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
+
 from service.draw2d_service import Draw2dService
 from service.mino_service import MinioService
-
 
 draw_2d_crud = Blueprint("draw_2d_crud", __name__)
 

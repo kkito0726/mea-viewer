@@ -1,22 +1,23 @@
 from flask import Blueprint, jsonify
+
+from enums.FigType import FigType
+from service.draw2d_service import Draw2dService
+from service.draw3d_service import Draw3dService
 from service.fig_service import (
-    showAllService,
-    showSingleService,
-    showDetectionService,
-    rasterPlotService,
     draw_2d_service,
     draw_3d_service,
     plot_peaks_service,
+    rasterPlotService,
+    showAllService,
+    showDetectionService,
+    showSingleService,
 )
 from service.mino_service import MinioService
-from service.showDetection_service import ShowDetectionService
-from service.showAll_service import ShowAllService
-from service.showSingle_service import ShowSingleService
-from service.rasterPlot_service import RasterPlotService
-from service.draw2d_service import Draw2dService
-from service.draw3d_service import Draw3dService
 from service.plotPeaks_service import PlotPeaksService
-from enums.FigType import FigType
+from service.rasterPlot_service import RasterPlotService
+from service.showAll_service import ShowAllService
+from service.showDetection_service import ShowDetectionService
+from service.showSingle_service import ShowSingleService
 
 figure = Blueprint("figure", __name__)
 

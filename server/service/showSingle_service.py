@@ -1,6 +1,8 @@
-from repository.showShingle_repository import ShowSingleRepository
-from flask import request
 import json
+
+from flask import request
+
+from repository.showShingle_repository import ShowSingleRepository
 
 
 class ShowSingleService:

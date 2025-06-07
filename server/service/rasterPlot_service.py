@@ -1,6 +1,8 @@
-from repository.rasterPlot_repository import RasterPlotRepository
-from flask import request
 import json
+
+from flask import request
+
+from repository.rasterPlot_repository import RasterPlotRepository
 
 
 class RasterPlotService:

@@ -1,6 +1,7 @@
-from model.ShowShingleImage import ShowSingleImage, ShowSingleImageSchema
-from db import db
 import json
+
+from db import db
+from model.ShowShingleImage import ShowSingleImage, ShowSingleImageSchema
 
 
 class ShowSingleRepository:

@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
-from service.rasterPlot_service import RasterPlotService
-from service.mino_service import MinioService
 
+from service.mino_service import MinioService
+from service.rasterPlot_service import RasterPlotService
 
 rasterPlot_crud = Blueprint("rasterPlot_crud", __name__)
 

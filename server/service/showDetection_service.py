@@ -1,6 +1,8 @@
-from repository.showDetection_repository import ShowDetectionRepository
-from flask import request
 import json
+
+from flask import request
+
+from repository.showDetection_repository import ShowDetectionRepository
 
 
 class ShowDetectionService:
