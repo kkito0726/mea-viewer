@@ -17,6 +17,7 @@ class FormValue:
         self.x_ratio = int(json_data["x_ratio"])
         self.y_ratio = int(json_data["y_ratio"])
         self.dpi = int(json_data["dpi"])
+        self.electrode_distance = json_data.get("electrode_distance")
         self.chs = json_data.get("chs")
 
 
