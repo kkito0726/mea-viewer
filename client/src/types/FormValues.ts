@@ -6,6 +6,7 @@ export type FormValues = {
   x_ratio: number;
   y_ratio: number;
   dpi: number;
+  electrode_distance: number;
 };
 
 export const initFormValue: FormValues = {
@@ -16,4 +17,5 @@ export const initFormValue: FormValues = {
   x_ratio: 8,
   y_ratio: 8,
   dpi: 100,
+  electrode_distance: 450,
 };

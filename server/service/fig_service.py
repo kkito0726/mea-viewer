@@ -220,4 +220,4 @@ def create_figMEA(data, form_value: FormValue):
         form_value.hedValue.gain,
         data,
     )
-    return FigMEA(data, Electrode(450))
+    return FigMEA(data, Electrode(form_value.electrode_distance))
