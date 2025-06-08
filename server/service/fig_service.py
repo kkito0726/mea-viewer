@@ -30,6 +30,8 @@ def decode_request():
     return data, json_data
 
 
+# 受け取った電位データからnanを取り除く
+# FEで読み込むときに読み込み終了時間をデータ量より長く設定すると足りない分nanで補われる
 def clean_data(data):
     if not np.isnan(data).any():
         return data
@@ -40,7 +42,7 @@ def clean_data(data):
     return np.append(t, volt, axis=0)
 
 
-# 受け取った電極データ以外はダミーデータで保管してpyMEAで使用できるようにする
+# 受け取った電位データ以外はダミーデータで保管してpyMEAで使用できるようにする
 def complete_data(data, form_value: FormValue):
     if len(data) == 65:
         return data
@@ -70,7 +72,7 @@ def showAllService() -> tuple[io.BytesIO, str]:
         (form_value.x_ratio, form_value.y_ratio),
         form_value.dpi,
         isBuf=True,
-    )
+    ).buf
 
     return image_buf, form_value.filename
 
@@ -90,7 +92,7 @@ def showSingleService() -> tuple[list[int], list[io.BytesIO], str]:
             figsize=(form_value.x_ratio, form_value.y_ratio),
             dpi=form_value.dpi,
             isBuf=True,
-        )
+        ).buf
         for ch in range(1, len(data))
     ]
 
@@ -110,7 +112,7 @@ def showDetectionService() -> tuple[io.BytesIO, str]:
         figsize=(form_value.x_ratio, form_value.y_ratio),
         dpi=form_value.dpi,
         isBuf=True,
-    )
+    ).buf
 
     return image_buf, form_value.filename
 
@@ -132,7 +134,7 @@ def rasterPlotService() -> tuple[io.BytesIO, str]:
         end=form_value.end,
         dpi=form_value.dpi,
         isBuf=True,
-    )
+    ).buf
 
     return image_buf, form_value.filename
 
@@ -146,7 +148,7 @@ def draw_2d_service() -> tuple[list[io.BytesIO], str]:
     peak_index = detect_peak_neg(
         fm.data, peak_form_value.distance, peak_form_value.threshold
     )
-    image_buf_list = fm.draw_2d(peak_index, dpi=form_value.dpi, isBuf=True)
+    image_buf_list = fm.draw_2d(peak_index, dpi=form_value.dpi, isBuf=True).buf_list
 
     return image_buf_list, form_value.filename
 
@@ -160,7 +162,7 @@ def draw_3d_service() -> tuple[list[io.BytesIO], str]:
     peak_index = detect_peak_neg(
         fm.data, peak_form_value.distance, peak_form_value.threshold
     )
-    image_bufs = fm.draw_3d(peak_index, dpi=form_value.dpi, isBuf=True)
+    image_bufs = fm.draw_3d(peak_index, dpi=form_value.dpi, isBuf=True).buf_list
 
     return image_bufs, form_value.filename
 
@@ -185,7 +187,7 @@ def plot_peaks_service():
             figsize=(form_value.x_ratio, form_value.y_ratio),
             dpi=form_value.dpi,
             isBuf=True,
-        )
+        ).buf
         for ch in form_value.chs
     ]
 
