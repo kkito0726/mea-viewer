@@ -2,6 +2,8 @@
 
 MEA 計測データをブラウザ上で確認するアプリ
 
+![](client/public/window.png)
+
 ## 1. 環境構築
 
 アプリケーションを docker-compose で動かす。
