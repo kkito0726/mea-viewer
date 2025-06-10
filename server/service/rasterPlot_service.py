@@ -8,7 +8,7 @@ from repository.rasterPlot_repository import RasterPlotRepository
 class RasterPlotService:
     @staticmethod
     def insert(image_url: str, file_name: str):
-        return RasterPlotRepository.save_image(image_url, file_name)
+        return [RasterPlotRepository.save_image(image_url, file_name)]
 
     @staticmethod
     def select(filename: str):

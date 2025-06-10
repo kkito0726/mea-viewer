@@ -10,7 +10,7 @@ class ShowDetectionRepository:
         showDetectionImage = ShowDetectionImage(
             image_url=image_url, file_name=file_name
         ).create_image()
-        return ShowDetectionSchema().jsonify(showDetectionImage)
+        return ShowDetectionSchema().dump(showDetectionImage.serialize())
 
     @staticmethod
     def get_images(file_name: str) -> str:

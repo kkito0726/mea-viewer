@@ -1,78 +1,77 @@
 from flask import Blueprint, jsonify
 
 from enums.FigType import FigType
+from model.FigRequest import decode_request
 from service.draw2d_service import Draw2dService
 from service.draw3d_service import Draw3dService
-from service.fig_service import (
-    draw_2d_service,
-    draw_3d_service,
-    plot_peaks_service,
-    rasterPlotService,
-    showAllService,
-    showDetectionService,
-    showSingleService,
-)
 from service.mino_service import MinioService
 from service.plotPeaks_service import PlotPeaksService
 from service.rasterPlot_service import RasterPlotService
 from service.showAll_service import ShowAllService
 from service.showDetection_service import ShowDetectionService
 from service.showSingle_service import ShowSingleService
+from usecase.FigUseCase import FigUseCase
 
 figure = Blueprint("figure", __name__)
 
 
-@figure.route("/showAll", methods=["POST"])
-def plot_showAll():
-    img_buf, file_name = showAllService()
-    img_url = MinioService.save(FigType.SHOW_ALL.value, img_buf, file_name)
-    img_response = ShowAllService.insert(img_url, file_name)
-    return img_response
+@figure.route("/draw", methods=["POST"])
+def draw():
+    fig_request = decode_request()
+    return FigUseCase(fig_request).create_fig()
 
 
-@figure.route("/showSingle", methods=["POST"])
-def show_single():
-    chs, image_bufs, file_name = showSingleService()
-    img_urls = MinioService.saves(FigType.SHOW_SINGLE.value, image_bufs, file_name)
-    img_responses = ShowSingleService.inserts(chs, img_urls, file_name)
-    return jsonify(img_responses), 200
-
-
-@figure.route("/showDetection", methods=["POST"])
-def show_detection():
-    img_buf, file_name = showDetectionService()
-    img_url = MinioService.save(FigType.SHOW_DETECTION.value, img_buf, file_name)
-    img_response = ShowDetectionService.insert(img_url, file_name)
-    return img_response
-
-
-@figure.route("/rasterPlot", methods=["POST"])
-def raster_plot():
-    img_buf, file_name = rasterPlotService()
-    img_url = MinioService.save(FigType.RASTER_PLOT.value, img_buf, file_name)
-    img_response = RasterPlotService.insert(img_url, file_name)
-    return img_response
-
-
-@figure.route("/draw2d", methods=["POST"])
-def draw2d():
-    image_bufs, file_name = draw_2d_service()
-    image_urls = MinioService.saves(FigType.DRAW_2D.value, image_bufs, file_name)
-    image_responses = Draw2dService.inserts(image_urls, file_name)
-    return jsonify(image_responses), 200
-
-
-@figure.route("/draw3d", methods=["POST"])
-def drae3d():
-    image_bufs, file_name = draw_3d_service()
-    image_urls = MinioService.saves(FigType.DRAW_3D.value, image_bufs, file_name)
-    image_responses = Draw3dService.inserts(image_urls, file_name)
-    return jsonify(image_responses), 200
-
-
-@figure.route("/plotPeaks", methods=["POST"])
-def peakPlots():
-    chs, image_bufs, file_name = plot_peaks_service()
-    image_urls = MinioService.saves(FigType.PLOT_PEAKS.value, image_bufs, file_name)
-    image_response = PlotPeaksService.inserts(chs, image_urls, file_name)
-    return jsonify(image_response), 200
+# @figure.route("/showAll", methods=["POST"])
+# def plot_showAll():
+#     img_buf, file_name = showAllService()
+#     img_url = MinioService.save(FigType.SHOW_ALL.value, img_buf, file_name)
+#     img_response = ShowAllService.insert(img_url, file_name)
+#     return img_response
+#
+#
+# @figure.route("/showSingle", methods=["POST"])
+# def show_single():
+#     chs, image_bufs, file_name = showSingleService()
+#     img_urls = MinioService.saves(FigType.SHOW_SINGLE.value, image_bufs, file_name)
+#     img_responses = ShowSingleService.inserts(chs, img_urls, file_name)
+#     return jsonify(img_responses), 200
+#
+#
+# @figure.route("/showDetection", methods=["POST"])
+# def show_detection():
+#     img_buf, file_name = showDetectionService()
+#     img_url = MinioService.save(FigType.SHOW_DETECTION.value, img_buf, file_name)
+#     img_response = ShowDetectionService.insert(img_url, file_name)
+#     return img_response
+#
+#
+# @figure.route("/rasterPlot", methods=["POST"])
+# def raster_plot():
+#     img_buf, file_name = rasterPlotService()
+#     img_url = MinioService.save(FigType.RASTER_PLOT.value, img_buf, file_name)
+#     img_response = RasterPlotService.insert(img_url, file_name)
+#     return img_response
+#
+#
+# @figure.route("/draw2d", methods=["POST"])
+# def draw2d():
+#     image_bufs, file_name = draw_2d_service()
+#     image_urls = MinioService.saves(FigType.DRAW_2D.value, image_bufs, file_name)
+#     image_responses = Draw2dService.inserts(image_urls, file_name)
+#     return jsonify(image_responses), 200
+#
+#
+# @figure.route("/draw3d", methods=["POST"])
+# def drae3d():
+#     image_bufs, file_name = draw_3d_service()
+#     image_urls = MinioService.saves(FigType.DRAW_3D.value, image_bufs, file_name)
+#     image_responses = Draw3dService.inserts(image_urls, file_name)
+#     return jsonify(image_responses), 200
+#
+#
+# @figure.route("/plotPeaks", methods=["POST"])
+# def peakPlots():
+#     chs, image_bufs, file_name = plot_peaks_service()
+#     image_urls = MinioService.saves(FigType.PLOT_PEAKS.value, image_bufs, file_name)
+#     image_response = PlotPeaksService.inserts(chs, image_urls, file_name)
+#     return jsonify(image_response), 200

@@ -10,7 +10,7 @@ class RasterPlotRepository:
         rasterPlotImage = RasterPlotImage(
             image_url=image_url, file_name=file_name
         ).create_image()
-        return RasterPlotImageSchema().jsonify(rasterPlotImage)
+        return RasterPlotImageSchema().dump(rasterPlotImage.serialize())
 
     @staticmethod
     def get_images(file_name: str) -> str:
