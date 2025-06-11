@@ -27,7 +27,6 @@ export const useDataSubmission = (
 
   const [imageResponses, setImageResponses] = useState<ImgResponse[]>([]);
   const [isPost, setIsPost] = useState<boolean>(false);
-  // const [isPython, setIsPython] = useState(true);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
