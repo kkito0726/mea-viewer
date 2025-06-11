@@ -5,20 +5,14 @@ import { ChFormValue, initChFormValue } from "../types/ChFormValue";
 import { HedValue } from "../types/HedValue";
 import {
   delete_image,
-  fetchDraw2d,
-  fetchDraw3d,
-  fetchPlotPeaks,
-  fetchRasterPlot,
-  fetchShowAll,
-  fetchShowDetection,
-  fetchShowSingle,
+  fetchCreateFigure,
   FLASK_ROOT_URL,
   GIN_ROOT_URL,
 } from "./fetchApi";
-import { PageName } from "../enum/PageName";
 import { PeakFormValue } from "../types/PeakFormValue";
 import { toast } from "react-toastify";
 import { ImgResponse } from "../types/ImgResponse";
+import { chPadPages } from "../enum/PageName";
 
 export const useDataSubmission = (
   pageName: string,
@@ -29,7 +23,7 @@ export const useDataSubmission = (
   peakFormValue: PeakFormValue,
   isPython: boolean
 ) => {
-  const [values, setValues] = useState<ChFormValue>(initChFormValue);
+  const [values, setValues] = useState<ChFormValue>(initChFormValue(pageName));
 
   const [imageResponses, setImageResponses] = useState<ImgResponse[]>([]);
   const [isPost, setIsPost] = useState<boolean>(false);
@@ -54,7 +48,7 @@ export const useDataSubmission = (
 
   const handleInitialize = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    setValues(initChFormValue);
+    setValues(initChFormValue(fileName));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -82,8 +76,6 @@ export const useDataSubmission = (
   };
 
   const handleFetch = async () => {
-    let root_url: string;
-
     const requestEntity: RequestEntity = {
       readTime: {
         start: Math.floor(meaData[0][0]),
@@ -93,109 +85,22 @@ export const useDataSubmission = (
       filename: fileName,
       ...values,
     };
-    switch (pageName) {
-      case PageName.SHOW_ALL:
-        {
-          isPython ? (root_url = FLASK_ROOT_URL) : (root_url = GIN_ROOT_URL);
-          const resData = await fetchShowAll(root_url, requestEntity, meaData);
-          if (resData) {
-            setImageResponses((prev) => [...prev, resData]);
-          }
-        }
-        break;
-      case PageName.SHOW_SINGLE:
-        {
-          isPython ? (root_url = FLASK_ROOT_URL) : (root_url = GIN_ROOT_URL);
-          const resData = await fetchShowSingle(
-            root_url,
-            requestEntity,
-            meaData,
-            activeChs
-          );
-          if (resData) {
-            setImageResponses((prev) => [...prev, ...resData]);
-          }
-        }
-        break;
-      case PageName.SHOW_DETECTION:
-        {
-          isPython ? (root_url = FLASK_ROOT_URL) : (root_url = GIN_ROOT_URL);
-          const resData = await fetchShowDetection(
-            root_url,
-            requestEntity,
-            meaData,
-            activeChs
-          );
-          if (resData) {
-            setImageResponses((prev) => [...prev, resData]);
-          }
-        }
-        break;
-      case PageName.RASTER_PLOT:
-        {
-          isPython ? (root_url = FLASK_ROOT_URL) : (root_url = GIN_ROOT_URL);
-          const peakRequestEntity: PeakRequestEntity = {
-            ...requestEntity,
-            peakFormValue,
-          };
-          const resData = await fetchRasterPlot(
-            root_url,
-            peakRequestEntity,
-            meaData,
-            activeChs
-          );
-          if (resData) {
-            setImageResponses((prev) => [...prev, resData]);
-          }
-        }
-        break;
-      case PageName.DRAW_2D:
-        {
-          const peakRequestEntity: PeakRequestEntity = {
-            ...requestEntity,
-            peakFormValue,
-          };
-          const resData = await fetchDraw2d(peakRequestEntity, meaData);
-          if (resData) {
-            setImageResponses((prev) => [...prev, ...resData]);
-          }
-        }
-        break;
-      case PageName.DRAW_3D:
-        {
-          const peakRequestEntity: PeakRequestEntity = {
-            ...requestEntity,
-            peakFormValue,
-          };
-          const resData = await fetchDraw3d(peakRequestEntity, meaData);
-          if (resData) {
-            setImageResponses((prev) => [...prev, ...resData]);
-          }
-        }
-        break;
-      case PageName.PlotPeaks:
-        {
-          isPython ? (root_url = FLASK_ROOT_URL) : (root_url = GIN_ROOT_URL);
-          const peakRequestEntity: PeakRequestEntity = {
-            ...requestEntity,
-            peakFormValue,
-          };
-          const resData = await fetchPlotPeaks(
-            root_url,
-            peakRequestEntity,
-            meaData,
-            activeChs
-          );
-          if (resData) {
-            setImageResponses((prev) => [...prev, ...resData]);
-          }
-        }
-        break;
+    const peakRequestEntity: PeakRequestEntity = {
+      ...requestEntity,
+      peakFormValue,
+    };
+
+    const resData = await fetchCreateFigure(
+      isPython ? FLASK_ROOT_URL : GIN_ROOT_URL,
+      peakRequestEntity,
+      meaData,
+      chPadPages.includes(pageName) ? activeChs : null
+    );
+    if (resData) {
+      setImageResponses((prev) => [...prev, ...resData]);
     }
   };
-  // const togglePython = () => {
-  //   setIsPython(!isPython);
-  // };
+
   return {
     values,
     imageResponses,

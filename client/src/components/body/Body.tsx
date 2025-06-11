@@ -4,7 +4,7 @@ import { ReadBio } from "./readMeaFile/ReadBio";
 import { useDataSubmission } from "../../hooks/useDataSubmition";
 import { ChPad } from "../ChPad/ChPad";
 import { useChPad } from "../../hooks/useChPad";
-import { PageName } from "../../enum/PageName";
+import { chPadPages, PageName } from "../../enum/PageName";
 import { usePeakFormHandler } from "../../hooks/usePeakFormHandler";
 import { useSharedMEA } from "../SharedMEA";
 import { useEffect } from "react";
@@ -59,13 +59,6 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     peakFormValue,
     isPython
   );
-
-  const chPadPages: string[] = [
-    PageName.SHOW_SINGLE,
-    PageName.SHOW_DETECTION,
-    PageName.RASTER_PLOT,
-    PageName.PlotPeaks,
-  ];
 
   const pythonAndGoPages: string[] = [
     PageName.SHOW_ALL,
