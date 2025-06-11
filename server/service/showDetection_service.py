@@ -8,7 +8,7 @@ from repository.showDetection_repository import ShowDetectionRepository
 class ShowDetectionService:
     @staticmethod
     def insert(image_url: str, file_name: str):
-        return ShowDetectionRepository.save_image(image_url, file_name)
+        return [ShowDetectionRepository.save_image(image_url, file_name)]
 
     @staticmethod
     def select(filename: str):

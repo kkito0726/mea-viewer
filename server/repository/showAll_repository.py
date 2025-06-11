@@ -10,7 +10,7 @@ class ShowAllRepository:
         showAllImage = ShowAllImage(
             image_url=image_url, file_name=file_name
         ).create_image()
-        return ShowAllImageSchema().jsonify(showAllImage)
+        return ShowAllImageSchema().dump(showAllImage.serialize())
 
     @staticmethod
     def get_images(file_name):

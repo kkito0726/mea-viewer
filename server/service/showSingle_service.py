@@ -7,7 +7,7 @@ from repository.showShingle_repository import ShowSingleRepository
 
 class ShowSingleService:
     @staticmethod
-    def inserts(chs: int, image_urls: list[str], file_name: str):
+    def inserts(chs: list[int], image_urls: list[str], file_name: str):
         return [
             ShowSingleRepository.save_image(ch, image_url, file_name)
             for ch, image_url in zip(chs, image_urls)

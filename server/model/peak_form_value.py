@@ -1,6 +1,8 @@
 class PeakFormValue:
     def __init__(self, json_data) -> None:
-        self.isPositive = json_data["peakFormValue"]["isPositive"]
-        self.isNegative = json_data["peakFormValue"]["isNegative"]
-        self.distance = json_data["peakFormValue"]["distance"]
-        self.threshold = json_data["peakFormValue"]["threshold"]
+        peak_form_value = json_data.get("peakFormValue")
+        if peak_form_value:
+            self.isPositive = peak_form_value.get("isPositive")
+            self.isNegative = peak_form_value.get("isNegative")
+            self.distance = peak_form_value.get("distance")
+            self.threshold = peak_form_value.get("threshold")

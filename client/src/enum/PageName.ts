@@ -7,3 +7,10 @@ export const enum PageName {
   DRAW_3D = "draw3d",
   PlotPeaks = "plotPeaks",
 }
+
+export const chPadPages: string[] = [
+  PageName.SHOW_SINGLE,
+  PageName.SHOW_DETECTION,
+  PageName.RASTER_PLOT,
+  PageName.PlotPeaks,
+];
