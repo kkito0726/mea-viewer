@@ -14,7 +14,7 @@ export const fetchCreateFigure = async (
 
   // バイナリデータをBlobに変換
   const buffers = activeChs
-    ? [0, ...activeChs].map((v) => new Blob([meaData[v].buffer]))
+    ? activeChs.map((ch) => new Blob([meaData[ch - 1].buffer]))
     : meaData.map((v) => new Blob([v.buffer]));
 
   // FormDataを使用してデータを送信

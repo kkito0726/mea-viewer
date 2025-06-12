@@ -8,7 +8,6 @@ type BioInputProps = {
   handleReadTime: (e: ChangeEvent<HTMLInputElement>) => void;
   handleBioInput: (e: ChangeEvent<HTMLInputElement>) => void;
   bioName: string;
-  meaData: Float32Array[];
 };
 
 export const BioInput: React.FC<BioInputProps> = ({
@@ -17,7 +16,6 @@ export const BioInput: React.FC<BioInputProps> = ({
   handleReadTime,
   handleBioInput,
   bioName,
-  meaData,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -88,8 +86,7 @@ export const BioInput: React.FC<BioInputProps> = ({
               </div>
               <div>
                 <span>
-                  {Math.floor(meaData[0][0])} ~{" "}
-                  {Math.round(meaData[0][meaData[0].length - 1])} (s)
+                  {readTime.start} ~ {readTime.end} (s)
                 </span>
               </div>
             </div>
