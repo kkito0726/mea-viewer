@@ -29,8 +29,18 @@ class FigUseCase:
         return FigDispatchService(fig_service, fig_type).create_fig()
 
 
+def create_time_data(data, form_value: FormValue):
+    t = np.arange(len(data[0])) / form_value.hedValue.sampling_rate
+    t = t.reshape(1, len(t))
+    t += form_value.readTime.start
+
+    return np.append(t, data, axis=0)
+
+
 # 受け取った電位データ以外はダミーデータで保管してpyMEAで使用できるようにする
 def complete_data(data, form_value: FormValue):
+    # 時刻データ作成
+    data = create_time_data(data, form_value)
     if len(data) == 65:
         return data
 
