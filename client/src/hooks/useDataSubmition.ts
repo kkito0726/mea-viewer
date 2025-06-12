@@ -13,10 +13,12 @@ import { PeakFormValue } from "../types/PeakFormValue";
 import { toast } from "react-toastify";
 import { ImgResponse } from "../types/ImgResponse";
 import { chPadPages } from "../enum/PageName";
+import { ReadTime } from "../types/ReadTime";
 
 export const useDataSubmission = (
   pageName: string,
   fileName: string,
+  readTime: ReadTime,
   activeChs: number[],
   meaData: Float32Array[],
   hedValue: HedValue,
@@ -77,8 +79,8 @@ export const useDataSubmission = (
   const handleFetch = async () => {
     const requestEntity: RequestEntity = {
       readTime: {
-        start: Math.floor(meaData[0][0]),
-        end: Math.round(meaData[0][meaData[0].length - 1]),
+        start: readTime.start,
+        end: readTime.end,
       },
       hedValue: hedValue,
       filename: fileName,

@@ -53,6 +53,7 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
   } = useDataSubmission(
     pageName,
     fileName.bioName,
+    readTime,
     activeChs,
     meaData,
     hedValue,
@@ -107,7 +108,6 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
           handleReadTime={handleReadTime}
           handleRefreshHedFile={handleRefreshHedFile}
           handleReadBio={handleReadBio}
-          meaData={meaData}
         />
 
         {chPadPages.includes(pageName) ? (

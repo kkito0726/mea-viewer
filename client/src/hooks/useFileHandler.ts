@@ -26,7 +26,7 @@ export const useFileHandler = () => {
   });
   const [hedValue, setHedValue] = useState<HedValue>(initHedValue);
   const [meaData, setMeaData] = useState<Float32Array[]>([]);
-  const [readTime, setReadTime] = useState<ReadTime>({ start: 0, end: 120 });
+  const [readTime, setReadTime] = useState<ReadTime>({ start: 0, end: 30 });
   const [isBioRead, setIsBioRead] = useState(false);
 
   const handleHedChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -50,12 +50,13 @@ export const useFileHandler = () => {
     }
   };
 
-  const handleReadTime = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleReadTime = async (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setReadTime({
       ...readTime,
       [name]: parseInt(value),
     });
+    await handleReadBio();
   };
 
   // .bioファイルがinputされたらデータを読み込む
@@ -87,8 +88,9 @@ export const useFileHandler = () => {
 
   // .bioファイルを読み込み直す
   const handleReadBio = async () => {
-    setIsBioRead(true);
     if (!meaFile?.bioFile) return;
+    setIsBioRead(true);
+
     setMeaData(await readBio(meaFile.bioFile, hedValue, readTime));
     setIsBioRead(false);
     toast.success("MEAデータを読み込み完了", {

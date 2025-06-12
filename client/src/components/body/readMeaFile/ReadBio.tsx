@@ -14,7 +14,6 @@ type ReadBioProps = {
   hedValue: HedValue;
   readTime: ReadTime;
   fileName: FileName;
-  meaData: Float32Array[];
   handleHedChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   handleHedFile: (e: ChangeEvent<HTMLInputElement>) => void;
   handleBioInput: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -27,7 +26,6 @@ export const ReadBio: React.FC<ReadBioProps> = ({
   hedValue,
   readTime,
   fileName,
-  meaData,
   handleHedChange,
   handleHedFile,
   handleBioInput,
@@ -50,7 +48,6 @@ export const ReadBio: React.FC<ReadBioProps> = ({
         handleReadTime={handleReadTime}
         handleBioInput={handleBioInput}
         bioName={fileName.bioName}
-        meaData={meaData}
       />
       <div className="px-9 pb-2">
         <hr className="border border-zinc-600" />

@@ -32,7 +32,8 @@ def clean_data(data):
     if not np.isnan(data).any():
         return data
 
-    volt = np.array([row[~np.isnan(row)] for row in data[1:]])
-    t = data[0][: len(volt[0])]
-    t = t.reshape(1, len(t))
-    return np.append(t, volt, axis=0)
+    # 各行ごとにNaNを除去
+    cleaned_rows = [row[~np.isnan(row)] for row in data]
+
+    # 結果を2次元配列に（形が揃っている前提）
+    return np.vstack(cleaned_rows)
