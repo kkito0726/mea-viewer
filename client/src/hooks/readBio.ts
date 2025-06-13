@@ -29,7 +29,7 @@ export const readBio = (
     const reader = new FileReader();
     reader.onload = (e: ProgressEvent<FileReader>) => {
       const buffer = new Int16Array(e.target!.result as ArrayBuffer);
-      const reshapedData = convertData(buffer, hedValue, readTime, cols);
+      const reshapedData = convertData(buffer, hedValue, cols);
       resolve(reshapedData);
     };
     reader.onerror = () => {
@@ -42,7 +42,6 @@ export const readBio = (
 const convertData = (
   buffer: Int16Array,
   hedValue: HedValue,
-  readTime: ReadTime,
   cols: number
 ): Float32Array[] => {
   const data: Float32Array = new Float32Array(buffer.length);
@@ -50,25 +49,19 @@ const convertData = (
     data[i] = buffer[i] * (VOLT_RANGE / (Math.pow(2, 16) - 1)) * 4;
   }
 
-  const reshapedData: Float32Array[] = new Array(ELECTRODE_NUMBER + 1);
-  reshapedData[0] = new Float32Array(cols); // For time array
+  const reshapedData: Float32Array[] = new Array(ELECTRODE_NUMBER);
   for (let i = 0; i < ELECTRODE_NUMBER; i++) {
-    reshapedData[i + 1] = new Float32Array(cols);
+    reshapedData[i] = new Float32Array(cols);
     for (let j = 0; j < cols; j++) {
-      reshapedData[i + 1][j] = data[j * DATA_UNIT_LENGTH + 4 + i]; // skip first 4 elements
+      reshapedData[i][j] = data[j * DATA_UNIT_LENGTH + 4 + i]; // skip first 4 elements
     }
   }
 
   if (hedValue.gain !== 50000) {
     const amp: number = 50000 / hedValue.gain;
-    for (let i = 1; i < reshapedData.length; i++) {
+    for (let i = 0; i < reshapedData.length; i++) {
       reshapedData[i] = reshapedData[i].map((value) => value * amp);
     }
-  }
-
-  // Create time array
-  for (let i = 0; i < cols; i++) {
-    reshapedData[0][i] = i / hedValue.sampling_rate + readTime.start;
   }
 
   return reshapedData;
