@@ -38,14 +38,14 @@ export const fetchCreateFigure = async (
 };
 
 export const get_images = async (pageName: string, fileName: string) => {
-  const url = `${GIN_ROOT_URL}/crud/${pageName}/${fileName}`;
+  const url = `${GIN_ROOT_URL}/fig/${pageName}/${fileName}`;
   const res = await fetch(url);
   const resData: ImgResponse[] = await res.json();
   return resData;
 };
 
 export const delete_image = async (pageName: string, img_url: string) => {
-  const url = `${GIN_ROOT_URL}/crud/${pageName}`;
+  const url = `${GIN_ROOT_URL}/fig/${pageName}`;
   await fetch(url, {
     method: "DELETE",
     headers: {
@@ -58,7 +58,7 @@ export const delete_image = async (pageName: string, img_url: string) => {
 };
 
 export const delete_all_image = async (pageName: string, file_name: string) => {
-  const url = `${GIN_ROOT_URL}/crud/${pageName}/all`;
+  const url = `${GIN_ROOT_URL}/fig/all/${pageName}`;
   await fetch(url, {
     method: "DELETE",
     headers: {

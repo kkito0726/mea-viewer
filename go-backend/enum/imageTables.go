@@ -1,5 +1,7 @@
 package enum
 
+import "fmt"
+
 type ImageTable int
 
 const (
@@ -30,5 +32,26 @@ func (i ImageTable) String() string {
 		return "plot_peaks_images"
 	default:
 		return "xxx"
+	}
+}
+
+func ParseImageTable(s string) (ImageTable, error) {
+	switch s {
+	case "showAll":
+		return ShowAllTable, nil
+	case "showSingle":
+		return ShowSingleTable, nil
+	case "showDetection":
+		return ShowDetectionTable, nil
+	case "rasterPlot":
+		return RasterPlotTable, nil
+	case "draw2d":
+		return Draw2dTable, nil
+	case "draw3d":
+		return Draw3dTable, nil
+	case "plotPeaks":
+		return PlotPeaksTable, nil
+	default:
+		return 0, fmt.Errorf("無効なFigType: %s", s)
 	}
 }
