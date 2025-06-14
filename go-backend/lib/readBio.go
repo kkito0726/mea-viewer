@@ -11,7 +11,7 @@ import (
 	"github.com/kkito0726/mea-viewer/model"
 )
 
-func DecodeRequest(formFiles map[string][]*multipart.FileHeader) (*[][]float32, error) {
+func DecodeRequest(formFiles map[string][]*multipart.FileHeader) ([][]float32, error) {
 	var wg sync.WaitGroup
 	ch := make(chan struct{}, 8)
 	var mu sync.Mutex
@@ -49,7 +49,7 @@ func DecodeRequest(formFiles map[string][]*multipart.FileHeader) (*[][]float32, 
 		}(i)
 	}
 	wg.Wait()
-	return &meaData, nil
+	return meaData, nil
 }
 
 func CalcReadFrame(data *model.JsonData) *model.ReadFrame {

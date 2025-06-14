@@ -2,7 +2,6 @@ package service
 
 import (
 	"encoding/json"
-	"math"
 	"mime/multipart"
 
 	"github.com/kkito0726/mea-viewer/enum"
@@ -21,6 +20,8 @@ func (dms *DecodeMeaService) HandleRequest() (*RequestModel, *errors.CustomError
 	if err != nil {
 		return nil, errors.BadRequest(enum.F006)
 	}
+	// 読み込みデータからNaNを除去
+	meaData = cleanMeaData(meaData)
 
 	var data model.JsonData
 	if err := json.Unmarshal([]byte(dms.JsonString), &data); err != nil {
@@ -29,19 +30,20 @@ func (dms *DecodeMeaService) HandleRequest() (*RequestModel, *errors.CustomError
 
 	readFrame := lib.CalcReadFrame(&data)
 
-	sliceMeaData := make([][]float32, len(*meaData)+1)
+	sliceMeaData := make([][]float32, len(meaData)+1)
 	start := int(readFrame.StartFrame)
 	end := int(readFrame.EndFrame)
-	for i, mea := range *meaData {
+	for i, mea := range meaData {
 		if end > len(mea) {
 			end = len(mea) // 範囲チェック
 		}
 		sliceMeaData[i+1] = mea[start:end]
 	}
-	sliceMeaData = cleanData(sliceMeaData)
+	// 時刻データ作成
 	t := createTimeData(len(sliceMeaData[1]), int(data.HedValue.SamplingRate), int(data.ReadTime.Start))
 	sliceMeaData[0] = t
 
+	// 時刻データの末尾がプロット終了時間よりも前の場合はプロット終了時間を変更
 	readEnd := sliceMeaData[0][len(sliceMeaData[0])-1]
 	if readEnd < float32(data.End) {
 		data.End = float64(readEnd)
@@ -53,36 +55,24 @@ func (dms *DecodeMeaService) HandleRequest() (*RequestModel, *errors.CustomError
 	}, nil
 }
 
-// NaN を含むか判定
-func containsNaN(data [][]float32) bool {
-	for _, row := range data {
-		for _, val := range row {
-			if math.IsNaN(float64(val)) {
-				return true
-			}
+// NaNを除去
+func cleanData(data []float32) []float32 {
+	cleaned := make([]float32, 0, len(data))
+	for _, val := range data {
+		if val == val { // NaN でない
+			cleaned = append(cleaned, val)
 		}
 	}
-	return false
+	return cleaned
 }
 
-// 各行から NaN を除去し、新しい 2D スライスを返す
-func cleanData(data [][]float32) [][]float32 {
-	if !containsNaN(data) {
-		return data
+func cleanMeaData(data [][]float32) [][]float32 {
+	newMeaData := make([][]float32, len(data))
+	for i, val := range data {
+		newRow := cleanData(val)
+		newMeaData[i] = newRow
 	}
-
-	cleaned := make([][]float32, 0, len(data))
-	for _, row := range data {
-		newRow := make([]float32, 0, len(row))
-		for _, val := range row {
-			if !math.IsNaN(float64(val)) {
-				newRow = append(newRow, val)
-			}
-		}
-		cleaned = append(cleaned, newRow)
-	}
-
-	return cleaned
+	return newMeaData
 }
 
 func createTimeData(dataLength int, samplingRate int, startTime int) []float32 {
