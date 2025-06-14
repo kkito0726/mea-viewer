@@ -4,11 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kkito0726/mea-viewer/enum"
-	"github.com/kkito0726/mea-viewer/errors"
 	"github.com/kkito0726/mea-viewer/model"
-	"github.com/kkito0726/mea-viewer/repository"
-	"github.com/kkito0726/mea-viewer/service"
+	"github.com/kkito0726/mea-viewer/usecase"
 )
 
 func GetImagesController(c *gin.Context) {
@@ -17,15 +14,11 @@ func GetImagesController(c *gin.Context) {
 		FileName: c.Param("filename"),
 	}
 
-	table, err := enum.ParseImageTable(getImageRequest.FigType)
+	images, err := usecase.GetImages(&getImageRequest)
 	if err != nil {
-		customErr := errors.ServerError(enum.F009)
-		customErr.Logging()
-		c.JSON(http.StatusBadRequest, gin.H{"error": customErr})
+		err.Logging()
+		c.JSON(err.StatusCode, gin.H{"error": err})
 	}
-
-	imageService := service.NewImageService(table, repository.MinioRepository{})
-	images := imageService.GetImages(&getImageRequest)
 	c.JSON(http.StatusOK, images)
 }
 
@@ -37,15 +30,7 @@ func DeleteImageController(c *gin.Context) {
 		return
 	}
 
-	table, err := enum.ParseImageTable(c.Param("figType"))
-	if err != nil {
-		customErr := errors.ServerError(enum.F009)
-		customErr.Logging()
-		c.JSON(http.StatusBadRequest, gin.H{"error": customErr})
-	}
-
-	imageService := service.NewImageService(table, repository.MinioRepository{})
-	if err := imageService.DeleteImage((&deleteImageRequest)); err != nil {
+	if err := usecase.DeleteImage(&deleteImageRequest, c.Param("figType")); err != nil {
 		err.Logging()
 		c.JSON(err.StatusCode, gin.H{"error": err.Error()})
 	}
@@ -61,17 +46,30 @@ func DeleteAllImagesController(c *gin.Context) {
 		return
 	}
 
-	table, err := enum.ParseImageTable(c.Param("figType"))
-	if err != nil {
-		customErr := errors.ServerError(enum.F009)
-		customErr.Logging()
-		c.JSON(http.StatusBadRequest, gin.H{"error": customErr})
-	}
-
-	imageService := service.NewImageService(table, repository.MinioRepository{})
-	if err := imageService.DeleteAllImage(&deleteAllRequest); err != nil {
+	if err := usecase.DeleteImages(&deleteAllRequest, c.Param("figType")); err != nil {
 		err.Logging()
-		c.JSON(err.StatusCode, gin.H{"error": err})
+		c.JSON(err.StatusCode, gin.H{"error": err.Error()})
 	}
 	c.Status(http.StatusNoContent)
+}
+
+func CreateFigController(c *gin.Context) {
+	form, err := c.MultipartForm()
+	if err != nil {
+		c.String(http.StatusBadRequest, "Failed to get multipart form: %s", err)
+		return
+	}
+
+	jsonString := c.PostForm("jsonData")
+	if jsonString == "" {
+		c.String(http.StatusBadRequest, "No jsonData provided")
+		return
+	}
+
+	images, customErr := usecase.CreateFig(form, jsonString)
+	if customErr != nil {
+		customErr.Logging()
+		c.JSON(customErr.StatusCode, gin.H{"error": customErr})
+	}
+	c.JSON(http.StatusOK, images)
 }

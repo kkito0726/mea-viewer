@@ -2,7 +2,6 @@ package enum
 
 import (
 	"fmt"
-	"strings"
 )
 
 type FigType int
@@ -38,21 +37,21 @@ func (ft FigType) String() string {
 	}
 }
 
-func (FigType) FromString(s string) (FigType, error) {
-	switch strings.ToLower(s) {
-	case "showall":
+func ParseFigType(s string) (FigType, error) {
+	switch s {
+	case "showAll":
 		return ShowAll, nil
-	case "showsingle":
+	case "showSingle":
 		return ShowSingle, nil
-	case "showdetection":
+	case "showDetection":
 		return ShowDetection, nil
-	case "rasterplot":
+	case "rasterPlot":
 		return RasterPlot, nil
 	case "draw2d":
 		return Draw2d, nil
 	case "draw3d":
 		return Draw3d, nil
-	case "plotpeaks":
+	case "plotPeaks":
 		return PlotPeaks, nil
 	default:
 		return 0, fmt.Errorf("無効なFigType: %s", s)
