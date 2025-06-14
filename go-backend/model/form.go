@@ -16,6 +16,7 @@ type FormValue struct {
 }
 
 type JsonData struct {
+	FigType       string        `json:"figType"`
 	Start         float64       `json:"start"`
 	End           float64       `json:"end"`
 	ReadTime      ReadTime      `json:"readTime"`

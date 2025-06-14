@@ -64,6 +64,7 @@ type PlotPeaksImage struct {
 }
 
 type GetImageRequest struct {
+	FigType  string `json:"figType" binding:"required"`
 	FileName string `json:"file_name" binding:"required"`
 }
 

@@ -1,5 +1,9 @@
 package enum
 
+import (
+	"fmt"
+)
+
 type FigType int
 
 const (
@@ -30,5 +34,26 @@ func (ft FigType) String() string {
 		return "plotPeaks"
 	default:
 		return "未定義"
+	}
+}
+
+func ParseFigType(s string) (FigType, error) {
+	switch s {
+	case "showAll":
+		return ShowAll, nil
+	case "showSingle":
+		return ShowSingle, nil
+	case "showDetection":
+		return ShowDetection, nil
+	case "rasterPlot":
+		return RasterPlot, nil
+	case "draw2d":
+		return Draw2d, nil
+	case "draw3d":
+		return Draw3d, nil
+	case "plotPeaks":
+		return PlotPeaks, nil
+	default:
+		return 0, fmt.Errorf("無効なFigType: %s", s)
 	}
 }

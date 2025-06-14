@@ -58,6 +58,14 @@ export const useDataSubmission = (
       alert("MEAデータが読み込まれていません");
       return;
     }
+    if (chPadPages.includes(pageName) && activeChs.length === 0) {
+      toast.error("電極が指定されていません", {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: true,
+      });
+      return;
+    }
     setIsPost(true);
     await handleFetch();
     setIsPost(false);
