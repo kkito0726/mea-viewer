@@ -37,11 +37,7 @@ func SetupRouter() *gin.Engine {
 	router.DELETE(FIG_BASE_URL+"/:figType", controller.DeleteImageController)
 	router.DELETE(FIG_BASE_URL+"/all/:figType", controller.DeleteAllImagesController)
 
-	router.POST("/showAll", controller.CreateShowAllController)
-	router.POST("/showSingle", controller.CreateShowSingleController)
-	router.POST("/showDetection", controller.CreateShowDetectionController)
-	router.POST("rasterPlot", controller.CreateRasterPlotController)
-	router.POST("/plotPeaks", controller.CreatePlotPeaksController)
+	router.POST("/draw", controller.CreateFigController)
 
 	return router
 }
