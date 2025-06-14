@@ -49,9 +49,6 @@ func CreateFig(form *multipart.Form, jsonString string) ([]model.Image, *errors.
 	if customErr != nil {
 		return nil, customErr
 	}
-	println(len(requestModel.SliceMeaData))
-	println(len(requestModel.SliceMeaData[0]))
-	println(len(requestModel.SliceMeaData[1]))
 	images, err := service.FigDispatch(requestModel)
 	if err != nil {
 		return nil, err
