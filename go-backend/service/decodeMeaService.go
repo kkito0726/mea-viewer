@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"math"
 	"mime/multipart"
 
 	"github.com/kkito0726/mea-viewer/enum"
@@ -37,13 +38,51 @@ func (dms *DecodeMeaService) HandleRequest() (*RequestModel, *errors.CustomError
 		}
 		sliceMeaData[i+1] = mea[start:end]
 	}
+	sliceMeaData = cleanData(sliceMeaData)
 	t := createTimeData(len(sliceMeaData[1]), int(data.HedValue.SamplingRate), int(data.ReadTime.Start))
 	sliceMeaData[0] = t
+
+	readEnd := sliceMeaData[0][len(sliceMeaData[0])-1]
+	if readEnd < float32(data.End) {
+		data.End = float64(readEnd)
+	}
 
 	return &RequestModel{
 		SliceMeaData: sliceMeaData,
 		JsonData:     &data,
 	}, nil
+}
+
+// NaN を含むか判定
+func containsNaN(data [][]float32) bool {
+	for _, row := range data {
+		for _, val := range row {
+			if math.IsNaN(float64(val)) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// 各行から NaN を除去し、新しい 2D スライスを返す
+func cleanData(data [][]float32) [][]float32 {
+	if !containsNaN(data) {
+		return data
+	}
+
+	cleaned := make([][]float32, 0, len(data))
+	for _, row := range data {
+		newRow := make([]float32, 0, len(row))
+		for _, val := range row {
+			if !math.IsNaN(float64(val)) {
+				newRow = append(newRow, val)
+			}
+		}
+		cleaned = append(cleaned, newRow)
+	}
+
+	return cleaned
 }
 
 func createTimeData(dataLength int, samplingRate int, startTime int) []float32 {
