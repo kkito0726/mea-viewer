@@ -22,32 +22,18 @@ func (dms *DecodeMeaService) HandleRequest() (*RequestModel, *errors.CustomError
 	}
 	// 読み込みデータからNaNを除去
 	meaData = cleanMeaData(meaData)
-
 	var data model.JsonData
 	if err := json.Unmarshal([]byte(dms.JsonString), &data); err != nil {
 		return nil, errors.BadRequest(enum.F007)
 	}
 
-	readFrame := lib.CalcReadFrame(&data)
-
 	sliceMeaData := make([][]float32, len(meaData)+1)
-	start := int(readFrame.StartFrame)
-	end := int(readFrame.EndFrame)
 	for i, mea := range meaData {
-		if end > len(mea) {
-			end = len(mea) // 範囲チェック
-		}
-		sliceMeaData[i+1] = mea[start:end]
+		sliceMeaData[i+1] = mea
 	}
 	// 時刻データ作成
-	t := createTimeData(len(sliceMeaData[1]), int(data.HedValue.SamplingRate), int(data.ReadTime.Start))
+	t := createTimeData(len(sliceMeaData[1]), int(data.HedValue.SamplingRate), int(data.Start))
 	sliceMeaData[0] = t
-
-	// 時刻データの末尾がプロット終了時間よりも前の場合はプロット終了時間を変更
-	readEnd := sliceMeaData[0][len(sliceMeaData[0])-1]
-	if readEnd < float32(data.End) {
-		data.End = float64(readEnd)
-	}
 
 	return &RequestModel{
 		SliceMeaData: sliceMeaData,

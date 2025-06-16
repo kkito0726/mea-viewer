@@ -32,7 +32,7 @@ class FigUseCase:
 def create_time_data(data, form_value: FormValue):
     t = np.arange(len(data[0])) / form_value.hedValue.sampling_rate
     t = t.reshape(1, len(t))
-    t += form_value.readTime.start
+    t += form_value.start
 
     return np.append(t, data, axis=0)
 
@@ -59,8 +59,8 @@ def complete_data(data, form_value: FormValue):
 def create_figMEA(data, form_value: FormValue):
     data = MEA(
         HedPath("tmp.hed"),
-        form_value.readTime.start,
-        data[0][-1],
+        form_value.start,
+        form_value.end,
         form_value.hedValue.sampling_rate,
         form_value.hedValue.gain,
         data,

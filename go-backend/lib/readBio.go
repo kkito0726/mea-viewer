@@ -7,8 +7,6 @@ import (
 	"strconv"
 	"sync"
 	"unsafe"
-
-	"github.com/kkito0726/mea-viewer/model"
 )
 
 func DecodeRequest(formFiles map[string][]*multipart.FileHeader) ([][]float32, error) {
@@ -50,26 +48,6 @@ func DecodeRequest(formFiles map[string][]*multipart.FileHeader) ([][]float32, e
 	}
 	wg.Wait()
 	return meaData, nil
-}
-
-func CalcReadFrame(data *model.JsonData) *model.ReadFrame {
-	startFrame := (data.Start - data.ReadTime.Start) * data.HedValue.SamplingRate
-	endFrame := (data.End - data.ReadTime.Start) * data.HedValue.SamplingRate
-
-	if startFrame < 0 {
-		startFrame = 0
-	}
-	if endFrame < 0 {
-		endFrame = 1
-	}
-	if endFrame > data.ReadTime.End*data.HedValue.SamplingRate {
-		endFrame = data.ReadTime.End * data.HedValue.SamplingRate
-	}
-
-	return &model.ReadFrame{
-		StartFrame: startFrame,
-		EndFrame:   endFrame,
-	}
 }
 
 func decodeFloat32Array(data []byte, out *[]float32) error {
