@@ -12,10 +12,26 @@ export const fetchCreateFigure = async (
 ) => {
   const url = rootUrl + "/draw";
 
+  let startFrame =
+    (value.start - value.readTime.start) * value.hedValue.sampling_rate;
+  if (startFrame < 0) {
+    startFrame = 0;
+    value.start = value.readTime.start;
+  }
+
+  let endFrame =
+    (value.end - value.readTime.start) * value.hedValue.sampling_rate;
+  if (endFrame > meaData[0].length) {
+    endFrame = meaData[0].length;
+    value.end = value.readTime.end;
+  }
+
   // バイナリデータをBlobに変換
   const buffers = activeChs
-    ? activeChs.map((ch) => new Blob([meaData[ch - 1].buffer]))
-    : meaData.map((v) => new Blob([v.buffer]));
+    ? activeChs.map(
+        (ch) => new Blob([meaData[ch - 1].slice(startFrame, endFrame).buffer])
+      )
+    : meaData.map((v) => new Blob([v.slice(startFrame, endFrame).buffer]));
 
   // FormDataを使用してデータを送信
   const formData = new FormData();
