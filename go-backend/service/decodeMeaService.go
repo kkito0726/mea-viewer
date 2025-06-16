@@ -32,7 +32,7 @@ func (dms *DecodeMeaService) HandleRequest() (*RequestModel, *errors.CustomError
 		sliceMeaData[i+1] = mea
 	}
 	// 時刻データ作成
-	t := createTimeData(len(sliceMeaData[1]), int(data.HedValue.SamplingRate), int(data.Start))
+	t := createTimeData(len(sliceMeaData[1]), int(data.HedValue.SamplingRate), data.Start)
 	sliceMeaData[0] = t
 
 	return &RequestModel{
@@ -61,7 +61,7 @@ func cleanMeaData(data [][]float32) [][]float32 {
 	return newMeaData
 }
 
-func createTimeData(dataLength int, samplingRate int, startTime int) []float32 {
+func createTimeData(dataLength int, samplingRate int, startTime float64) []float32 {
 	t := make([]float32, dataLength)
 	invRate := 1.0 / float32(samplingRate)
 	for i := 0; i < dataLength; i++ {

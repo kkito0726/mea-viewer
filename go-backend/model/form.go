@@ -37,7 +37,7 @@ type ReadTime struct {
 }
 
 type HedValue struct {
-	SamplingRate float64 `json:"sampling_rate"`
+	SamplingRate int `json:"sampling_rate"`
 }
 
 type ReadFrame struct {

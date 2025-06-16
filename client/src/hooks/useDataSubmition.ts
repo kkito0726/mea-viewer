@@ -12,7 +12,7 @@ import {
 import { PeakFormValue } from "../types/PeakFormValue";
 import { toast } from "react-toastify";
 import { ImgResponse } from "../types/ImgResponse";
-import { chPadPages } from "../enum/PageName";
+import { chPadPages, PageName } from "../enum/PageName";
 import { ReadTime } from "../types/ReadTime";
 
 export const useDataSubmission = (
@@ -100,10 +100,13 @@ export const useDataSubmission = (
     };
 
     const resData = await fetchCreateFigure(
-      isPython ? FLASK_ROOT_URL : GIN_ROOT_URL,
+      isPython ||
+        [PageName.DRAW_2D, PageName.DRAW_3D].includes(pageName as PageName)
+        ? FLASK_ROOT_URL
+        : GIN_ROOT_URL,
       peakRequestEntity,
       meaData,
-      chPadPages.includes(pageName) ? activeChs : null
+      chPadPages.includes(pageName as PageName) ? activeChs : null
     );
     if (resData) {
       setImageResponses((prev) => [...prev, ...resData]);
