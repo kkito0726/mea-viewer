@@ -3,6 +3,9 @@ from dataclasses import dataclass
 
 import matplotlib
 
+from enums.FigType import FigType
+from model.FigImageData import FigImageData
+
 matplotlib.use("Agg")  # GUIバックエンドを使用しないように設定
 
 import numpy as np
@@ -20,7 +23,7 @@ class FigService:
     form_value: FormValue
     peak_form_value: PeakFormValue
 
-    def showAll(self) -> tuple[io.BytesIO, str]:
+    def showAll(self) -> list[FigImageData]:
         image_buf = self.fm.showAll(
             self.form_value.start,
             self.form_value.end,
@@ -30,10 +33,11 @@ class FigService:
             self.form_value.dpi,
             isBuf=True,
         ).buf
+        return [
+            FigImageData(None, FigType.SHOW_ALL, image_buf, self.form_value.filename)
+        ]
 
-        return image_buf, self.form_value.filename
-
-    def showSingle(self) -> tuple[list[int], list[io.BytesIO], str]:
+    def showSingle(self) -> list[FigImageData]:
         image_bufs = [
             self.fm.showSingle(
                 ch,
@@ -47,10 +51,12 @@ class FigService:
             ).buf
             for ch in self.form_value.chs
         ]
+        return [
+            FigImageData(ch, FigType.SHOW_SINGLE, image_buf, self.form_value.filename)
+            for ch, image_buf in zip(self.form_value.chs, image_bufs)
+        ]
 
-        return self.form_value.chs, image_bufs, self.form_value.filename
-
-    def showDetection(self) -> tuple[io.BytesIO, str]:
+    def showDetection(self) -> list[FigImageData]:
         image_buf = self.fm.showDetection(
             self.form_value.chs,
             start=self.form_value.start,
@@ -60,9 +66,13 @@ class FigService:
             isBuf=True,
         ).buf
 
-        return image_buf, self.form_value.filename
+        return [
+            FigImageData(
+                None, FigType.SHOW_DETECTION, image_buf, self.form_value.filename
+            )
+        ]
 
-    def rasterPlot(self) -> tuple[io.BytesIO, str]:
+    def rasterPlot(self) -> list[FigImageData]:
         peak_index = get_peak_indexes(self.peak_form_value, self.fm.data)
 
         image_buf = self.fm.raster_plot(
@@ -75,19 +85,24 @@ class FigService:
             isBuf=True,
         ).buf
 
-        return image_buf, self.form_value.filename
+        return [
+            FigImageData(None, FigType.RASTER_PLOT, image_buf, self.form_value.filename)
+        ]
 
-    def draw_2d(self) -> tuple[list[io.BytesIO], str]:
+    def draw_2d(self) -> list[FigImageData]:
         peak_index = detect_peak_neg(
             self.fm.data, self.peak_form_value.distance, self.peak_form_value.threshold
         )
-        image_buf_list = self.fm.draw_2d(
+        image_bufs = self.fm.draw_2d(
             peak_index, dpi=self.form_value.dpi, isBuf=True
         ).buf_list
 
-        return image_buf_list, self.form_value.filename
+        return [
+            FigImageData(None, FigType.DRAW_2D, image_buf, self.form_value.filename)
+            for image_buf in image_bufs
+        ]
 
-    def draw_3d(self) -> tuple[list[io.BytesIO], str]:
+    def draw_3d(self) -> list[FigImageData]:
         peak_index = detect_peak_neg(
             self.fm.data, self.peak_form_value.distance, self.peak_form_value.threshold
         )
@@ -95,9 +110,12 @@ class FigService:
             peak_index, dpi=self.form_value.dpi, isBuf=True
         ).buf_list
 
-        return image_bufs, self.form_value.filename
+        return [
+            FigImageData(None, FigType.DRAW_3D, image_buf, self.form_value.filename)
+            for image_buf in image_bufs
+        ]
 
-    def plot_peaks_service(self):
+    def plot_peaks_service(self) -> list[FigImageData]:
         peak_index = get_peak_indexes(self.peak_form_value, self.fm.data)
 
         image_bufs = [
@@ -115,7 +133,10 @@ class FigService:
             for ch in self.form_value.chs
         ]
 
-        return self.form_value.chs, image_bufs, self.form_value.filename
+        return [
+            FigImageData(ch, FigType.PLOT_PEAKS, image_buf, self.form_value.filename)
+            for ch, image_buf in zip(self.form_value.chs, image_bufs)
+        ]
 
 
 def get_peak_indexes(peak_form_value: PeakFormValue, data: MEA):
