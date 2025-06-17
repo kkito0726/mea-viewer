@@ -35,14 +35,3 @@ def output_buf(func):
         return buf
 
     return warapper
-
-
-if __name__ == "__main__":
-
-    @output_base64
-    def test(x, y, figsize=(5, 5)):
-        plt.figure(figsize=figsize)
-        plt.plot(x, y)
-
-    img = test([1, 2, 3], [1, 2, 3])
-    print(img)
