@@ -51,7 +51,7 @@ func (s *ImageService) CreateImage(f lib.PlotMethod, formDto *model.FormDto) (*m
 	return image, nil
 }
 
-func (s *ImageService) GetImages(getImageRequest *model.GetImageRequest) []model.Image {
+func (s *ImageService) GetImages(getImageRequest *model.GetImageRequest) ([]model.FigImage, error) {
 	return s.ImageRepository.GetImages(getImageRequest)
 }
 

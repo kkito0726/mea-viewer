@@ -10,14 +10,20 @@ import (
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-func GetImages(getImageRequest *model.GetImageRequest) ([]model.Image, *errors.CustomError) {
+func GetImages(getImageRequest *model.GetImageRequest) ([]model.FigImage, *errors.CustomError) {
 	table, err := enum.ParseImageTable(getImageRequest.FigType)
 	if err != nil {
 		return nil, errors.BadRequest(enum.F009)
 	}
 
-	imageService := service.NewImageService(table, repository.MinioRepository{})
-	return imageService.GetImages(getImageRequest), nil
+	imageRepository := repository.ImageRepository{
+		TableName: table,
+	}
+	images, err := imageRepository.GetImages(getImageRequest)
+	if err != nil {
+		return nil, errors.NotFoundError(enum.F010)
+	}
+	return images, nil
 }
 
 func DeleteImage(deleteImageRequest *model.DeleteRequest, figTypeStr string) *errors.CustomError {
