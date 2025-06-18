@@ -58,12 +58,24 @@ docker compose -f ~/Workspace/mea-viewer/docker-compose.yml stop
 
 ## 3. アプリのアップデートをする場合
 
+以下どちらかを実行 <br>
 ローカルリポジトリを最新版にして、docker コンテナを build する
 
 ```bash
 cd ~/Workspace/mea-viewer
 git pull
 docker compose up -d --build
+```
+
+もしくはバックアップ初期化してバージョンアップ場合
+
+```bash
+cd ~/Workspace/mea-viewer
+git pull
+rm -rf ./data
+rm -rf ./minio_data
+docker compose down
+docker compose up -d
 ```
 
 ---
@@ -82,6 +94,6 @@ docker compose up -d --build
 ### 2. バックエンド
 
 - Python + Flask
-- [pyMEA](https://github.com/kkito0726/MEA_modules), Matplotlib, etc...
+- [PyMEA](https://github.com/kkito0726/MEA_modules), Matplotlib, etc...
 - Go + Gin + Gorm
 - mysql + minio
