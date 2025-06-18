@@ -13,9 +13,7 @@ import (
 
 func NewImageService(tableName enum.ImageTable, minioRepository repository.MinioRepository) *ImageService {
 	return &ImageService{
-		ImageRepository: &repository.ImageRepository{
-			TableName: tableName,
-		},
+		ImageRepository: &repository.ImageRepository{},
 		MinioRepository: &minioRepository,
 	}
 }
@@ -25,7 +23,7 @@ type ImageService struct {
 	MinioRepository *repository.MinioRepository
 }
 
-func (s *ImageService) CreateImage(f lib.PlotMethod, formDto *model.FormDto) (*model.Image, *errors.CustomError) {
+func (s *ImageService) CreateImage(f lib.PlotMethod, formDto *model.FormDto) (*model.FigImage, *errors.CustomError) {
 	// Figの描画
 	img, err := f(formDto.FormValue)
 	if err != nil {
@@ -43,34 +41,10 @@ func (s *ImageService) CreateImage(f lib.PlotMethod, formDto *model.FormDto) (*m
 	}
 
 	// DBへレコードInsert
-	image := &model.Image{ImageUrl: imageUrl, FileName: formDto.FileName, Ch: formDto.Ch}
+	image := &model.FigImage{FigType: formDto.FormValue.FigType, ImageUrl: imageUrl, FileName: formDto.FileName, Ch: formDto.Ch}
 	if err := s.ImageRepository.CreateImage(image); err != nil {
 		return nil, errors.ServerError(enum.F004)
 	}
 
 	return image, nil
-}
-
-func (s *ImageService) GetImages(getImageRequest *model.GetImageRequest) ([]model.FigImage, error) {
-	return s.ImageRepository.GetImages(getImageRequest)
-}
-
-func (s *ImageService) DeleteImage(deleteRequest *model.DeleteRequest) *errors.CustomError {
-	if err := s.MinioRepository.DeleteFile(deleteRequest.ImageURL); err != nil {
-		return errors.ServerError(enum.F001)
-	}
-	if err := s.ImageRepository.DeleteImage(deleteRequest); err != nil {
-		return errors.ServerError(enum.F002)
-	}
-	return nil
-}
-
-func (s *ImageService) DeleteAllImage(deleteAllImage *model.DeleteAllRequest) *errors.CustomError {
-	if err := s.MinioRepository.DeleteObjectsInDirectory(deleteAllImage.Directory); err != nil {
-		return errors.ServerError(enum.F001)
-	}
-	if err := s.ImageRepository.DeleteAllImages(deleteAllImage); err != nil {
-		return errors.ServerError(enum.F002)
-	}
-	return nil
 }

@@ -83,6 +83,5 @@ type DeleteRequest struct {
 
 type DeleteAllRequest struct {
 	Directory string `json:"directory" binding:"required"`
-	FigType   string `json:"figType" binding:"required"`
 	FileName  string `json:"file_name" binding:"required"`
 }

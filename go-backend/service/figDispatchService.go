@@ -10,7 +10,7 @@ import (
 	"github.com/kkito0726/mea-viewer/repository"
 )
 
-func FigDispatch(requestModel *RequestModel) ([]model.Image, *errors.CustomError) {
+func FigDispatch(requestModel *RequestModel) ([]model.FigImage, *errors.CustomError) {
 	figType, err := enum.ParseFigType(requestModel.JsonData.FigType)
 	if err != nil {
 		return nil, errors.BadRequest(enum.F009)
@@ -37,12 +37,13 @@ func FigDispatch(requestModel *RequestModel) ([]model.Image, *errors.CustomError
 	}
 }
 
-func showAll(requestModel *RequestModel) ([]model.Image, *errors.CustomError) {
-	images := make([]model.Image, 1)
+func showAll(requestModel *RequestModel) ([]model.FigImage, *errors.CustomError) {
+	images := make([]model.FigImage, 1)
 	meaPlot := lib.NewMeaPlot(requestModel.SliceMeaData)
 	imageService := NewImageService(enum.ShowAllTable, repository.MinioRepository{})
 	image, customErr := imageService.CreateImage(meaPlot.ShowAll, &model.FormDto{
 		FormValue: &model.FormValue{
+			FigType: requestModel.JsonData.FigType,
 			XRatio:  requestModel.JsonData.XRatio,
 			YRatio:  requestModel.JsonData.YRatio,
 			VoltMin: requestModel.JsonData.VoltMin,
@@ -57,10 +58,10 @@ func showAll(requestModel *RequestModel) ([]model.Image, *errors.CustomError) {
 	return images, customErr
 }
 
-func showSingle(requestModel *RequestModel) ([]model.Image, *errors.CustomError) {
+func showSingle(requestModel *RequestModel) ([]model.FigImage, *errors.CustomError) {
 	var wg sync.WaitGroup
 	ch := make(chan struct{}, 8)
-	images := make([]model.Image, len(requestModel.JsonData.Chs))
+	images := make([]model.FigImage, len(requestModel.JsonData.Chs))
 	var mu sync.Mutex
 	var firstErr *errors.CustomError
 	for i, meaCh := range requestModel.JsonData.Chs {
@@ -75,6 +76,7 @@ func showSingle(requestModel *RequestModel) ([]model.Image, *errors.CustomError)
 			imageService := NewImageService(enum.ShowSingleTable, repository.MinioRepository{})
 			image, customErr := imageService.CreateImage(meaPlot.ShowSingle, &model.FormDto{
 				FormValue: &model.FormValue{
+					FigType: requestModel.JsonData.FigType,
 					XRatio:  requestModel.JsonData.XRatio,
 					YRatio:  requestModel.JsonData.YRatio,
 					VoltMin: requestModel.JsonData.VoltMin,
@@ -107,12 +109,13 @@ func showSingle(requestModel *RequestModel) ([]model.Image, *errors.CustomError)
 	return images, nil
 }
 
-func showDetection(requestModel *RequestModel) ([]model.Image, *errors.CustomError) {
-	images := make([]model.Image, 1)
+func showDetection(requestModel *RequestModel) ([]model.FigImage, *errors.CustomError) {
+	images := make([]model.FigImage, 1)
 	meaPlot := lib.NewMeaPlot(requestModel.SliceMeaData)
 	imageService := NewImageService(enum.ShowDetectionTable, repository.MinioRepository{})
 	image, customErr := imageService.CreateImage(meaPlot.ShowDetection, &model.FormDto{
 		FormValue: &model.FormValue{
+			FigType: requestModel.JsonData.FigType,
 			XRatio:  requestModel.JsonData.XRatio,
 			YRatio:  requestModel.JsonData.YRatio,
 			VoltMin: requestModel.JsonData.VoltMin,
@@ -122,7 +125,7 @@ func showDetection(requestModel *RequestModel) ([]model.Image, *errors.CustomErr
 			Chs:     requestModel.JsonData.Chs,
 		},
 		FileName: requestModel.JsonData.Filename,
-		FigType:  enum.ShowAll,
+		FigType:  enum.ShowDetection,
 	})
 	if customErr != nil {
 		return nil, customErr
@@ -131,12 +134,13 @@ func showDetection(requestModel *RequestModel) ([]model.Image, *errors.CustomErr
 	return images, nil
 }
 
-func rasterPlot(requestModel *RequestModel) ([]model.Image, *errors.CustomError) {
-	images := make([]model.Image, 1)
+func rasterPlot(requestModel *RequestModel) ([]model.FigImage, *errors.CustomError) {
+	images := make([]model.FigImage, 1)
 	meaPlot := lib.NewMeaPlot(requestModel.SliceMeaData)
 	imageService := NewImageService(enum.RasterPlotTable, repository.MinioRepository{})
 	image, customErr := imageService.CreateImage(meaPlot.RasterPlot, &model.FormDto{
 		FormValue: &model.FormValue{
+			FigType:       requestModel.JsonData.FigType,
 			XRatio:        requestModel.JsonData.XRatio,
 			YRatio:        requestModel.JsonData.YRatio,
 			VoltMin:       requestModel.JsonData.VoltMin,
@@ -147,7 +151,7 @@ func rasterPlot(requestModel *RequestModel) ([]model.Image, *errors.CustomError)
 			Chs:           requestModel.JsonData.Chs,
 		},
 		FileName: requestModel.JsonData.Filename,
-		FigType:  enum.ShowAll,
+		FigType:  enum.RasterPlot,
 	})
 	if customErr != nil {
 		return nil, customErr
@@ -156,8 +160,8 @@ func rasterPlot(requestModel *RequestModel) ([]model.Image, *errors.CustomError)
 	return images, nil
 }
 
-func plotPeaks(requestModel *RequestModel) ([]model.Image, *errors.CustomError) {
-	images := make([]model.Image, len(requestModel.JsonData.Chs))
+func plotPeaks(requestModel *RequestModel) ([]model.FigImage, *errors.CustomError) {
+	images := make([]model.FigImage, len(requestModel.JsonData.Chs))
 	var wg sync.WaitGroup
 	ch := make(chan struct{}, 8)
 	var mu sync.Mutex
@@ -174,6 +178,7 @@ func plotPeaks(requestModel *RequestModel) ([]model.Image, *errors.CustomError) 
 			imageService := NewImageService(enum.PlotPeaksTable, repository.MinioRepository{})
 			image, customErr := imageService.CreateImage(meaPlot.PlotPeaks, &model.FormDto{
 				FormValue: &model.FormValue{
+					FigType:       requestModel.JsonData.FigType,
 					XRatio:        requestModel.JsonData.XRatio,
 					YRatio:        requestModel.JsonData.YRatio,
 					VoltMin:       requestModel.JsonData.VoltMin,
@@ -183,7 +188,7 @@ func plotPeaks(requestModel *RequestModel) ([]model.Image, *errors.CustomError) 
 					PeakFormValue: requestModel.JsonData.PeakFormValue,
 				},
 				FileName: requestModel.JsonData.Filename,
-				FigType:  enum.ShowSingle,
+				FigType:  enum.PlotPeaks,
 				Ch:       meaCh,
 			})
 			if customErr != nil {
