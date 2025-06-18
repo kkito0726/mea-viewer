@@ -30,7 +30,7 @@ func DeleteImageController(c *gin.Context) {
 		return
 	}
 
-	if err := usecase.DeleteImage(&deleteImageRequest, c.Param("figType")); err != nil {
+	if err := usecase.DeleteImage(&deleteImageRequest); err != nil {
 		err.Logging()
 		c.JSON(err.StatusCode, gin.H{"error": err.Error()})
 	}

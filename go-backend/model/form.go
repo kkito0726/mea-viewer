@@ -1,10 +1,9 @@
 package model
 
-import (
-	"github.com/kkito0726/mea-viewer/enum"
-)
+import "github.com/kkito0726/mea-viewer/enum"
 
 type FormValue struct {
+	FigType       string
 	XRatio        int
 	YRatio        int
 	VoltMin       float64

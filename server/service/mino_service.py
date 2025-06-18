@@ -2,6 +2,8 @@ import json
 
 from flask import request
 
+from model.FigImage import FigImage
+from model.FigImageData import FigImageData
 from repository.minio_repository import MinioRepository
 
 
@@ -11,12 +13,18 @@ class MinioService:
         return MinioRepository.save_image(file_type, image_buf, file_name)
 
     @staticmethod
-    def saves(file_type, image_bufs, file_name):
-        image_urls = [
-            MinioRepository.save_image(file_type, image_buf, file_name)
-            for image_buf in image_bufs
+    def saves(fig_image_data_list: list[FigImageData]):
+        return [
+            FigImage(
+                ch=data.ch,
+                fig_type=data.fig_type.value,
+                image_url=MinioRepository.save_image(
+                    data.fig_type.value, data.image_buf, data.filename
+                ),
+                file_name=data.filename,
+            )
+            for data in fig_image_data_list
         ]
-        return image_urls
 
     @staticmethod
     def delete():
