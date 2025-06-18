@@ -19,7 +19,7 @@ class MinioService:
                 ch=data.ch,
                 fig_type=data.fig_type.value,
                 image_url=MinioRepository.save_image(
-                    data.fig_type, data.image_buf, data.filename
+                    data.fig_type.value, data.image_buf, data.filename
                 ),
                 file_name=data.filename,
             )
