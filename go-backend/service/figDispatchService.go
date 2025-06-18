@@ -229,7 +229,7 @@ func createImage(f lib.PlotMethod, formDto *model.FormDto) (*model.FigImage, *er
 	}
 
 	// DBへレコードInsert
-	image := &model.FigImage{FigType: formDto.FormValue.FigType, ImageUrl: imageUrl, FileName: formDto.FileName, Ch: formDto.Ch}
+	image := &model.FigImage{FigType: formDto.FigType.String(), ImageUrl: imageUrl, FileName: formDto.FileName, Ch: formDto.Ch}
 	if err := imageRepository.CreateImage(image); err != nil {
 		return nil, errors.ServerError(enum.F004)
 	}
