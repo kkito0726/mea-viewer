@@ -13,7 +13,7 @@ func (repo *ImageRepository) CreateImage(image *model.FigImage) error {
 
 func (repo *ImageRepository) GetImages(getImageRequest *model.GetImageRequest) ([]model.FigImage, error) {
 	var images []model.FigImage
-	if err := db.DB.Where("fig_type = ? AND file_name = ?", getImageRequest.FigType, getImageRequest.FileName).Find(&images).Error; err != nil {
+	if err := db.DB.Where("fig_type = ? AND file_name = ?", getImageRequest.FigType, getImageRequest.FileName).Order("created_at ASC").Find(&images).Error; err != nil {
 		return nil, err
 	}
 	return images, nil
