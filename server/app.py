@@ -3,7 +3,6 @@ from flask_cors import CORS
 
 import db
 from config import config
-
 from controller.figure_controller import figure
 from controller.health_controller import health
 
