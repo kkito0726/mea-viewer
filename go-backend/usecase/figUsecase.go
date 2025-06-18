@@ -21,7 +21,7 @@ func GetImages(getImageRequest *model.GetImageRequest) ([]model.FigImage, *error
 	return images, nil
 }
 
-func DeleteImage(deleteImageRequest *model.DeleteRequest, figTypeStr string) *errors.CustomError {
+func DeleteImage(deleteImageRequest *model.DeleteRequest) *errors.CustomError {
 	if err := minioRepository.DeleteFile(deleteImageRequest.ImageURL); err != nil {
 		return errors.ServerError(enum.F001)
 	}

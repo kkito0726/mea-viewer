@@ -1,6 +1,8 @@
 package service
 
 import (
+	"bytes"
+	"image/png"
 	"sync"
 
 	"github.com/kkito0726/mea-viewer/enum"
@@ -9,6 +11,9 @@ import (
 	"github.com/kkito0726/mea-viewer/model"
 	"github.com/kkito0726/mea-viewer/repository"
 )
+
+var imageRepository = &repository.ImageRepository{}
+var minioRepository = &repository.MinioRepository{}
 
 func FigDispatch(requestModel *RequestModel) ([]model.FigImage, *errors.CustomError) {
 	figType, err := enum.ParseFigType(requestModel.JsonData.FigType)
@@ -40,8 +45,7 @@ func FigDispatch(requestModel *RequestModel) ([]model.FigImage, *errors.CustomEr
 func showAll(requestModel *RequestModel) ([]model.FigImage, *errors.CustomError) {
 	images := make([]model.FigImage, 1)
 	meaPlot := lib.NewMeaPlot(requestModel.SliceMeaData)
-	imageService := NewImageService(enum.ShowAllTable, repository.MinioRepository{})
-	image, customErr := imageService.CreateImage(meaPlot.ShowAll, &model.FormDto{
+	image, customErr := createImage(meaPlot.ShowAll, &model.FormDto{
 		FormValue: &model.FormValue{
 			FigType: requestModel.JsonData.FigType,
 			XRatio:  requestModel.JsonData.XRatio,
@@ -73,8 +77,7 @@ func showSingle(requestModel *RequestModel) ([]model.FigImage, *errors.CustomErr
 			defer func() { <-ch }()
 			singleChannelMeaData := [][]float32{requestModel.SliceMeaData[0], requestModel.SliceMeaData[i+1]}
 			meaPlot := lib.NewMeaPlot(singleChannelMeaData)
-			imageService := NewImageService(enum.ShowSingleTable, repository.MinioRepository{})
-			image, customErr := imageService.CreateImage(meaPlot.ShowSingle, &model.FormDto{
+			image, customErr := createImage(meaPlot.ShowSingle, &model.FormDto{
 				FormValue: &model.FormValue{
 					FigType: requestModel.JsonData.FigType,
 					XRatio:  requestModel.JsonData.XRatio,
@@ -112,8 +115,7 @@ func showSingle(requestModel *RequestModel) ([]model.FigImage, *errors.CustomErr
 func showDetection(requestModel *RequestModel) ([]model.FigImage, *errors.CustomError) {
 	images := make([]model.FigImage, 1)
 	meaPlot := lib.NewMeaPlot(requestModel.SliceMeaData)
-	imageService := NewImageService(enum.ShowDetectionTable, repository.MinioRepository{})
-	image, customErr := imageService.CreateImage(meaPlot.ShowDetection, &model.FormDto{
+	image, customErr := createImage(meaPlot.ShowDetection, &model.FormDto{
 		FormValue: &model.FormValue{
 			FigType: requestModel.JsonData.FigType,
 			XRatio:  requestModel.JsonData.XRatio,
@@ -137,8 +139,7 @@ func showDetection(requestModel *RequestModel) ([]model.FigImage, *errors.Custom
 func rasterPlot(requestModel *RequestModel) ([]model.FigImage, *errors.CustomError) {
 	images := make([]model.FigImage, 1)
 	meaPlot := lib.NewMeaPlot(requestModel.SliceMeaData)
-	imageService := NewImageService(enum.RasterPlotTable, repository.MinioRepository{})
-	image, customErr := imageService.CreateImage(meaPlot.RasterPlot, &model.FormDto{
+	image, customErr := createImage(meaPlot.RasterPlot, &model.FormDto{
 		FormValue: &model.FormValue{
 			FigType:       requestModel.JsonData.FigType,
 			XRatio:        requestModel.JsonData.XRatio,
@@ -175,8 +176,7 @@ func plotPeaks(requestModel *RequestModel) ([]model.FigImage, *errors.CustomErro
 			singleChannelMeaData := [][]float32{requestModel.SliceMeaData[0], requestModel.SliceMeaData[i+1]}
 			meaPlot := lib.NewMeaPlot(singleChannelMeaData)
 
-			imageService := NewImageService(enum.PlotPeaksTable, repository.MinioRepository{})
-			image, customErr := imageService.CreateImage(meaPlot.PlotPeaks, &model.FormDto{
+			image, customErr := createImage(meaPlot.PlotPeaks, &model.FormDto{
 				FormValue: &model.FormValue{
 					FigType:       requestModel.JsonData.FigType,
 					XRatio:        requestModel.JsonData.XRatio,
@@ -209,4 +209,30 @@ func plotPeaks(requestModel *RequestModel) ([]model.FigImage, *errors.CustomErro
 		return nil, firstErr
 	}
 	return images, nil
+}
+
+func createImage(f lib.PlotMethod, formDto *model.FormDto) (*model.FigImage, *errors.CustomError) {
+	// Figの描画
+	img, err := f(formDto.FormValue)
+	if err != nil {
+		return nil, errors.ServerError(enum.F008)
+	}
+	buf := new(bytes.Buffer)
+	if err := png.Encode(buf, img.Image()); err != nil {
+		return nil, errors.ServerError(enum.F005)
+	}
+
+	// minioへの保存
+	imageUrl, err := minioRepository.SaveImage(buf, formDto)
+	if err != nil {
+		return nil, errors.ServerError(enum.F003)
+	}
+
+	// DBへレコードInsert
+	image := &model.FigImage{FigType: formDto.FormValue.FigType, ImageUrl: imageUrl, FileName: formDto.FileName, Ch: formDto.Ch}
+	if err := imageRepository.CreateImage(image); err != nil {
+		return nil, errors.ServerError(enum.F004)
+	}
+
+	return image, nil
 }
