@@ -6,5 +6,5 @@
     // ファイルの保存時にフォーマットを自動実行する場合
     "editor.formatOnSave": true
   },
-  "cSpell.words": ["kkito", "usecase"]
+  "cSpell.words": ["gorm", "kkito", "usecase"]
 }

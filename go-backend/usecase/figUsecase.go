@@ -10,37 +10,55 @@ import (
 	"github.com/kkito0726/mea-viewer/service"
 )
 
-func GetImages(getImageRequest *model.GetImageRequest) ([]model.Image, *errors.CustomError) {
-	table, err := enum.ParseImageTable(getImageRequest.FigType)
-	if err != nil {
-		return nil, errors.BadRequest(enum.F009)
-	}
+var imageRepository = repository.ImageRepository{}
+var minioRepository = repository.MinioRepository{}
 
-	imageService := service.NewImageService(table, repository.MinioRepository{})
-	return imageService.GetImages(getImageRequest), nil
+func GetImages(getImageRequest *model.GetImageRequest) ([]model.FigImage, *errors.CustomError) {
+	images, err := imageRepository.GetImages(getImageRequest)
+	if err != nil {
+		return nil, errors.NotFoundError(enum.F010)
+	}
+	return images, nil
 }
 
-func DeleteImage(deleteImageRequest *model.DeleteRequest, figTypeStr string) *errors.CustomError {
-	table, err := enum.ParseImageTable(figTypeStr)
-	if err != nil {
-		return errors.BadRequest(enum.F009)
+func DeleteImage(deleteImageRequest *model.DeleteRequest) *errors.CustomError {
+	if err := minioRepository.DeleteFile(deleteImageRequest.ImageURL); err != nil {
+		return errors.ServerError(enum.F001)
 	}
-
-	imageService := service.NewImageService(table, repository.MinioRepository{})
-	return imageService.DeleteImage(deleteImageRequest)
+	if err := imageRepository.DeleteImage(deleteImageRequest); err != nil {
+		return errors.ServerError(enum.F002)
+	}
+	return nil
 }
 
 func DeleteImages(deleteAllRequest *model.DeleteAllRequest, figTypeStr string) *errors.CustomError {
-	table, err := enum.ParseImageTable(figTypeStr)
+	// 削除対象のレコードを取得
+	images, err := imageRepository.GetImages(
+		&model.GetImageRequest{
+			FigType:  figTypeStr,
+			FileName: deleteAllRequest.FileName,
+		},
+	)
 	if err != nil {
-		return errors.BadRequest(enum.F009)
+		return errors.NotFoundError(enum.F010)
 	}
 
-	imageService := service.NewImageService(table, repository.MinioRepository{})
-	return imageService.DeleteAllImage(deleteAllRequest)
+	// 削除対象のファイルを全削除
+	for _, image := range images {
+		err := minioRepository.DeleteFile(image.ImageUrl)
+		if err != nil {
+			return errors.ServerError(enum.F001)
+		}
+	}
+
+	// 削除対象のレコードを全削除
+	if err := imageRepository.DeleteAllImages(figTypeStr, deleteAllRequest.FileName); err != nil {
+		return errors.ServerError(enum.F002)
+	}
+	return nil
 }
 
-func CreateFig(form *multipart.Form, jsonString string) ([]model.Image, *errors.CustomError) {
+func CreateFig(form *multipart.Form, jsonString string) ([]model.FigImage, *errors.CustomError) {
 	decodeMeaService := service.DecodeMeaService{
 		Form:       form,
 		JsonString: jsonString,

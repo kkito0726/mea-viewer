@@ -26,6 +26,7 @@ const (
 	F007
 	F008
 	F009
+	F010
 )
 
 // iotaを用いて生成した連番に対して、別名を与えて定義する
@@ -121,6 +122,8 @@ func (ec ErrorCode) Message() string {
 		return "MEAデータのFigへの描画に失敗しました"
 	case F009:
 		return "FigTypeの形式が間違っています"
+	case F010:
+		return "画像が見つかりませんでした"
 	default:
 		return "未定義"
 	}
