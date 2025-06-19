@@ -23,5 +23,7 @@ class FigDispatchService:
             return self.fig_service.draw_2d()
         elif self.fig_type == FigType.DRAW_3D:
             return self.fig_service.draw_3d()
+        elif self.fig_type == FigType.DRAW_LINE:
+            return self.fig_service.draw_line()
         else:
             return self.fig_service.plot_peaks_service()

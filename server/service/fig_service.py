@@ -1,4 +1,3 @@
-import io
 from dataclasses import dataclass
 
 import matplotlib
@@ -8,8 +7,6 @@ from model.FigImageData import FigImageData
 
 matplotlib.use("Agg")  # GUIバックエンドを使用しないように設定
 
-import numpy as np
-from flask import request
 from pyMEA import FigMEA, detect_peak_all, detect_peak_neg, detect_peak_pos
 from pyMEA.read.model.MEA import MEA
 
@@ -112,6 +109,23 @@ class FigService:
 
         return [
             FigImageData(None, FigType.DRAW_3D, image_buf, self.form_value.filename)
+            for image_buf in image_bufs
+        ]
+
+    def draw_line(self):
+        peak_index = detect_peak_neg(
+            self.fm.data, self.peak_form_value.distance, self.peak_form_value.threshold
+        )
+        image_bufs = self.fm.draw_line_conduction(
+            peak_index=peak_index,
+            chs=self.form_value.chs,
+            base_ch=self.peak_form_value.base_ch,
+            isLoop=self.peak_form_value.isLoop,
+            isBuf=True,
+        ).buf_list
+
+        return [
+            FigImageData(None, FigType.DRAW_LINE, image_buf, self.form_value.filename)
             for image_buf in image_bufs
         ]
 
