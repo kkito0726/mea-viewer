@@ -4,6 +4,7 @@ import { Footer } from "../../footer/Footer";
 import { PeakForm, PeakFormProps } from "./PeakForm";
 
 export type FormProps = {
+  pageName: string;
   values: FormValues;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleInitialize: (e: { preventDefault: () => void }) => void;
@@ -11,6 +12,7 @@ export type FormProps = {
 } & PeakFormProps;
 
 export const Form: React.FC<FormProps> = ({
+  pageName,
   values,
   handleChange,
   handleInitialize,
@@ -47,6 +49,7 @@ export const Form: React.FC<FormProps> = ({
           })}
         </div>
         <PeakForm
+          pageName={pageName}
           peakFormValue={peakFormValue}
           handlePeakFormChange={handlePeakFormChange}
         />

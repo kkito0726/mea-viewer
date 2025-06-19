@@ -2,11 +2,14 @@ import { ChangeEvent } from "react";
 import { getPeakFormData } from "../../../hooks/getPeakFormData";
 import { PeakFormValue } from "../../../types/PeakFormValue";
 import { barCss } from "../../../hooks/barCss";
+import { onlyPythonList, PageName } from "../../../enum/PageName";
 export type PeakFormProps = {
+  pageName: string;
   peakFormValue: PeakFormValue;
   handlePeakFormChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 export const PeakForm: React.FC<PeakFormProps> = ({
+  pageName,
   peakFormValue,
   handlePeakFormChange,
 }) => {
@@ -65,35 +68,39 @@ export const PeakForm: React.FC<PeakFormProps> = ({
               </div>
             );
           })}
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              name="isLoop"
-              max={64}
-              checked={peakFormValue.isLoop}
-              onChange={handlePeakFormChange}
-              className="form-checkbox h-5 w-5 text-indigo-600"
-              id="isLoop"
-            />
-            <label htmlFor="isLoop" className="ml-2">
-              環状経路
-            </label>
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="baseCh" className={labelCss + " mr-2"}>
-              拍動周期の基準電極
-            </label>
-            <input
-              type="number"
-              name="baseCh"
-              min={1}
-              max={64}
-              className={barCss}
-              value={peakFormValue.baseCh}
-              onChange={handlePeakFormChange}
-              id="baseCh"
-            />
-          </div>
+          {onlyPythonList.includes(pageName as PageName) ? (
+            <>
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  name="isLoop"
+                  max={64}
+                  checked={peakFormValue.isLoop}
+                  onChange={handlePeakFormChange}
+                  className="form-checkbox h-5 w-5 text-indigo-600"
+                  id="isLoop"
+                />
+                <label htmlFor="isLoop" className="ml-2">
+                  環状経路
+                </label>
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="baseCh" className={labelCss + " mr-2"}>
+                  拍動周期の基準電極
+                </label>
+                <input
+                  type="number"
+                  name="baseCh"
+                  min={1}
+                  max={64}
+                  className={barCss}
+                  value={peakFormValue.baseCh}
+                  onChange={handlePeakFormChange}
+                  id="baseCh"
+                />
+              </div>
+            </>
+          ) : null}
         </div>
       </div>
     </div>

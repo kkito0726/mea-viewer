@@ -66,6 +66,18 @@ export const useDataSubmission = (
       });
       return;
     }
+    if (
+      chPadPages.includes(pageName) &&
+      peakFormValue.baseCh &&
+      !activeChs.includes(peakFormValue.baseCh)
+    ) {
+      toast.error("拍動周期の基準電極は指定した電極から選択してください", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: true,
+      });
+      return;
+    }
     setIsPost(true);
     await handleFetch();
     setIsPost(false);

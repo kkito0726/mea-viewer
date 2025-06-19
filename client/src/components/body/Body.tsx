@@ -121,6 +121,7 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
         ) : null}
 
         <Form
+          pageName={pageName}
           values={values}
           handleChange={handleChange}
           handleInitialize={handleInitialize}
