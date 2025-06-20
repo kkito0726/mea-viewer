@@ -91,7 +91,10 @@ class FigService:
             self.fm.data, self.peak_form_value.distance, self.peak_form_value.threshold
         )
         image_bufs = self.fm.draw_2d(
-            peak_index, dpi=self.form_value.dpi, isBuf=True
+            peak_index=peak_index,
+            base_ch=self.peak_form_value.base_ch,
+            dpi=self.form_value.dpi,
+            isBuf=True,
         ).buf_list
 
         return [
