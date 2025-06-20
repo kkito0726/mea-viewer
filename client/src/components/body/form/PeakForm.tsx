@@ -1,8 +1,8 @@
 import { ChangeEvent } from "react";
 import { getPeakFormData } from "../../../hooks/getPeakFormData";
 import { PeakFormValue } from "../../../types/PeakFormValue";
-import { barCss } from "../../../hooks/barCss";
 import { PageName } from "../../../enum/PageName";
+import { MEAViewerInputForm } from "../../molecule/MEAViewerInputForm";
 export type PeakFormProps = {
   pageName: string;
   peakFormValue: PeakFormValue;
@@ -13,8 +13,6 @@ export const PeakForm: React.FC<PeakFormProps> = ({
   peakFormValue,
   handlePeakFormChange,
 }) => {
-  const labelCss = "block text-sm font-medium text-gray-300 px-1";
-
   const peakFormData = getPeakFormData(peakFormValue);
   return (
     <div className="text-slate-200">
@@ -54,16 +52,16 @@ export const PeakForm: React.FC<PeakFormProps> = ({
           {peakFormData.map((data, i) => {
             return (
               <div key={i}>
-                <label htmlFor={data.name} className={labelCss}>
-                  {data.label}
-                </label>
-                <input
-                  type="number"
-                  id={data.name}
-                  name={data.name}
-                  className={barCss}
-                  value={data.value}
-                  onChange={handlePeakFormChange}
+                <MEAViewerInputForm
+                  inputLabelProps={{ name: data.name, label: data.label }}
+                  numberFormProps={{
+                    name: data.name,
+                    value: data.value,
+                    min: 1,
+                    max: undefined,
+                    step: 1,
+                    handleChange: handlePeakFormChange,
+                  }}
                 />
               </div>
             );
@@ -87,18 +85,19 @@ export const PeakForm: React.FC<PeakFormProps> = ({
                 </label>
               </div>
               <div className="flex flex-col">
-                <label htmlFor="baseCh" className={labelCss + " mr-2"}>
-                  拍動周期の基準電極
-                </label>
-                <input
-                  type="number"
-                  name="baseCh"
-                  min={1}
-                  max={64}
-                  className={barCss}
-                  value={peakFormValue.baseCh}
-                  onChange={handlePeakFormChange}
-                  id="baseCh"
+                <MEAViewerInputForm
+                  inputLabelProps={{
+                    name: "baseCh",
+                    label: "拍動周期の基準電極",
+                  }}
+                  numberFormProps={{
+                    name: "baseCh",
+                    value: peakFormValue.baseCh,
+                    min: 1,
+                    max: 64,
+                    step: 1,
+                    handleChange: handlePeakFormChange,
+                  }}
                 />
               </div>
             </>

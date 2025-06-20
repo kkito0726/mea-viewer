@@ -2,6 +2,7 @@ import { FormValues } from "../../../types/FormValues";
 import { getFormData } from "../../../hooks/getFormData";
 import { Footer } from "../../footer/Footer";
 import { PeakForm, PeakFormProps } from "./PeakForm";
+import { MEAViewerInputForm } from "../../molecule/MEAViewerInputForm";
 
 export type FormProps = {
   pageName: string;
@@ -20,9 +21,6 @@ export const Form: React.FC<FormProps> = ({
   peakFormValue,
   handlePeakFormChange,
 }) => {
-  const barCss =
-    "mt-1 block w-full px-3 py-2 text-green-300 bg-zinc-800 border-none rounded-md shadow-sm focus:outline-none";
-  const labelCss = "block text-sm font-medium text-gray-300 px-1";
   const formData = getFormData(values);
   return (
     <div className="px-4 text-white">
@@ -31,18 +29,16 @@ export const Form: React.FC<FormProps> = ({
           {formData.map((data, i) => {
             return (
               <div key={i}>
-                <label htmlFor={data.name} className={labelCss}>
-                  {data.label}
-                </label>
-                <input
-                  type="number"
-                  id={data.name}
-                  name={data.name}
-                  className={barCss}
-                  value={data.value}
-                  min={data.min}
-                  step={data.step}
-                  onChange={handleChange}
+                <MEAViewerInputForm
+                  inputLabelProps={{ name: data.name, label: data.label }}
+                  numberFormProps={{
+                    name: data.name,
+                    value: data.value,
+                    min: data.min,
+                    max: undefined,
+                    step: data.step,
+                    handleChange,
+                  }}
                 />
               </div>
             );
