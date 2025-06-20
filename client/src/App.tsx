@@ -9,6 +9,7 @@ import { Draw3D } from "./pages/Draw3d";
 import { PagePath } from "./enum/PagePath";
 import { SharedMeaProvider } from "./components/SharedMEA";
 import { PlotPeaks } from "./pages/PlotPeaks";
+import { DrawLine } from "./pages/DrawLine";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path={PagePath.RASTER_PLOT} element={<RasterPlot />} />
             <Route path={PagePath.DRAW_2D} element={<Draw2D />} />
             <Route path={PagePath.DRAW_3D} element={<Draw3D />} />
+            <Route path={PagePath.DRAWLine} element={<DrawLine />} />
             <Route path={PagePath.PlotPeaks} element={<PlotPeaks />} />
           </Routes>
         </Router>

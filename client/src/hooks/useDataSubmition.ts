@@ -12,7 +12,7 @@ import {
 import { PeakFormValue } from "../types/PeakFormValue";
 import { toast } from "react-toastify";
 import { ImgResponse } from "../types/ImgResponse";
-import { chPadPages, PageName } from "../enum/PageName";
+import { chPadPages, onlyPythonList, PageName } from "../enum/PageName";
 import { ReadTime } from "../types/ReadTime";
 
 export const useDataSubmission = (
@@ -66,6 +66,18 @@ export const useDataSubmission = (
       });
       return;
     }
+    if (
+      chPadPages.includes(pageName) &&
+      peakFormValue.baseCh &&
+      !activeChs.includes(peakFormValue.baseCh)
+    ) {
+      toast.error("拍動周期の基準電極は指定した電極から選択してください", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: true,
+      });
+      return;
+    }
     setIsPost(true);
     await handleFetch();
     setIsPost(false);
@@ -100,8 +112,7 @@ export const useDataSubmission = (
     };
 
     const resData = await fetchCreateFigure(
-      isPython ||
-        [PageName.DRAW_2D, PageName.DRAW_3D].includes(pageName as PageName)
+      isPython || onlyPythonList.includes(pageName as PageName)
         ? FLASK_ROOT_URL
         : GIN_ROOT_URL,
       peakRequestEntity,
