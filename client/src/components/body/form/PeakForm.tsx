@@ -2,7 +2,7 @@ import { ChangeEvent } from "react";
 import { getPeakFormData } from "../../../hooks/getPeakFormData";
 import { PeakFormValue } from "../../../types/PeakFormValue";
 import { barCss } from "../../../hooks/barCss";
-import { onlyPythonList, PageName } from "../../../enum/PageName";
+import { PageName } from "../../../enum/PageName";
 export type PeakFormProps = {
   pageName: string;
   peakFormValue: PeakFormValue;
@@ -68,7 +68,9 @@ export const PeakForm: React.FC<PeakFormProps> = ({
               </div>
             );
           })}
-          {onlyPythonList.includes(pageName as PageName) ? (
+          {[PageName.DRAW_2D, PageName.DRAWLine].includes(
+            pageName as PageName
+          ) ? (
             <>
               <div className="flex items-center">
                 <input
