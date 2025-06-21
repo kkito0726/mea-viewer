@@ -1,6 +1,6 @@
 import { ChangeEvent, useRef } from "react";
-import { barCss } from "../../../hooks/barCss";
 import { ReadTime } from "../../../types/ReadTime";
+import { MEAViewerInputForm } from "../../molecule/MEAViewerInputForm";
 
 type BioInputProps = {
   handleReadBio: () => void;
@@ -46,36 +46,28 @@ export const BioInput: React.FC<BioInputProps> = ({
         />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label
-            htmlFor=""
-            className="block text-sm font-medium text-gray-300 px-1"
-          >
-            開始時間 (s)
-          </label>
-          <input
-            className={barCss}
-            name="start"
-            type="number"
-            value={readTime.start}
-            onChange={handleReadTime}
-          />
-        </div>
-        <div>
-          <label
-            htmlFor=""
-            className="block text-sm font-medium text-gray-300 px-1"
-          >
-            終了時間 (s)
-          </label>
-          <input
-            className={barCss}
-            name="end"
-            type="number"
-            value={readTime.end}
-            onChange={handleReadTime}
-          />
-        </div>
+        <MEAViewerInputForm
+          inputLabelProps={{ name: "", label: "開始時間 (s)" }}
+          numberFormProps={{
+            name: "start",
+            value: readTime.start,
+            min: 0,
+            max: undefined,
+            step: 1,
+            handleChange: handleReadTime,
+          }}
+        />
+        <MEAViewerInputForm
+          inputLabelProps={{ name: "", label: "終了時間 (s)" }}
+          numberFormProps={{
+            name: "end",
+            value: readTime.end,
+            min: readTime.start + 1,
+            max: undefined,
+            step: 1,
+            handleChange: handleReadTime,
+          }}
+        />
       </div>
       {bioName ? (
         <>

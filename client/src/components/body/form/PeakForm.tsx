@@ -1,8 +1,9 @@
 import { ChangeEvent } from "react";
 import { getPeakFormData } from "../../../hooks/getPeakFormData";
 import { PeakFormValue } from "../../../types/PeakFormValue";
-import { barCss } from "../../../hooks/barCss";
 import { PageName } from "../../../enum/PageName";
+import { MEAViewerInputForm } from "../../molecule/MEAViewerInputForm";
+import { Checkbox } from "../../molecule/Checkbox";
 export type PeakFormProps = {
   pageName: string;
   peakFormValue: PeakFormValue;
@@ -13,8 +14,6 @@ export const PeakForm: React.FC<PeakFormProps> = ({
   peakFormValue,
   handlePeakFormChange,
 }) => {
-  const labelCss = "block text-sm font-medium text-gray-300 px-1";
-
   const peakFormData = getPeakFormData(peakFormValue);
   return (
     <div className="text-slate-200">
@@ -23,30 +22,18 @@ export const PeakForm: React.FC<PeakFormProps> = ({
       </div>
 
       <div className="grid grid-cols-2 gap-4 pb-2">
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            name="isPositive"
-            checked={peakFormValue.isPositive}
-            onChange={handlePeakFormChange}
-            className="form-checkbox h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
-          />
-          <label htmlFor="posPeak" className="ml-2">
-            Positive Peaks
-          </label>
-        </div>
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            name="isNegative"
-            checked={peakFormValue.isNegative}
-            onChange={handlePeakFormChange}
-            className="form-checkbox h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
-          />
-          <label htmlFor="negPeak" className="ml-2">
-            Negative Peaks
-          </label>
-        </div>
+        <Checkbox
+          name="isPositive"
+          checked={peakFormValue.isPositive}
+          onChange={handlePeakFormChange}
+          label="Positive Peaks"
+        />
+        <Checkbox
+          name="isNegative"
+          checked={peakFormValue.isNegative}
+          onChange={handlePeakFormChange}
+          label="Negative Peaks"
+        />
       </div>
 
       <div>
@@ -54,16 +41,16 @@ export const PeakForm: React.FC<PeakFormProps> = ({
           {peakFormData.map((data, i) => {
             return (
               <div key={i}>
-                <label htmlFor={data.name} className={labelCss}>
-                  {data.label}
-                </label>
-                <input
-                  type="number"
-                  id={data.name}
-                  name={data.name}
-                  className={barCss}
-                  value={data.value}
-                  onChange={handlePeakFormChange}
+                <MEAViewerInputForm
+                  inputLabelProps={{ name: data.name, label: data.label }}
+                  numberFormProps={{
+                    name: data.name,
+                    value: data.value,
+                    min: 1,
+                    max: undefined,
+                    step: 1,
+                    handleChange: handlePeakFormChange,
+                  }}
                 />
               </div>
             );
@@ -72,35 +59,26 @@ export const PeakForm: React.FC<PeakFormProps> = ({
             pageName as PageName
           ) ? (
             <>
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="isLoop"
-                  max={64}
-                  checked={peakFormValue.isLoop}
-                  onChange={handlePeakFormChange}
-                  className="form-checkbox h-5 w-5 text-indigo-600"
-                  id="isLoop"
-                />
-                <label htmlFor="isLoop" className="ml-2">
-                  環状経路
-                </label>
-              </div>
-              <div className="flex flex-col">
-                <label htmlFor="baseCh" className={labelCss + " mr-2"}>
-                  拍動周期の基準電極
-                </label>
-                <input
-                  type="number"
-                  name="baseCh"
-                  min={1}
-                  max={64}
-                  className={barCss}
-                  value={peakFormValue.baseCh}
-                  onChange={handlePeakFormChange}
-                  id="baseCh"
-                />
-              </div>
+              <Checkbox
+                name="isLoop"
+                checked={peakFormValue.isLoop}
+                onChange={handlePeakFormChange}
+                label="環状経路"
+              />
+              <MEAViewerInputForm
+                inputLabelProps={{
+                  name: "baseCh",
+                  label: "拍動周期の基準電極",
+                }}
+                numberFormProps={{
+                  name: "baseCh",
+                  value: peakFormValue.baseCh,
+                  min: 1,
+                  max: 64,
+                  step: 1,
+                  handleChange: handlePeakFormChange,
+                }}
+              />
             </>
           ) : null}
         </div>

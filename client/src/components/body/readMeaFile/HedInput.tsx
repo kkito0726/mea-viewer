@@ -1,5 +1,6 @@
 import { ChangeEvent, useRef } from "react";
 import { HedValue } from "../../../types/HedValue";
+import { MEAViewerSelectForm } from "../../molecule/MEAViewerSelectForm";
 
 type BioInputProps = {
   handleRefreshHedFile: () => void;
@@ -18,8 +19,6 @@ export const HedInput: React.FC<BioInputProps> = ({
 }) => {
   const rateValues = [100000, 50000, 25000, 20000, 10000, 5000];
   const gainValues = [20, 100, 1000, 2000, 5000, 10000, 20000, 50000];
-  const barCss =
-    "mt-1 block w-full px-3 py-2 text-green-300 bg-zinc-800 border-none rounded-md shadow-sm focus: border-none";
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -53,50 +52,32 @@ export const HedInput: React.FC<BioInputProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label
-              htmlFor="sampling-rate"
-              className="block text-sm font-medium text-gray-300 px-1"
-            >
-              サンプリングレート (Hz)
-            </label>
-            <select
-              className={barCss}
-              value={hedValue.sampling_rate}
-              onChange={handleHedChange}
-              name="sampling_rate"
-              id="sampling-rate"
-              disabled={!!hedName}
-            >
-              {rateValues.map((value, i) => (
-                <option key={i} value={value}>
-                  {value}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label
-              htmlFor="gain"
-              className="block text-sm font-medium text-gray-300 px-1"
-            >
-              Gain
-            </label>
-            <select
-              className={barCss}
-              value={hedValue.gain}
-              onChange={handleHedChange}
-              name="gain"
-              id="gain"
-              disabled={!!hedName}
-            >
-              {gainValues.map((value, i) => (
-                <option key={i} value={value}>
-                  {value}
-                </option>
-              ))}
-            </select>
-          </div>
+          <MEAViewerSelectForm
+            inputLabelProps={{
+              name: "sampling-rate",
+              label: "サンプリングレート (Hz)",
+            }}
+            numberSelectFormProps={{
+              name: "sampling_rate",
+              value: hedValue.sampling_rate,
+              handleChange: handleHedChange,
+              disabled: !!hedName,
+              optionValues: rateValues,
+            }}
+          />
+          <MEAViewerSelectForm
+            inputLabelProps={{
+              name: "gain",
+              label: "Gain",
+            }}
+            numberSelectFormProps={{
+              name: "gain",
+              value: hedValue.gain,
+              handleChange: handleHedChange,
+              disabled: !!hedName,
+              optionValues: gainValues,
+            }}
+          />
         </div>
         {hedName ? (
           <div className="flex items-center justify-between">
