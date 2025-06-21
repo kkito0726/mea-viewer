@@ -29,9 +29,7 @@ export const PeakForm: React.FC<PeakFormProps> = ({
             onChange={handlePeakFormChange}
             className="form-checkbox h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
           />
-          <label htmlFor="posPeak" className="ml-2">
-            Positive Peaks
-          </label>
+          <label className="ml-2">Positive Peaks</label>
         </div>
         <div className="flex items-center">
           <input
@@ -41,9 +39,7 @@ export const PeakForm: React.FC<PeakFormProps> = ({
             onChange={handlePeakFormChange}
             className="form-checkbox h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
           />
-          <label htmlFor="negPeak" className="ml-2">
-            Negative Peaks
-          </label>
+          <label className="ml-2">Negative Peaks</label>
         </div>
       </div>
 
