@@ -42,15 +42,13 @@ export const PeakForm: React.FC<PeakFormProps> = ({
             return (
               <div key={i}>
                 <MEAViewerInputForm
-                  inputLabelProps={{ name: data.name, label: data.label }}
-                  numberFormProps={{
-                    name: data.name,
-                    value: data.value,
-                    min: 1,
-                    max: undefined,
-                    step: 1,
-                    handleChange: handlePeakFormChange,
-                  }}
+                  label={data.label}
+                  name={data.name}
+                  value={data.value}
+                  min={1}
+                  max={undefined}
+                  step={1}
+                  onChange={handlePeakFormChange}
                 />
               </div>
             );
@@ -66,18 +64,13 @@ export const PeakForm: React.FC<PeakFormProps> = ({
                 label="環状経路"
               />
               <MEAViewerInputForm
-                inputLabelProps={{
-                  name: "baseCh",
-                  label: "拍動周期の基準電極",
-                }}
-                numberFormProps={{
-                  name: "baseCh",
-                  value: peakFormValue.baseCh,
-                  min: 1,
-                  max: 64,
-                  step: 1,
-                  handleChange: handlePeakFormChange,
-                }}
+                label={"拍動周期の基準電極"}
+                name={"baseCh"}
+                value={peakFormValue.baseCh}
+                min={1}
+                max={64}
+                step={1}
+                onChange={handlePeakFormChange}
               />
             </>
           ) : null}

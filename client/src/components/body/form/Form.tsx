@@ -30,15 +30,13 @@ export const Form: React.FC<FormProps> = ({
             return (
               <div key={i}>
                 <MEAViewerInputForm
-                  inputLabelProps={{ name: data.name, label: data.label }}
-                  numberFormProps={{
-                    name: data.name,
-                    value: data.value,
-                    min: data.min,
-                    max: undefined,
-                    step: data.step,
-                    handleChange,
-                  }}
+                  label={data.label}
+                  name={data.name}
+                  value={data.value}
+                  min={data.min}
+                  max={undefined}
+                  step={data.step}
+                  onChange={handleChange}
                 />
               </div>
             );

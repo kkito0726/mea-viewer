@@ -47,26 +47,22 @@ export const BioInput: React.FC<BioInputProps> = ({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MEAViewerInputForm
-          inputLabelProps={{ name: "", label: "開始時間 (s)" }}
-          numberFormProps={{
-            name: "start",
-            value: readTime.start,
-            min: 0,
-            max: undefined,
-            step: 1,
-            handleChange: handleReadTime,
-          }}
+          label={"開始時間 (s)"}
+          name={"start"}
+          value={readTime.start}
+          min={0}
+          max={readTime.end - 1}
+          step={1}
+          onChange={handleReadTime}
         />
         <MEAViewerInputForm
-          inputLabelProps={{ name: "", label: "終了時間 (s)" }}
-          numberFormProps={{
-            name: "end",
-            value: readTime.end,
-            min: readTime.start + 1,
-            max: undefined,
-            step: 1,
-            handleChange: handleReadTime,
-          }}
+          label={"終了時間 (s)"}
+          name={"end"}
+          value={readTime.end}
+          min={readTime.start + 1}
+          max={undefined}
+          step={1}
+          onChange={handleReadTime}
         />
       </div>
       {bioName ? (

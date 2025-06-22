@@ -1,25 +1,35 @@
-import { NumberForm, NumberFormProps } from "../atom/NumberForm";
-import { InputLabelProps, InputLabel } from "../atom/InputLabel";
+import { NumberForm } from "../atom/NumberForm";
+import { InputLabel } from "../atom/InputLabel";
 
-export type InputFormProps = {
-  inputLabelProps: InputLabelProps;
-  numberFormProps: NumberFormProps;
+type Props = {
+  label: string;
+  name: string;
+  value: number | undefined;
+  max: number | undefined;
+  min: number | undefined;
+  step: number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const MEAViewerInputForm: React.FC<InputFormProps> = ({
-  inputLabelProps,
-  numberFormProps,
+export const MEAViewerInputForm: React.FC<Props> = ({
+  label,
+  name,
+  value,
+  max,
+  min,
+  step,
+  onChange,
 }) => {
   return (
     <div>
-      <InputLabel name={inputLabelProps.name} label={inputLabelProps.label} />
+      <InputLabel label={label} />
       <NumberForm
-        name={numberFormProps.name}
-        value={numberFormProps.value}
-        min={numberFormProps.min}
-        max={numberFormProps.max}
-        step={numberFormProps.step}
-        handleChange={numberFormProps.handleChange}
+        name={name}
+        value={value}
+        min={min}
+        max={max}
+        step={step}
+        onChange={onChange}
       />
     </div>
   );

@@ -53,30 +53,20 @@ export const HedInput: React.FC<BioInputProps> = ({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <MEAViewerSelectForm
-            inputLabelProps={{
-              name: "sampling-rate",
-              label: "サンプリングレート (Hz)",
-            }}
-            numberSelectFormProps={{
-              name: "sampling_rate",
-              value: hedValue.sampling_rate,
-              handleChange: handleHedChange,
-              disabled: !!hedName,
-              optionValues: rateValues,
-            }}
+            label="サンプリングレート (Hz)"
+            name="sampling_rate"
+            value={hedValue.sampling_rate}
+            onChange={handleHedChange}
+            disabled={!!hedName}
+            optionValues={rateValues}
           />
           <MEAViewerSelectForm
-            inputLabelProps={{
-              name: "gain",
-              label: "Gain",
-            }}
-            numberSelectFormProps={{
-              name: "gain",
-              value: hedValue.gain,
-              handleChange: handleHedChange,
-              disabled: !!hedName,
-              optionValues: gainValues,
-            }}
+            label="Gain"
+            name="gain"
+            value={hedValue.gain}
+            onChange={handleHedChange}
+            disabled={!!hedName}
+            optionValues={gainValues}
           />
         </div>
         {hedName ? (
