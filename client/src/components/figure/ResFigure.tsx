@@ -55,7 +55,7 @@ export const ResFigure: React.FC<FigureProps> = ({
               >
                 <div className="relative group">
                   {img.ch ? (
-                    <span className="absolute top-2 left-2 text-zinc-800">{`ch ${img.ch}`}</span>
+                    <span className="absolute top-5 left-2 text-zinc-800">{`ch ${img.ch}`}</span>
                   ) : null}
                   <img
                     src={img.image_url}
