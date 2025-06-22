@@ -3,7 +3,7 @@ import { ChangeEvent } from "react";
 export type NumberSelectFormProps = {
   name: string;
   value: number;
-  handleChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   disabled: boolean;
   optionValues: number[];
 };
@@ -11,7 +11,7 @@ export type NumberSelectFormProps = {
 export const NumberSelectForm: React.FC<NumberSelectFormProps> = ({
   name,
   value,
-  handleChange,
+  onChange: handleChange,
   disabled,
   optionValues,
 }) => {

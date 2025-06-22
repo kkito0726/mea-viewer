@@ -1,27 +1,33 @@
-import { InputLabel, InputLabelProps } from "../atom/InputLabel";
-import {
-  NumberSelectForm,
-  NumberSelectFormProps,
-} from "../atom/NumberSelectForm";
+import { ChangeEvent } from "react";
+import { InputLabel } from "../atom/InputLabel";
+import { NumberSelectForm } from "../atom/NumberSelectForm";
 
-export type MEAViewerSelectFormProps = {
-  inputLabelProps: InputLabelProps;
-  numberSelectFormProps: NumberSelectFormProps;
+type Props = {
+  label: string;
+  name: string;
+  value: number;
+  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  disabled: boolean;
+  optionValues: number[];
 };
 
-export const MEAViewerSelectForm: React.FC<MEAViewerSelectFormProps> = ({
-  inputLabelProps,
-  numberSelectFormProps,
+export const MEAViewerSelectForm: React.FC<Props> = ({
+  label,
+  name,
+  value,
+  onChange,
+  disabled,
+  optionValues,
 }) => {
   return (
     <div>
-      <InputLabel name={inputLabelProps.name} label={inputLabelProps.label} />
+      <InputLabel label={label} />
       <NumberSelectForm
-        name={numberSelectFormProps.name}
-        value={numberSelectFormProps.value}
-        handleChange={numberSelectFormProps.handleChange}
-        disabled={numberSelectFormProps.disabled}
-        optionValues={numberSelectFormProps.optionValues}
+        name={name}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+        optionValues={optionValues}
       />
     </div>
   );

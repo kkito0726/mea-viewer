@@ -6,7 +6,7 @@ export type NumberFormProps = {
   min: number | undefined;
   max: number | undefined;
   step: number | undefined;
-  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const NumberForm: React.FC<NumberFormProps> = ({
@@ -15,7 +15,7 @@ export const NumberForm: React.FC<NumberFormProps> = ({
   min,
   max,
   step,
-  handleChange: handleChange,
+  onChange: handleChange,
 }) => {
   const barCss =
     "mt-1 block w-full px-3 py-2 text-green-300 bg-zinc-800 border-none rounded-md shadow-sm focus: border-none";
