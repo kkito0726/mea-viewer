@@ -1,3 +1,6 @@
+import importlib.metadata
+import logging
+
 from flask import Flask
 from flask_cors import CORS
 
@@ -6,7 +9,12 @@ from config import config
 from controller.figure_controller import figure
 from controller.health_controller import health
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler())
+
 app = Flask(__name__)
+logger.info(f"PyMEA version: {importlib.metadata.version('pyMEA')}")
 
 # Controller読み込み
 app.register_blueprint(health)
@@ -32,4 +40,5 @@ CORS(
 
 
 if __name__ == "__main__":
+    print(f"PyMEA version: {importlib.metadata.version('pyMEA')}")
     app.run(host="0.0.0.0", port=5001)
