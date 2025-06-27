@@ -1,6 +1,6 @@
 import { ChangeEvent, useRef } from "react";
-import { HedValue } from "../../../types/HedValue";
-import { MEAViewerSelectForm } from "../../molecule/MEAViewerSelectForm";
+import { HedValue } from "../../../../types/HedValue";
+import { MEAViewerSelectForm } from "../../../molecule/MEAViewerSelectForm";
 
 type BioInputProps = {
   handleRefreshHedFile: () => void;

@@ -1,18 +1,8 @@
-import { Body } from "../components/body/Body";
-import { Sidebar } from "../components/sidebar/Sidebar";
-import { Topbar } from "../components/topbar/Topbar";
+import { FigImageTemplate } from "../components/template/FigImageTemplate";
 import { PageName } from "../enum/PageName";
 
 export const PlotPeaks = () => {
   return (
-    <div className="min-h-screen w-screen">
-      <div className="overflow-auto">
-        <Topbar displayName="ピーク抽出" />
-        <div className="flex">
-          <Sidebar name={PageName.PlotPeaks} />
-          <Body pageName={PageName.PlotPeaks} />
-        </div>
-      </div>
-    </div>
+    <FigImageTemplate displayName="ピーク抽出" pageName={PageName.PLOT_PEAKS} />
   );
 };

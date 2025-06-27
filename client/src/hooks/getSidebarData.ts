@@ -39,13 +39,13 @@ export const sidebarData: SidebarData[] = [
     label: "3Dカラーマップ",
   },
   {
-    name: PageName.DRAWLine,
-    link: PagePath.DRAWLine,
+    name: PageName.DRAW_LINE,
+    link: PagePath.DRAW_LINE,
     label: "AMCカラーマップ",
   },
   {
-    name: PageName.PlotPeaks,
-    link: PagePath.PlotPeaks,
+    name: PageName.PLOT_PEAKS,
+    link: PagePath.PLOT_PEAKS,
     label: "ピーク抽出",
   },
 ];

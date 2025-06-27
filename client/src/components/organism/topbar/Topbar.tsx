@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MEAViewerLogo } from "../atom/MEAViewerLogo";
+import { MEAViewerLogo } from "../../atom/MEAViewerLogo";
 
 type TopbarProps = {
   displayName: string;

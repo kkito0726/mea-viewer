@@ -1,4 +1,4 @@
-import { MEAViewerSubLogo } from "../atom/MEAViewerSubLogo";
+import { MEAViewerSubLogo } from "../../atom/MEAViewerSubLogo";
 
 export const Footer = () => {
   return (

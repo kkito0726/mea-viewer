@@ -1,9 +1,9 @@
 import { ChangeEvent } from "react";
 import { HedInput } from "./HedInput";
 import { BioInput } from "./BioInput";
-import { HedValue } from "../../../types/HedValue";
-import { ReadTime } from "../../../types/ReadTime";
-import { Processing } from "../../Processing";
+import { HedValue } from "../../../../types/HedValue";
+import { ReadTime } from "../../../../types/ReadTime";
+import { Processing } from "../../../Processing";
 type FileName = {
   hedName: string;
   bioName: string;

@@ -1,8 +1,8 @@
-import { FormValues } from "../../../types/FormValues";
-import { getFormData } from "../../../hooks/getFormData";
+import { FormValues } from "../../../../types/FormValues";
+import { getFormData } from "../../../../hooks/getFormData";
 import { Footer } from "../../footer/Footer";
 import { PeakForm, PeakFormProps } from "./PeakForm";
-import { MEAViewerInputForm } from "../../molecule/MEAViewerInputForm";
+import { MEAViewerInputForm } from "../../../molecule/MEAViewerInputForm";
 
 export type FormProps = {
   pageName: string;
