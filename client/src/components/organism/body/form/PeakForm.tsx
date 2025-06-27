@@ -53,7 +53,7 @@ export const PeakForm: React.FC<PeakFormProps> = ({
               </div>
             );
           })}
-          {[PageName.DRAW_2D, PageName.DRAWLine].includes(
+          {[PageName.DRAW_2D, PageName.DRAW_LINE].includes(
             pageName as PageName
           ) ? (
             <>

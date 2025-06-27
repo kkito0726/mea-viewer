@@ -5,7 +5,7 @@ export const DrawLine = () => {
   return (
     <FigImageTemplate
       displayName="AMCカラーマップ"
-      pageName={PageName.DRAWLine}
+      pageName={PageName.DRAW_LINE}
     />
   );
 };

@@ -24,8 +24,8 @@ function App() {
             <Route path={PagePath.RASTER_PLOT} element={<RasterPlot />} />
             <Route path={PagePath.DRAW_2D} element={<Draw2D />} />
             <Route path={PagePath.DRAW_3D} element={<Draw3D />} />
-            <Route path={PagePath.DRAWLine} element={<DrawLine />} />
-            <Route path={PagePath.PlotPeaks} element={<PlotPeaks />} />
+            <Route path={PagePath.DRAW_LINE} element={<DrawLine />} />
+            <Route path={PagePath.PLOT_PEAKS} element={<PlotPeaks />} />
           </Routes>
         </Router>
       </SharedMeaProvider>

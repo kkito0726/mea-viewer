@@ -66,7 +66,7 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     PageName.SHOW_SINGLE,
     PageName.SHOW_DETECTION,
     PageName.RASTER_PLOT,
-    PageName.PlotPeaks,
+    PageName.PLOT_PEAKS,
   ];
 
   useEffect(() => {

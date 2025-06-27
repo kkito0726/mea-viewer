@@ -6,6 +6,6 @@ export const enum PagePath {
   RASTER_PLOT = "/rasterPlot",
   DRAW_2D = "/draw2d",
   DRAW_3D = "/draw3d",
-  DRAWLine = "/drawLine",
-  PlotPeaks = "/plotPeaks",
+  DRAW_LINE = "/drawLine",
+  PLOT_PEAKS = "/plotPeaks",
 }
