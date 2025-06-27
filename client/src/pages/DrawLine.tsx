@@ -1,6 +1,6 @@
-import { Body } from "../components/body/Body";
-import { Sidebar } from "../components/sidebar/Sidebar";
-import { Topbar } from "../components/topbar/Topbar";
+import { Body } from "../components/organism/body/Body";
+import { Sidebar } from "../components/organism/sidebar/Sidebar";
+import { Topbar } from "../components/organism/topbar/Topbar";
 import { PageName } from "../enum/PageName";
 
 export const DrawLine = () => {

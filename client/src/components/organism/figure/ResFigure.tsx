@@ -1,11 +1,11 @@
-import { Processing } from "../Processing";
+import { Processing } from "../../Processing";
 import CancelIcon from "@mui/icons-material/Cancel";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SaveAlt } from "@mui/icons-material";
-import { ImgResponse } from "../../types/ImgResponse";
-import { BodyMainLogo } from "../molecule/BodyMainLogo";
+import { ImgResponse } from "../../../types/ImgResponse";
+import { BodyMainLogo } from "../../molecule/BodyMainLogo";
 
 type FigureProps = {
   isPost: boolean;

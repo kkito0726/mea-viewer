@@ -1,9 +1,9 @@
 import { ChangeEvent } from "react";
-import { getPeakFormData } from "../../../hooks/getPeakFormData";
-import { PeakFormValue } from "../../../types/PeakFormValue";
-import { PageName } from "../../../enum/PageName";
-import { MEAViewerInputForm } from "../../molecule/MEAViewerInputForm";
-import { Checkbox } from "../../molecule/Checkbox";
+import { getPeakFormData } from "../../../../hooks/getPeakFormData";
+import { PeakFormValue } from "../../../../types/PeakFormValue";
+import { PageName } from "../../../../enum/PageName";
+import { MEAViewerInputForm } from "../../../molecule/MEAViewerInputForm";
+import { Checkbox } from "../../../molecule/Checkbox";
 export type PeakFormProps = {
   pageName: string;
   peakFormValue: PeakFormValue;

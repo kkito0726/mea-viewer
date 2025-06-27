@@ -1,14 +1,14 @@
 import { ResFigure } from "../figure/ResFigure";
 import { Form } from "./form/Form";
 import { ReadBio } from "./readMeaFile/ReadBio";
-import { useDataSubmission } from "../../hooks/useDataSubmition";
+import { useDataSubmission } from "../../../hooks/useDataSubmition";
 import { ChPad } from "../ChPad/ChPad";
-import { useChPad } from "../../hooks/useChPad";
-import { chPadPages, PageName } from "../../enum/PageName";
-import { usePeakFormHandler } from "../../hooks/usePeakFormHandler";
-import { useSharedMEA } from "../SharedMEA";
+import { useChPad } from "../../../hooks/useChPad";
+import { chPadPages, PageName } from "../../../enum/PageName";
+import { usePeakFormHandler } from "../../../hooks/usePeakFormHandler";
+import { useSharedMEA } from "../../SharedMEA";
 import { useEffect } from "react";
-import { delete_all_image, get_images } from "../../hooks/fetchApi";
+import { delete_all_image, get_images } from "../../../hooks/fetchApi";
 import { toast } from "react-toastify";
 
 type BodyProps = {

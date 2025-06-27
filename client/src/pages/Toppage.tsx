@@ -1,5 +1,5 @@
-import { Topbar } from "../components/topbar/Topbar";
-import { TopBody } from "../components/body/TopBody";
+import { Topbar } from "../components/organism/topbar/Topbar";
+import { TopBody } from "../components/organism/body/TopBody";
 
 export const Toppage = () => {
   return (

@@ -1,6 +1,6 @@
-import { Topbar } from "../components/topbar/Topbar";
-import { Sidebar } from "../components/sidebar/Sidebar";
-import { Body } from "../components/body/Body";
+import { Topbar } from "../components/organism/topbar/Topbar";
+import { Sidebar } from "../components/organism/sidebar/Sidebar";
+import { Body } from "../components/organism/body/Body";
 import { PageName } from "../enum/PageName";
 
 export const ShowDetection = () => {

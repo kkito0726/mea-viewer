@@ -1,6 +1,6 @@
 import { ChangeEvent, useRef } from "react";
-import { ReadTime } from "../../../types/ReadTime";
-import { MEAViewerInputForm } from "../../molecule/MEAViewerInputForm";
+import { ReadTime } from "../../../../types/ReadTime";
+import { MEAViewerInputForm } from "../../../molecule/MEAViewerInputForm";
 
 type BioInputProps = {
   handleReadBio: () => void;
