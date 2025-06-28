@@ -111,6 +111,12 @@ export const useDataSubmission = (
       peakFormValue,
     };
 
+    toast.info("描画処理を開始しました", {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: true,
+    });
+
     const resData = await fetchCreateFigure(
       isPython || onlyPythonList.includes(pageName as PageName)
         ? FLASK_ROOT_URL
@@ -119,8 +125,29 @@ export const useDataSubmission = (
       meaData,
       chPadPages.includes(pageName as PageName) ? activeChs : null
     );
-    if (resData) {
-      setImageResponses((prev) => [...prev, ...resData]);
+
+    if (resData && resData.job_id) {
+      const eventSource = new EventSource(
+        `${FLASK_ROOT_URL}/draw/stream/${resData.job_id}`
+      );
+      eventSource.onmessage = (event) => {
+        try {
+          const result: ImgResponse[] = JSON.parse(event.data);
+          setImageResponses((prev) => [...prev, ...result]);
+          toast.success(`${result.length}枚のグラフ描画処理が完了しました`, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+          });
+        } catch (e) {
+          console.error("SSE parse error:", e);
+        }
+        eventSource.close();
+      };
+      eventSource.onerror = (e) => {
+        console.error("SSE error:", e);
+        eventSource.close();
+      };
     }
   };
 

@@ -1,15 +1,13 @@
 from dataclasses import dataclass
 
 import numpy as np
-from flask import jsonify
-from pyMEA import MEA, FigMEA
-from pyMEA.core.Electrode import Electrode
-from pyMEA.read.model.HedPath import HedPath
-
 from enums.FigType import FigType
 from model.FigRequest import FigRequest
 from model.form_value import FormValue
 from model.peak_form_value import PeakFormValue
+from pyMEA import MEA, FigMEA
+from pyMEA.core.Electrode import Electrode
+from pyMEA.read.model.HedPath import HedPath
 from repository.fig_image_repository import FigImageRepository
 from service.fig_service import FigService
 from service.FigDispatchService import FigDispatchService
@@ -35,7 +33,7 @@ class FigUseCase:
         # 永続化
         fig_images = MinioService.saves(image_data_list)
         res = [FigImageRepository.insert(fig_image) for fig_image in fig_images]
-        return jsonify(res), 200
+        return res
 
 
 def create_time_data(data, form_value: FormValue):

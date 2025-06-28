@@ -46,7 +46,8 @@ export const fetchCreateFigure = async (
       method: "POST",
       body: formData, // ヘッダーのContent-TypeはFormDataに任せる
     });
-    const resData: ImgResponse[] = await res.json();
+    const resData = await res.json();
+    // job_idのみ返す
     return resData;
   } catch (e) {
     console.error(e);
