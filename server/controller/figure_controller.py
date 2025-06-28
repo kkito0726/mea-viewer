@@ -43,6 +43,7 @@ def draw_stream(job_id):
                 if not isinstance(data, str):
                     data = json.dumps(data, ensure_ascii=False)
                 yield f"data: {data}\n\n"
+                del jobs[job_id]
                 break
             time.sleep(1)
 
