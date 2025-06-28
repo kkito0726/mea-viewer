@@ -28,7 +28,6 @@ export const useDataSubmission = (
   const [values, setValues] = useState<ChFormValue>(initChFormValue(pageName));
 
   const [imageResponses, setImageResponses] = useState<ImgResponse[]>([]);
-  const [isPost, setIsPost] = useState<boolean>(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -78,9 +77,7 @@ export const useDataSubmission = (
       });
       return;
     }
-    setIsPost(true);
     await handleFetch();
-    setIsPost(false);
   };
 
   const handleRemoveImg = async (index: number) => {
@@ -155,7 +152,6 @@ export const useDataSubmission = (
     values,
     imageResponses,
     setImageResponses,
-    isPost,
     handleChange,
     handleInitialize,
     handleSubmit,
