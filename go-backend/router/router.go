@@ -38,6 +38,7 @@ func SetupRouter() *gin.Engine {
 	router.DELETE(FIG_BASE_URL+"/all/:figType", controller.DeleteAllImagesController)
 
 	router.POST("/draw", controller.CreateFigController)
+	router.GET("/draw/stream/:job_id", controller.CreateFigStreamController)
 
 	return router
 }

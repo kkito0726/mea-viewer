@@ -113,11 +113,13 @@ export const useDataSubmission = (
       autoClose: 1000,
       hideProgressBar: true,
     });
-
-    const resData = await fetchCreateFigure(
+    const rootUrl =
       isPython || onlyPythonList.includes(pageName as PageName)
         ? FLASK_ROOT_URL
-        : GIN_ROOT_URL,
+        : GIN_ROOT_URL;
+
+    const resData = await fetchCreateFigure(
+      rootUrl,
       peakRequestEntity,
       meaData,
       chPadPages.includes(pageName as PageName) ? activeChs : null
@@ -125,7 +127,7 @@ export const useDataSubmission = (
 
     if (resData && resData.job_id) {
       const eventSource = new EventSource(
-        `${FLASK_ROOT_URL}/draw/stream/${resData.job_id}`
+        `${rootUrl}/draw/stream/${resData.job_id}`
       );
       eventSource.onmessage = (event) => {
         try {
