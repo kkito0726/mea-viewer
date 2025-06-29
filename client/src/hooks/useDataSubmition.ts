@@ -28,6 +28,7 @@ export const useDataSubmission = (
   const [values, setValues] = useState<ChFormValue>(initChFormValue(pageName));
 
   const [imageResponses, setImageResponses] = useState<ImgResponse[]>([]);
+  const [disabled, setDisabled] = useState<boolean>(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -53,8 +54,13 @@ export const useDataSubmission = (
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (disabled) {
+      return;
+    }
+    setDisabled(true);
     if (!meaData[0]) {
       alert("MEAデータが読み込まれていません");
+      setDisabled(false);
       return;
     }
     if (chPadPages.includes(pageName) && activeChs.length === 0) {
@@ -63,6 +69,7 @@ export const useDataSubmission = (
         autoClose: 1000,
         hideProgressBar: true,
       });
+      setDisabled(false);
       return;
     }
     if (
@@ -75,9 +82,13 @@ export const useDataSubmission = (
         autoClose: 1500,
         hideProgressBar: true,
       });
+      setDisabled(false);
       return;
     }
-    await handleFetch();
+
+    const wait = new Promise((resolve) => setTimeout(resolve, 2000));
+    await Promise.race([handleFetch(), wait]);
+    setDisabled(false);
   };
 
   const handleRemoveImg = async (index: number) => {
@@ -99,7 +110,7 @@ export const useDataSubmission = (
         start: readTime.start,
         end: readTime.end,
       },
-      hedValue: hedValue,
+      hedValue,
       filename: fileName,
       ...values,
     };
@@ -113,6 +124,7 @@ export const useDataSubmission = (
       autoClose: 1000,
       hideProgressBar: true,
     });
+
     const rootUrl =
       isPython || onlyPythonList.includes(pageName as PageName)
         ? FLASK_ROOT_URL
@@ -125,28 +137,35 @@ export const useDataSubmission = (
       chPadPages.includes(pageName as PageName) ? activeChs : null
     );
 
-    if (resData && resData.job_id) {
-      const eventSource = new EventSource(
-        `${rootUrl}/draw/stream/${resData.job_id}`
-      );
-      eventSource.onmessage = (event) => {
-        try {
-          const result: ImgResponse[] = JSON.parse(event.data);
-          setImageResponses((prev) => [...prev, ...result]);
-          toast.success(`${result.length}枚のグラフ描画処理が完了しました`, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: true,
-          });
-        } catch (e) {
-          console.error("SSE parse error:", e);
-        }
-        eventSource.close();
-      };
-      eventSource.onerror = (e) => {
-        console.error("SSE error:", e);
-        eventSource.close();
-      };
+    // resData.job_id があるなら SSE を Promise 化して返す
+    if (resData?.job_id) {
+      return new Promise<void>((resolve) => {
+        const eventSource = new EventSource(
+          `${rootUrl}/draw/stream/${resData.job_id}`
+        );
+
+        eventSource.onmessage = (event) => {
+          try {
+            const result: ImgResponse[] = JSON.parse(event.data);
+            setImageResponses((prev) => [...prev, ...result]);
+            toast.success(`${result.length}枚のグラフ描画処理が完了しました`, {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: true,
+            });
+          } catch (e) {
+            console.error("SSE parse error:", e);
+          }
+          eventSource.close();
+          resolve(); // SSE完了として扱う
+        };
+
+        eventSource.onerror = (e) => {
+          console.error("SSE error:", e);
+          eventSource.close();
+          resolve(); // エラーでも resolve してボタンは再有効化
+        };
+      });
     }
   };
 
