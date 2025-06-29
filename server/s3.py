@@ -1,6 +1,5 @@
-from minio import Minio
-
 import settings
+from minio import Minio
 
 minio_client = Minio(
     settings.MINIO_HOST,

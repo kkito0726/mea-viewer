@@ -45,7 +45,6 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     values,
     imageResponses,
     setImageResponses,
-    isPost,
     handleChange,
     handleInitialize,
     handleSubmit,
@@ -131,11 +130,7 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
         />
       </div>
       <div className="overflow-y-auto">
-        <ResFigure
-          isPost={isPost}
-          imgs={imageResponses}
-          handleRemoveImg={handleRemoveImg}
-        />
+        <ResFigure imgs={imageResponses} handleRemoveImg={handleRemoveImg} />
       </div>
       {imageResponses.length ? (
         <button

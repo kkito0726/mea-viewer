@@ -1,4 +1,3 @@
-import { Processing } from "../../Processing";
 import CancelIcon from "@mui/icons-material/Cancel";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast, ToastContainer } from "react-toastify";
@@ -8,15 +7,10 @@ import { ImgResponse } from "../../../types/ImgResponse";
 import { BodyMainLogo } from "../../molecule/BodyMainLogo";
 
 type FigureProps = {
-  isPost: boolean;
   imgs: ImgResponse[];
   handleRemoveImg: (index: number) => void;
 };
-export const ResFigure: React.FC<FigureProps> = ({
-  isPost,
-  imgs,
-  handleRemoveImg,
-}) => {
+export const ResFigure: React.FC<FigureProps> = ({ imgs, handleRemoveImg }) => {
   const handleCopyToClipboard = async (img_url: string) => {
     try {
       const blob = await fetch(img_url).then((r) => r.blob());
@@ -45,7 +39,6 @@ export const ResFigure: React.FC<FigureProps> = ({
       <ToastContainer />
 
       <div className="flex flex-col">
-        {isPost ? <Processing message="処理中です..." /> : null}
         {imgs.length > 0 ? (
           imgs.map((img, i) => {
             return (
@@ -87,7 +80,7 @@ export const ResFigure: React.FC<FigureProps> = ({
               </div>
             );
           })
-        ) : isPost ? null : (
+        ) : (
           <BodyMainLogo />
         )}
       </div>
