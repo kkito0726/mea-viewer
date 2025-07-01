@@ -119,7 +119,7 @@ class FigService:
         )
         image_bufs = self.fm.draw_line_conduction(
             peak_index=peak_index,
-            chs=self.form_value.chs,
+            amc_chs=self.form_value.chs,
             base_ch=self.peak_form_value.base_ch,
             isLoop=self.peak_form_value.isLoop,
             isBuf=True,
