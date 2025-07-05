@@ -11,7 +11,7 @@ from model.form_value import FormValue
 from usecase.FigUseCase import complete_data
 
 
-class MyTestCase(unittest.TestCase):
+class CompleteDataTest(unittest.TestCase):
     def setUp(self):
         self.path = get_resource_path("230615_day2_test_5s_.hed")
         self.mea = read_MEA(self.path.__str__(), 0, 1, 450)
