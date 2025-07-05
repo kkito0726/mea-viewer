@@ -1,12 +1,13 @@
 import importlib.metadata
 import logging
 
+from flask import Flask
+from flask_cors import CORS
+
 import db
 from config import config
 from controller.figure_controller import figure
 from controller.health_controller import health
-from flask import Flask
-from flask_cors import CORS
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
