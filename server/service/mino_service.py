@@ -1,6 +1,7 @@
 import json
 
 from flask import request
+
 from model.FigImage import FigImage
 from model.FigImageData import FigImageData
 from repository.minio_repository import MinioRepository

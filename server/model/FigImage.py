@@ -1,7 +1,8 @@
 from datetime import datetime
 
-from db import db, ma
 from sqlalchemy import DateTime
+
+from db import db, ma
 
 
 class FigImage(db.Model):

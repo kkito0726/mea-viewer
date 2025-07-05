@@ -6,6 +6,15 @@
     // ファイルの保存時にフォーマットを自動実行する場合
     "editor.formatOnSave": true
   },
-  "cSpell.words": ["gorm", "jsonify", "kkito", "Topbar", "Toppage", "usecase"],
+  "cSpell.words": [
+    "bufs",
+    "figsize",
+    "gorm",
+    "jsonify",
+    "kkito",
+    "Topbar",
+    "Toppage",
+    "usecase"
+  ],
   "flake8.args": ["--max-line-length=150", "--ignore=E203, E741,W503"]
 }
