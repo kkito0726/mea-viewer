@@ -10,6 +10,7 @@ import { PagePath } from "./enum/PagePath";
 import { SharedMeaProvider } from "./components/SharedMEA";
 import { PlotPeaks } from "./pages/PlotPeaks";
 import { DrawLine } from "./pages/DrawLine";
+import { Login } from "./pages/Login";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Router>
           <Routes>
             <Route path={PagePath.ROOT} element={<Toppage />} />
+            <Route path={PagePath.LOGIN} element={<Login />} />
             <Route path={PagePath.SHOW_ALL} element={<ShowAll />} />
             <Route path={PagePath.SHOW_SINGLE} element={<ShowSingle />} />
             <Route path={PagePath.SHOW_DETECTION} element={<ShowDetection />} />

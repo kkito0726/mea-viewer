@@ -1,5 +1,6 @@
 export const enum PagePath {
   ROOT = "/",
+  LOGIN = "/login",
   SHOW_ALL = "/showAll",
   SHOW_SINGLE = "/showSingle",
   SHOW_DETECTION = "/showDetection",
