@@ -15,7 +15,13 @@ export const Topbar: React.FC<TopbarProps> = ({ displayName }) => {
       </Link>
       <span className="text-green-400 ml-32">{displayName}</span>
 
-      <div className="text-slate-200">LaRC FB Hosei Univ.</div>
+      <div className="text-slate-200">
+        <Link to={"/login"}>
+          <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            Logout
+          </button>
+        </Link>
+      </div>
     </div>
   );
 };
