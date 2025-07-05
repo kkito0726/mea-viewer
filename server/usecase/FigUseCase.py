@@ -51,15 +51,20 @@ def complete_data(data, form_value: FormValue):
     if len(data) == 65:
         return data
 
+    # 入力チャンネルとデータの辞書を作成
+    input_data = {}
+    for i, ch in enumerate(form_value.chs):
+        input_data[ch] = data[i + 1]
+
+    # 電位データを1で初期化
     length = len(data[0])
     result = np.ones((65, length), dtype=data[0].dtype)
-    result[0] = data[0]
+    result[0] = data[0]  # 時刻データ代入
 
-    index = 1
+    # 入力のあったchの電位データを入力
     for ch in range(1, 65):
         if ch in set(form_value.chs):
-            result[ch] = data[index]
-            index += 1
+            result[ch] = input_data[ch]
     return result
 
 
