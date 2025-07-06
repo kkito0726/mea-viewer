@@ -12,20 +12,17 @@ import (
 var userService = service.NewUserService(&repository.UserRepository{})
 
 func CreateUserController(c *gin.Context) {
-	var header model.Header
-	if err := c.ShouldBindHeader(&header); err != nil {
+	userID := c.MustGet("userID").(uint)
+	token := c.MustGet("token").(string)
+
+	var createUserRequest model.CreateUserRequest
+
+	if err := c.ShouldBindBodyWithJSON(&createUserRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	var newUser model.User
-
-	if err := c.ShouldBindBodyWithJSON(&newUser); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	userResponse, err := userService.CreateUser(&header, &newUser)
+	userResponse, err := userService.CreateUser(userID, token, &createUserRequest)
 	if err != nil {
 		err.Logging()
 		c.JSON(err.StatusCode, gin.H{"error": err})
@@ -52,12 +49,10 @@ func LoginUserController(c *gin.Context) {
 }
 
 func LogoutUserController(c *gin.Context) {
-	var header model.Header
-	if err := c.ShouldBindHeader(&header); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	if err := userService.LogoutUser(&header); err != nil {
+	userID := c.MustGet("userID").(uint)
+	token := c.MustGet("token").(string)
+
+	if err := userService.LogoutUser(userID, token); err != nil {
 		err.Logging()
 		c.JSON(err.StatusCode, gin.H{"error": err})
 	}
@@ -65,36 +60,54 @@ func LogoutUserController(c *gin.Context) {
 }
 
 func UpdateUserController(c *gin.Context) {
-	var header model.Header
-	if err := c.ShouldBindHeader(&header); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	userID := c.MustGet("userID").(uint)
+	token := c.MustGet("token").(string)
+
 	var newUser model.User
 	if err := c.ShouldBindBodyWithJSON(&newUser); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	userResponse, err := userService.UpdateUser(&header, newUser)
+
+	targetUserID := c.Param("id")
+
+	userResponse, err := userService.UpdateUser(userID, token, &newUser, targetUserID)
 	if err != nil {
 		err.Logging()
 		c.JSON(err.StatusCode, gin.H{"error": err})
+		return
 	}
 
 	c.JSON(http.StatusOK, userResponse)
 }
 
 func DeleteUserController(c *gin.Context) {
-	var header model.Header
-	if err := c.ShouldBindHeader(&header); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	if err := userService.DeleteUser(&header); err != nil {
+	userID := c.MustGet("userID").(uint)
+	token := c.MustGet("token").(string)
+
+	if err := userService.DeleteUser(userID, token); err != nil {
 		err.Logging()
 		c.JSON(err.StatusCode, gin.H{"error": err})
 		return
 	}
 
 	c.JSON(http.StatusNoContent, nil)
+}
+
+func UpdatePasswordController(c *gin.Context) {
+	userID := c.MustGet("userID").(uint)
+
+	var req model.ResetPasswordRequest
+	if err := c.ShouldBindBodyWithJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := userService.UpdatePassword(userID, &req); err != nil {
+		err.Logging()
+		c.JSON(err.StatusCode, gin.H{"error": err})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Password reset successfully"})
 }

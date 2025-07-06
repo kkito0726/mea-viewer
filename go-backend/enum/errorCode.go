@@ -16,6 +16,7 @@ const (
 	C009
 	C010
 	C011
+	C012
 
 	F001
 	F002
@@ -107,6 +108,8 @@ func (ec ErrorCode) Message() string {
 		return "ユーザー削除に失敗しました"
 	case C011:
 		return "ログインユーザーにはこの操作の権限が存在しません"
+	case C012:
+		return "パスワードが一致しません"
 
 	case F001:
 		return "画像ストレージの削除に失敗しました"
