@@ -1,12 +1,16 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"github.com/kkito0726/mea-viewer/enum"
+	"gorm.io/gorm"
+)
 
 type User struct {
 	gorm.Model
 	Name          string        `json:"name" gorm:"unique" binding:"required"`
 	Email         string        `json:"email" binding:"required,email"`
 	Password      string        `json:"password" binding:"required"`
+	Role          enum.Role     `json:"role" gorm:"default:'app_user'"`
 	UserAuthToken UserAuthToken `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 

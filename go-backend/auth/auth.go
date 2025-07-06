@@ -6,6 +6,8 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+const EXPIRATION_YEAR = 4
+
 var jwtKey = []byte("my_secret_key")
 
 type Claims struct {
@@ -14,7 +16,7 @@ type Claims struct {
 }
 
 func GenerateJWT(userID uint) (string, error) {
-	expirationTime := time.Now().Add(24 * time.Hour)
+	expirationTime := time.Now().Add(EXPIRATION_YEAR * 365 * 24 * time.Hour)
 	claims := &Claims{
 		UserID: userID,
 		StandardClaims: jwt.StandardClaims{

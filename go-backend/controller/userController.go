@@ -12,6 +12,12 @@ import (
 var userService = service.NewUserService(&repository.UserRepository{})
 
 func CreateUserController(c *gin.Context) {
+	var header model.Header
+	if err := c.ShouldBindHeader(&header); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	var newUser model.User
 
 	if err := c.ShouldBindBodyWithJSON(&newUser); err != nil {
@@ -19,7 +25,7 @@ func CreateUserController(c *gin.Context) {
 		return
 	}
 
-	userResponse, err := userService.CreateUser(&newUser)
+	userResponse, err := userService.CreateUser(&header, &newUser)
 	if err != nil {
 		err.Logging()
 		c.JSON(err.StatusCode, gin.H{"error": err})

@@ -20,7 +20,21 @@ func NewUserService(repo *repository.UserRepository) *UserService {
 	}
 }
 
-func (s *UserService) CreateUser(newUser *model.User) (*model.UserResponse, *errors.CustomError) {
+func (s *UserService) CreateUser(header *model.Header, newUser *model.User) (*model.UserResponse, *errors.CustomError) {
+	// 認証チェック
+	if err := s.AuthUser(header); err != nil {
+		return nil, err
+	}
+
+	// ロールチェック
+	requestUser, err := s.UserRepository.GetUserById(header.UserID)
+	if err != nil {
+		return nil, errors.NotFoundError(enum.C006)
+	}
+	if requestUser.Role != enum.AppUser {
+		return nil, errors.ForbiddenError(enum.C011)
+	}
+
 	// ユーザーの重複チェック
 	if err := userDomainService.CheckUserConflict(newUser); err != nil {
 		return nil, err
