@@ -37,6 +37,7 @@ func SetupRouter() *gin.Engine {
 		authRequired.DELETE("/logout", controller.LogoutUserController)
 		authRequired.PUT("/:id", controller.UpdateUserController)
 		authRequired.PUT("/password", controller.UpdatePasswordController)
+		authRequired.PUT("/initialize-password/:id", controller.InitializePasswordController)
 		authRequired.DELETE("", controller.DeleteUserController)
 	}
 

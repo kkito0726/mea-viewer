@@ -202,3 +202,41 @@ func (s *UserService) UpdatePassword(userID uint, req *model.ResetPasswordReques
 
 	return nil
 }
+
+func (s *UserService) InitializePassword(requestUserID uint, targetUserIDStr string) (string, *errors.CustomError) {
+	// ロールチェック
+	requestUser, err := s.UserRepository.GetUserById(requestUserID)
+	if err != nil {
+		return "", errors.NotFoundError(enum.C006)
+	}
+	if requestUser.Role != enum.SystemAdmin && requestUser.Role != enum.Admin {
+		return "", errors.ForbiddenError(enum.C011)
+	}
+
+	// 更新対象のユーザーIDを数値に変換
+	targetUserID, convErr := strconv.ParseUint(targetUserIDStr, 10, 32)
+	if convErr != nil {
+		return "", errors.BadRequestError(enum.C001)
+	}
+
+	// 対象ユーザーの情報を取得
+	targetUser, err := s.UserRepository.GetUserById(uint(targetUserID))
+	if err != nil {
+		return "", errors.NotFoundError(enum.C006)
+	}
+
+	// パスワードをランダムに生成
+	b := make([]byte, 10)
+	if _, err := rand.Read(b); err != nil {
+		return "", errors.ServerError(enum.C003)
+	}
+	newPassword := base64.URLEncoding.EncodeToString(b)
+
+	// パスワードを更新
+	targetUser.Password = newPassword
+	if err := s.UserRepository.UpdateUser(targetUser); err != nil {
+		return "", errors.ServerError(enum.C009)
+	}
+
+	return newPassword, nil
+}

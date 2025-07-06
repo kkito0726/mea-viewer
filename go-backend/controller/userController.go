@@ -111,3 +111,17 @@ func UpdatePasswordController(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Password reset successfully"})
 }
+
+func InitializePasswordController(c *gin.Context) {
+	requestUserID := c.MustGet("userID").(uint)
+	targetUserIDStr := c.Param("id")
+
+	newPassword, err := userService.InitializePassword(requestUserID, targetUserIDStr)
+	if err != nil {
+		err.Logging()
+		c.JSON(err.StatusCode, gin.H{"error": err})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Password initialized successfully", "new_password": newPassword})
+}
