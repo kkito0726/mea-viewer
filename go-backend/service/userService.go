@@ -78,6 +78,7 @@ func (s *UserService) CreateUser(requestUserID uint, requestToken string, create
 		Name:     newUser.Name,
 		Email:    newUser.Email,
 		Password: password,
+		Role:     newUser.Role,
 		Token:    newUserAuthToken.Token,
 	}, nil
 }
