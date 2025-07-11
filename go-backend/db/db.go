@@ -12,7 +12,7 @@ import (
 
 var DB *gorm.DB
 
-func init() {
+func ConnectDB() {
 	env := config.Env{}
 	config.ParseEnv(&env)
 	connectInfo := fmt.Sprintf(
@@ -24,11 +24,11 @@ func init() {
 		env.MYSQL_DB,
 	)
 	fmt.Println(env.MYSQL_HOST)
-	db, err := gorm.Open("mysql", connectInfo)
+	dbConn, err := gorm.Open("mysql", connectInfo)
 	if err != nil {
 		log.Fatalf("Got error when connect database, the error is '%v'", err)
 	}
-	DB = db
+	DB = dbConn
 }
 
 func Migrate() {

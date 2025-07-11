@@ -21,6 +21,8 @@ func TestCreateUserNormal(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	r := router.SetupRouter()
+	db.ConnectDB()
+	defer db.DB.Close()
 
 	// テストケース
 	testCases := []struct {
@@ -102,6 +104,8 @@ func TestCreateUserAbnormal(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	r := router.SetupRouter()
+	db.ConnectDB()
+	defer db.DB.Close()
 
 	// テストケース
 	testCases := []struct {

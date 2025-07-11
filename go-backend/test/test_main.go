@@ -9,9 +9,8 @@ import (
 )
 
 func TestMain(m *testing.M) {
-
-	dbInstance := db.DB
-	defer dbInstance.Close()
+	db.ConnectDB()
+	defer db.DB.Close()
 	db.Migrate()
 
 	code := m.Run()

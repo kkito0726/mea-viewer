@@ -106,6 +106,7 @@ func (s *UserService) LoginUser(req *model.LoginUserRequest) (*model.UserRespons
 		ID:    user.ID,
 		Name:  user.Name,
 		Email: user.Email,
+		Role:  user.Role,
 		Token: newUserAuthToken.Token,
 	}, nil
 }
@@ -179,6 +180,9 @@ func (s *UserService) UpdateUser(requestUserID uint, requestToken string, update
 
 func (s *UserService) DeleteUser(userID uint, token string) *errors.CustomError {
 	if err := s.UserRepository.DeleteUser(userID); err != nil {
+		return errors.ServerError(enum.C010)
+	}
+	if err := s.UserRepository.DeleteToken(&model.UserAuthToken{UserID: userID, Token: token}); err != nil {
 		return errors.ServerError(enum.C010)
 	}
 	return nil
