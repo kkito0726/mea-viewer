@@ -36,7 +36,7 @@ func (r *UserRepository) CreateUserToken(newUserToken *model.UserAuthToken) erro
 
 func (r *UserRepository) GetUser(req *model.LoginUserRequest) (*model.User, error) {
 	var user model.User
-	if err := db.DB.Where(&model.User{Email: req.Email, Password: req.Password}).First(&user).Error; err != nil {
+	if err := db.DB.Where(&model.User{Email: req.Email}).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
@@ -45,7 +45,6 @@ func (r *UserRepository) GetUser(req *model.LoginUserRequest) (*model.User, erro
 func (r *UserRepository) GetUserById(id uint) (*model.User, error) {
 	var user model.User
 	if err := db.DB.First(&user, id).Error; err != nil {
-		log.Fatal(err)
 		return nil, err
 	}
 	return &user, nil
@@ -77,5 +76,10 @@ func (r *UserRepository) DeleteUser(id uint) error {
 }
 
 func (r *UserRepository) DeleteToken(token *model.UserAuthToken) error {
-	return db.DB.Delete(&model.UserAuthToken{UserID: token.UserID, Token: token.Token}).Error
+	return db.DB.Unscoped().Delete(
+		&model.UserAuthToken{
+			UserID: token.UserID,
+			Token:  token.Token,
+		},
+	).Error
 }

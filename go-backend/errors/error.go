@@ -23,9 +23,18 @@ func (c *CustomError) Logging() {
 }
 
 // Status: 400
-func BadRequest(errorCode enum.ErrorCode) *CustomError {
+func BadRequestError(errorCode enum.ErrorCode) *CustomError {
 	return &CustomError{
 		StatusCode: http.StatusBadRequest,
+		ErrorCode:  errorCode.Code(),
+		Message:    errorCode.Message(),
+	}
+}
+
+// Status: 401
+func UnauthorizedError(errorCode enum.ErrorCode) *CustomError {
+	return &CustomError{
+		StatusCode: http.StatusUnauthorized,
 		ErrorCode:  errorCode.Code(),
 		Message:    errorCode.Message(),
 	}

@@ -16,6 +16,9 @@ const (
 	C009
 	C010
 	C011
+	C012
+	C013
+	C014
 
 	F001
 	F002
@@ -54,6 +57,14 @@ func (ec ErrorCode) Code() string {
 		return "C-009"
 	case C010:
 		return "C-010"
+	case C011:
+		return "C-011"
+	case C012:
+		return "C-012"
+	case C013:
+		return "C-013"
+	case C014:
+		return "C-014"
 
 	case F001:
 		return "F-001"
@@ -103,6 +114,14 @@ func (ec ErrorCode) Message() string {
 		return "ユーザー更新に失敗しました"
 	case C010:
 		return "ユーザー削除に失敗しました"
+	case C011:
+		return "ログインユーザーにはこの操作の権限が存在しません"
+	case C012:
+		return "パスワードが一致しません"
+	case C013:
+		return "リクエストの形式が正しくありません"
+	case C014:
+		return "認証に失敗しました"
 
 	case F001:
 		return "画像ストレージの削除に失敗しました"

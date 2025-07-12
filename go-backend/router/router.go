@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/kkito0726/mea-viewer/auth"
 	"github.com/kkito0726/mea-viewer/controller"
 )
 
@@ -27,12 +28,20 @@ func SetupRouter() *gin.Engine {
 
 	router.GET("", controller.HealthController)
 
-	router.POST(USER_BASE_URL, controller.CreateUserController)
 	router.POST(USER_BASE_URL+"/login", controller.LoginUserController)
-	router.DELETE(USER_BASE_URL+"/logout", controller.LogoutUserController)
-	router.PUT(USER_BASE_URL, controller.UpdateUserController)
-	router.DELETE(USER_BASE_URL, controller.DeleteUserController)
 
+	authRequired := router.Group(USER_BASE_URL)
+	authRequired.Use(auth.AuthMiddleware())
+	{
+		authRequired.POST("", controller.CreateUserController)
+		authRequired.DELETE("/logout", controller.LogoutUserController)
+		authRequired.PUT("/:id", controller.UpdateUserController)
+		authRequired.PUT("/password", controller.UpdatePasswordController)
+		authRequired.PUT("/initialize-password/:id", controller.InitializePasswordController)
+		authRequired.DELETE("", controller.DeleteUserController)
+	}
+
+	// 現状、認証が不要なエンドポイント
 	router.GET(FIG_BASE_URL+"/:figType/:filename", controller.GetImagesController)
 	router.DELETE(FIG_BASE_URL+"/:figType", controller.DeleteImageController)
 	router.DELETE(FIG_BASE_URL+"/all/:figType", controller.DeleteAllImagesController)

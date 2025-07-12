@@ -18,7 +18,7 @@ var minioRepository = &repository.MinioRepository{}
 func FigDispatch(requestModel *RequestModel) ([]model.FigImage, *errors.CustomError) {
 	figType, err := enum.ParseFigType(requestModel.JsonData.FigType)
 	if err != nil {
-		return nil, errors.BadRequest(enum.F009)
+		return nil, errors.BadRequestError(enum.F009)
 	}
 	switch figType {
 
@@ -38,7 +38,7 @@ func FigDispatch(requestModel *RequestModel) ([]model.FigImage, *errors.CustomEr
 		return plotPeaks(requestModel)
 
 	default:
-		return nil, errors.BadRequest(enum.F009)
+		return nil, errors.BadRequestError(enum.F009)
 	}
 }
 
