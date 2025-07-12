@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kkito0726/mea-viewer/enum"
+	"github.com/kkito0726/mea-viewer/errors"
 	"github.com/kkito0726/mea-viewer/model"
 	"github.com/kkito0726/mea-viewer/repository"
 	"github.com/kkito0726/mea-viewer/service"
@@ -18,7 +20,7 @@ func CreateUserController(c *gin.Context) {
 	var createUserRequest model.CreateUserRequest
 
 	if err := c.ShouldBindBodyWithJSON(&createUserRequest); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": errors.BadRequestError(enum.C013)})
 		return
 	}
 
@@ -35,7 +37,7 @@ func CreateUserController(c *gin.Context) {
 func LoginUserController(c *gin.Context) {
 	var req model.LoginUserRequest
 	if err := c.ShouldBindBodyWithJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": errors.BadRequestError(enum.C013)})
 		return
 	}
 
@@ -43,6 +45,7 @@ func LoginUserController(c *gin.Context) {
 	if err != nil {
 		err.Logging()
 		c.JSON(err.StatusCode, gin.H{"error": err})
+		return
 	}
 
 	c.JSON(http.StatusOK, userResponse)
@@ -63,15 +66,15 @@ func UpdateUserController(c *gin.Context) {
 	userID := c.MustGet("userID").(uint)
 	token := c.MustGet("token").(string)
 
-	var newUser model.User
-	if err := c.ShouldBindBodyWithJSON(&newUser); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	var updateUserRequest model.UpdateUserRequest
+	if err := c.ShouldBindBodyWithJSON(&updateUserRequest); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": errors.BadRequestError(enum.C013)})
 		return
 	}
 
 	targetUserID := c.Param("id")
 
-	userResponse, err := userService.UpdateUser(userID, token, &newUser, targetUserID)
+	userResponse, err := userService.UpdateUser(userID, token, &updateUserRequest, targetUserID)
 	if err != nil {
 		err.Logging()
 		c.JSON(err.StatusCode, gin.H{"error": err})
@@ -99,7 +102,7 @@ func UpdatePasswordController(c *gin.Context) {
 
 	var req model.ResetPasswordRequest
 	if err := c.ShouldBindBodyWithJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": errors.BadRequestError(enum.C013)})
 		return
 	}
 

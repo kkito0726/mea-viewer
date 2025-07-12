@@ -95,7 +95,7 @@ func TestResetPasswordAbnormal(t *testing.T) {
 			name:           "無効なリクエストボディ",
 			requestBody:    gin.H{"current_password": "", "new_password": ""},
 			expectedStatus: http.StatusBadRequest,
-			errorCode:      "C-001", // 例: バリデーションエラーのコード
+			errorCode:      "C-013", // 例: バリデーションエラーのコード
 			errorMessage:   "リクエストの形式が正しくありません",
 			requestUser:    &model.User{Name: "reset_user_3", Email: "reset_user_3@example.com", Password: "password", Role: enum.AppUser},
 		},

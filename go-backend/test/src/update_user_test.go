@@ -39,7 +39,7 @@ func TestUpdateUserNormal(t *testing.T) {
 	}{
 		{
 			name:           "自身の情報を更新（名前とメールアドレス）",
-			requestBody:    gin.H{"name": "updated_name", "email": "updated_email@example.com"},
+			requestBody:    gin.H{"name": "updated_name", "email": "updated_email@example.com", "role": "app_user"},
 			expectedStatus: http.StatusOK,
 			expectedName:   "updated_name",
 			expectedEmail:  "updated_email@example.com",
@@ -49,7 +49,7 @@ func TestUpdateUserNormal(t *testing.T) {
 		},
 		{
 			name:           "システム管理者が他のユーザーのロールをAdminに更新",
-			requestBody:    gin.H{"role": enum.Admin},
+			requestBody:    gin.H{"name": "sys_admin_update", "email": "sys_admin_update@example.com", "role": enum.Admin},
 			expectedStatus: http.StatusOK,
 			expectedName:   "other_user",
 			expectedEmail:  "other_user@example.com",
@@ -59,7 +59,7 @@ func TestUpdateUserNormal(t *testing.T) {
 		},
 		{
 			name:           "管理者が他のユーザーのロールをAppUserに更新",
-			requestBody:    gin.H{"role": enum.AppUser},
+			requestBody:    gin.H{"name": "admin_update", "email": "admin_update@example.com", "role": enum.AppUser},
 			expectedStatus: http.StatusOK,
 			expectedName:   "another_user",
 			expectedEmail:  "another_user@example.com",

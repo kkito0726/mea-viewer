@@ -124,14 +124,14 @@ func TestCreateUserAbnormal(t *testing.T) {
 			errorMessage:   "ログインユーザーにはこの操作の権限が存在しません",
 			requestUser:    &model.User{Name: "app_user", Email: "app_user@example.com", Password: "password", Role: enum.AppUser},
 		},
-		// {
-		// 	name:           "無効なリクエストボディ",
-		// 	requestBody:    gin.H{"name": "", "email": "invalid-email", "role": enum.AppUser},
-		// 	expectedStatus: http.StatusBadRequest,
-		// 	errorCode:      "C-011",
-		// 	errorMessage:   "ログインユーザーにはこの操作の権限が存在しません",
-		// 	requestUser:    &model.User{Name: "sys_admin_2", Email: "sys_admin_2@example.com", Password: "password", Role: enum.SystemAdmin},
-		// },
+		{
+			name:           "無効なリクエストボディ",
+			requestBody:    gin.H{"name": "", "email": "invalid-email", "role": enum.AppUser},
+			expectedStatus: http.StatusBadRequest,
+			errorCode:      "C-013",
+			errorMessage:   "リクエストの形式が正しくありません",
+			requestUser:    &model.User{Name: "sys_admin_2", Email: "sys_admin_2@example.com", Password: "password", Role: enum.SystemAdmin},
+		},
 		{
 			name:           "重複するメールアドレス",
 			requestBody:    gin.H{"name": "test_user_4", "email": "same_address@example.com", "role": enum.AppUser},

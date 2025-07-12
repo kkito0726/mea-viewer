@@ -88,6 +88,11 @@ func (s *UserService) LoginUser(req *model.LoginUserRequest) (*model.UserRespons
 	if err != nil {
 		return nil, errors.NotFoundError(enum.C006)
 	}
+
+	// パスワード確認
+	if user.Password != req.Password {
+		return nil, errors.ForbiddenError(enum.C014)
+	}
 	// Token生成
 	token, err := auth.GenerateJWT(user.ID)
 	if err != nil {
@@ -118,7 +123,7 @@ func (s *UserService) LogoutUser(userID uint, token string) *errors.CustomError 
 	return nil
 }
 
-func (s *UserService) UpdateUser(requestUserID uint, requestToken string, updatedUser *model.User, targetUserIDStr string) (*model.UserResponse, *errors.CustomError) {
+func (s *UserService) UpdateUser(requestUserID uint, requestToken string, updatedUserRequest *model.UpdateUserRequest, targetUserIDStr string) (*model.UserResponse, *errors.CustomError) {
 	// リクエスト元のユーザー情報を取得
 	requestUser, err := s.UserRepository.GetUserById(requestUserID)
 	if err != nil {
@@ -139,11 +144,11 @@ func (s *UserService) UpdateUser(requestUserID uint, requestToken string, update
 
 	// 自分自身の情報を更新する場合
 	if requestUser.ID == targetUser.ID {
-		targetUser.Name = updatedUser.Name
-		targetUser.Email = updatedUser.Email
+		targetUser.Name = updatedUserRequest.Name
+		targetUser.Email = updatedUserRequest.Email
 		// 自身のロールがシステム管理者なら自身のロールを変更できる
 		if requestUser.Role == enum.SystemAdmin {
-			targetUser.Role = updatedUser.Role
+			targetUser.Role = updatedUserRequest.Role
 		}
 	} else { // 他のユーザーの情報を更新する場合
 		// ロール更新権限チェック
@@ -152,16 +157,11 @@ func (s *UserService) UpdateUser(requestUserID uint, requestToken string, update
 		}
 
 		// AdminがSystemAdminにロールを変更しようとした場合
-		if requestUser.Role == enum.Admin && updatedUser.Role == enum.SystemAdmin {
+		if requestUser.Role == enum.Admin && updatedUserRequest.Role == enum.SystemAdmin {
 			return nil, errors.ForbiddenError(enum.C007)
 		}
 
-		targetUser.Role = updatedUser.Role
-	}
-
-	// ユーザーの重複チェック
-	if err := userDomainService.CheckUserConflict(targetUser); err != nil {
-		return nil, err
+		targetUser.Role = updatedUserRequest.Role
 	}
 
 	// データベースに保存

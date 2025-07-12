@@ -35,9 +35,15 @@ type CreateUserRequest struct {
 	Role  enum.Role `json:"role"`
 }
 
+type UpdateUserRequest struct {
+	Name  string    `json:"name" binding:"required"`
+	Email string    `json:"email" binding:"required,email"`
+	Role  enum.Role `json:"role"`
+}
+
 type LoginUserRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
 }
 
 type ResetPasswordRequest struct {

@@ -106,7 +106,7 @@ func TestInitializePasswordAbnormal(t *testing.T) {
 			name:           "存在しないユーザーのパスワードを初期化しようとする",
 			expectedStatus: http.StatusNotFound,
 			errorCode:      "C-006",
-			errorMessage:   "ユーザーが見つかりません",
+			errorMessage:   "ユーザーが見つかりませんでした",
 			requestUser:    &model.User{Name: "sys_admin_init_2", Email: "sys_admin_init_2@example.com", Password: "password", Role: enum.SystemAdmin},
 			targetUser:     &model.User{Name: "non_existent_init", Email: "non_existent_init@example.com", Password: "password", Role: enum.AppUser},
 		},

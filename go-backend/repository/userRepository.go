@@ -36,7 +36,7 @@ func (r *UserRepository) CreateUserToken(newUserToken *model.UserAuthToken) erro
 
 func (r *UserRepository) GetUser(req *model.LoginUserRequest) (*model.User, error) {
 	var user model.User
-	if err := db.DB.Where(&model.User{Email: req.Email, Password: req.Password}).First(&user).Error; err != nil {
+	if err := db.DB.Where(&model.User{Email: req.Email}).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
