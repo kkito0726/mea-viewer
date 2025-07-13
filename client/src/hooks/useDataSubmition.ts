@@ -158,15 +158,32 @@ export const useDataSubmission = (
 
         eventSource.onmessage = (event) => {
           try {
-            const result: ImgResponse[] = JSON.parse(event.data);
-            setImageResponses((prev) => [...prev, ...result]);
-            toast.success(`${result.length}枚のグラフ描画処理が完了しました`, {
+            const data = JSON.parse(event.data);
+            if (data.error) {
+              toast.error(`描画処理中にエラーが発生しました: ${data.error}`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+              });
+            } else {
+              const result: ImgResponse[] = data;
+              setImageResponses((prev) => [...prev, ...result]);
+              toast.success(
+                `${result.length}枚のグラフ描画処理が完了しました`,
+                {
+                  position: "top-right",
+                  autoClose: 3000,
+                  hideProgressBar: true,
+                }
+              );
+            }
+          } catch (e) {
+            console.error("SSE parse error:", e);
+            toast.error("描画処理中に不明なエラーが発生しました", {
               position: "top-right",
               autoClose: 3000,
               hideProgressBar: true,
             });
-          } catch (e) {
-            console.error("SSE parse error:", e);
           }
           eventSource.close();
           resolve(); // SSE完了として扱う
@@ -174,6 +191,11 @@ export const useDataSubmission = (
 
         eventSource.onerror = (e) => {
           console.error("SSE error:", e);
+          toast.error("描画処理中にネットワークエラーが発生しました", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+          });
           eventSource.close();
           resolve(); // エラーでも resolve してボタンは再有効化
         };
