@@ -1,9 +1,15 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { initPeakFormValue, PeakFormValue } from "../types/PeakFormValue";
 
 export const usePeakFormHandler = () => {
-  const [peakFormValue, setPeakFormValue] =
-    useState<PeakFormValue>(initPeakFormValue);
+  const [peakFormValue, setPeakFormValue] = useState<PeakFormValue>(() => {
+    const stored = localStorage.getItem("peakFormValue");
+    return stored ? JSON.parse(stored) : initPeakFormValue;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("peakFormValue", JSON.stringify(peakFormValue));
+  }, [peakFormValue]);
 
   const handlePeakFormChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, type, checked, value } = e.target;

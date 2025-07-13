@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { PeakRequestEntity, RequestEntity } from "../types/requestEntity";
 import { ChFormValue, initChFormValue } from "../types/ChFormValue";
@@ -25,7 +25,19 @@ export const useDataSubmission = (
   peakFormValue: PeakFormValue,
   isPython: boolean
 ) => {
-  const [values, setValues] = useState<ChFormValue>(initChFormValue(pageName));
+  const [values, setValues] = useState<ChFormValue>(() => {
+    const stored = localStorage.getItem("chFormValue");
+    if (stored) {
+      const v: ChFormValue = JSON.parse(stored);
+      v.figType = pageName; // 現在のページのfigTypeで上書きする (ストレージが別ページのものの場合があるため)
+      return v;
+    }
+    return initChFormValue(pageName);
+  });
+
+  useEffect(() => {
+    localStorage.setItem("chFormValue", JSON.stringify(values));
+  }, [values]);
 
   const [imageResponses, setImageResponses] = useState<ImgResponse[]>([]);
   const [disabled, setDisabled] = useState<boolean>(false);

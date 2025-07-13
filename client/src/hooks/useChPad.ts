@@ -9,7 +9,7 @@ export const useChPad = () => {
     return stored ? JSON.parse(stored) : [];
   });
 
-  // 上申されるたびにlocalStorageへ保存
+  // 更新されるたびにlocalStorageへ保存
   useEffect(() => {
     localStorage.setItem("activeChs", JSON.stringify(activeChs));
   }, [activeChs]);
