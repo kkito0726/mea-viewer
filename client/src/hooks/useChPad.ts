@@ -1,19 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const useChPad = () => {
   const gridSize = 8;
   const totalButtons = gridSize * gridSize;
 
-  const [activeChs, setActiveChs] = useState<number[]>([]);
+  const [activeChs, setActiveChs] = useState<number[]>(() => {
+    const stored = localStorage.getItem("activeChs");
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  // 上申されるたびにlocalStorageへ保存
+  useEffect(() => {
+    localStorage.setItem("activeChs", JSON.stringify(activeChs));
+  }, [activeChs]);
 
   const toggleButton = (index: number) => {
     setActiveChs((prev) => {
       const buttonNumber = index + 1;
-      const currentIndex = prev.indexOf(buttonNumber);
-      if (currentIndex === -1) {
-        return [...prev, buttonNumber]; // ボタンをアクティブリストに追加
+      if (prev.includes(buttonNumber)) {
+        return prev.filter((item) => item !== buttonNumber);
       } else {
-        return prev.filter((item) => item !== buttonNumber); // ボタンをアクティブリストから削除
+        return [...prev, buttonNumber];
       }
     });
   };
