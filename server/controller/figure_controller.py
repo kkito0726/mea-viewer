@@ -26,8 +26,11 @@ def background_draw(fig_request, job_id):
     from app import app
 
     with app.app_context():
-        result = FigUseCase(fig_request).create_fig()
-        jobs[job_id] = {"status": "done", "result": result}
+        try:
+            result = FigUseCase(fig_request).create_fig()
+            jobs[job_id] = {"status": "done", "result": result}
+        except Exception as e:
+            jobs[job_id] = {"status": "failed", "result": str(e)}
 
 
 @figure.route("/draw/stream/<job_id>")
@@ -44,6 +47,10 @@ def draw_stream(job_id):
                 if not isinstance(data, str):
                     data = json.dumps(data, ensure_ascii=False)
                 yield f"data: {data}\n\n"
+                del jobs[job_id]
+                break
+            elif job and job["status"] == "failed":
+                yield f'data: {{"error": "{job["result"]}"}}\n\n'
                 del jobs[job_id]
                 break
             time.sleep(1)
