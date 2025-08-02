@@ -1,17 +1,17 @@
 import unittest
+from test.src.utils import get_resource_path
 from unittest.mock import patch
+
+import numpy as np
+from pyMEA import detect_peak_neg, read_MEA
+from pyMEA.figure.plot.plot import circuit_eles
 
 from enums.FigType import FigType
 from model.form_value import FormValue
 from model.peak_form_value import PeakFormValue
-from service.FigDispatchService import FigDispatchService
 from service.fig_service import FigService
-from test.src.utils import get_resource_path
-from pyMEA import read_MEA, detect_peak_neg
-from pyMEA.figure.plot.plot import circuit_eles
-
+from service.FigDispatchService import FigDispatchService
 from usecase.FigUseCase import complete_data, create_figMEA
-import numpy as np
 
 
 class DrawLineTest(unittest.TestCase):
@@ -121,7 +121,7 @@ class DrawLineTest(unittest.TestCase):
         mock_draw_line_conduction.assert_called_once_with(
             peak_index=peak_index,
             amc_chs=circuit_eles,
-            base_ch = 2,
+            base_ch=2,
             isLoop=False,
             dpi=100,
             isBuf=True,
@@ -182,7 +182,9 @@ class DrawLineTest(unittest.TestCase):
         )
 
     @patch("pyMEA.FigMEA.draw_line_conduction")
-    def test_環状でない_拍動周期基準電極指定なし_baseCh項目すらなし(self, mock_draw_line_conduction):
+    def test_環状でない_拍動周期基準電極指定なし_baseCh項目すらなし(
+        self, mock_draw_line_conduction
+    ):
         input_data = []
         for ch in circuit_eles:
             input_data.append(self.mea.data[ch])
@@ -234,5 +236,6 @@ class DrawLineTest(unittest.TestCase):
             isBuf=True,
         )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
