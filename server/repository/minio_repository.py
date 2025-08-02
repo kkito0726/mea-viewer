@@ -2,17 +2,23 @@ from datetime import datetime
 from urllib.parse import urlparse
 
 from s3 import minio_client
+from server.enums.FigType import FigType
 
 BUCKET_NAME = "plot-figure"
 
 
 class MinioRepository:
     @staticmethod
-    def save_image(file_type, image_buf, file_name):
+    def save_image(fig_type: FigType, image_buf, file_name):
         ensure_bucket_exists(BUCKET_NAME)
 
         now = str(datetime.today()).replace(" ", "-")
-        obj_name = f"images/{file_type}/{file_name}_{file_type}_{now}.png"
+        name_path = f"images/{fig_type.value}/{file_name}_{fig_type.value}_{now}"
+        if fig_type in fig_type.image_fig_type_list:
+            obj_name = name_path + ".png"
+        else:
+            obj_name = name_path + ".gif"
+
         minio_client.put_object(
             BUCKET_NAME,
             obj_name,
