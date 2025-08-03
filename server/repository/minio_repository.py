@@ -1,8 +1,8 @@
 from datetime import datetime
 from urllib.parse import urlparse
 
+from enums.FigType import FigType
 from s3 import minio_client
-from server.enums.FigType import FigType
 
 BUCKET_NAME = "plot-figure"
 
@@ -16,15 +16,17 @@ class MinioRepository:
         name_path = f"images/{fig_type.value}/{file_name}_{fig_type.value}_{now}"
         if fig_type in fig_type.image_fig_type_list:
             obj_name = name_path + ".png"
+            content_type = "image/png"
         else:
             obj_name = name_path + ".gif"
+            content_type = "image/gif"
 
         minio_client.put_object(
             BUCKET_NAME,
             obj_name,
             image_buf,
             length=image_buf.getbuffer().nbytes,
-            content_type="image/png",
+            content_type=content_type,
         )
 
         image_url = f"http://localhost:9000/{BUCKET_NAME}/{obj_name}"

@@ -20,7 +20,7 @@ class FigType(Enum):
     DRAW_LINE_GIF = "drawLineGif"
 
     @property
-    def image_fig_type_list():
+    def image_fig_type_list(self):
         return [
             FigType.SHOW_ALL,
             FigType.SHOW_SINGLE,

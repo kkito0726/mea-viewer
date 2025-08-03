@@ -10,7 +10,7 @@ from enums.FigType import FigType
 from model.form_value import FormValue
 from model.peak_form_value import PeakFormValue
 from service.fig_service import FigService
-from service.FigDispatchService import FigDispatchService
+from service.FigImageDispatchService import FigImageDispatchService
 from usecase.FigUseCase import complete_data, create_figMEA
 
 
@@ -61,7 +61,7 @@ class DrawLineTest(unittest.TestCase):
         peak_index = detect_peak_neg(
             fm.data, peak_form_value.distance, peak_form_value.threshold
         )
-        FigDispatchService(fig_service, fig_type).create_fig()
+        FigImageDispatchService(fig_service, fig_type).create_fig()
 
         mock_draw_line_conduction.assert_called()
         mock_draw_line_conduction.assert_called_once_with(
@@ -115,7 +115,7 @@ class DrawLineTest(unittest.TestCase):
         peak_index = detect_peak_neg(
             fm.data, peak_form_value.distance, peak_form_value.threshold
         )
-        FigDispatchService(fig_service, fig_type).create_fig()
+        FigImageDispatchService(fig_service, fig_type).create_fig()
 
         mock_draw_line_conduction.assert_called()
         mock_draw_line_conduction.assert_called_once_with(
@@ -169,7 +169,7 @@ class DrawLineTest(unittest.TestCase):
         peak_index = detect_peak_neg(
             fm.data, peak_form_value.distance, peak_form_value.threshold
         )
-        FigDispatchService(fig_service, fig_type).create_fig()
+        FigImageDispatchService(fig_service, fig_type).create_fig()
 
         mock_draw_line_conduction.assert_called()
         mock_draw_line_conduction.assert_called_once_with(
@@ -224,7 +224,7 @@ class DrawLineTest(unittest.TestCase):
         peak_index = detect_peak_neg(
             fm.data, peak_form_value.distance, peak_form_value.threshold
         )
-        FigDispatchService(fig_service, fig_type).create_fig()
+        FigImageDispatchService(fig_service, fig_type).create_fig()
 
         mock_draw_line_conduction.assert_called()
         mock_draw_line_conduction.assert_called_once_with(

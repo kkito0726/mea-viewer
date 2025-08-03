@@ -10,8 +10,7 @@ from model.FigRequest import FigRequest
 from model.form_value import FormValue
 from model.peak_form_value import PeakFormValue
 from repository.fig_image_repository import FigImageRepository
-from service.fig_service import FigService
-from service.FigDispatchService import FigDispatchService
+from service.FigDispatchServiceFactory import FigDispatchServiceFactory
 from service.mino_service import MinioService
 
 
@@ -26,10 +25,13 @@ class FigUseCase:
         completed_data = complete_data(self.fig_request.data, form_value)
 
         fm = create_figMEA(completed_data, form_value)
-        fig_service = FigService(fm, form_value, peak_form_value)
         fig_type = FigType.from_value(form_value.fig_type)
+
         # グラフ描画
-        image_data_list = FigDispatchService(fig_service, fig_type).create_fig()
+        fig_dispatch_service = FigDispatchServiceFactory.create(
+            fm, form_value, peak_form_value, fig_type
+        )
+        image_data_list = fig_dispatch_service.create_fig()
 
         # 永続化
         fig_images = MinioService.saves(image_data_list)
