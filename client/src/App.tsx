@@ -10,6 +10,9 @@ import { PagePath } from "./enum/PagePath";
 import { SharedMeaProvider } from "./components/SharedMEA";
 import { PlotPeaks } from "./pages/PlotPeaks";
 import { DrawLine } from "./pages/DrawLine";
+import { Draw2DGif } from "./pages/Draw2dGif";
+import { Draw3DGif } from "./pages/Draw3dGif";
+import { DrawLineGif } from "./pages/DrawLineGif";
 
 function App() {
   return (
@@ -26,6 +29,9 @@ function App() {
             <Route path={PagePath.DRAW_3D} element={<Draw3D />} />
             <Route path={PagePath.DRAW_LINE} element={<DrawLine />} />
             <Route path={PagePath.PLOT_PEAKS} element={<PlotPeaks />} />
+            <Route path={PagePath.DRAW_2D_GIF} element={<Draw2DGif />} />
+            <Route path={PagePath.DRAW_3D_GIF} element={<Draw3DGif />} />
+            <Route path={PagePath.DRAW_LINE_GIF} element={<DrawLineGif />} />
           </Routes>
         </Router>
       </SharedMeaProvider>

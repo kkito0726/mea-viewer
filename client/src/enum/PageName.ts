@@ -23,6 +23,10 @@ export const chPadPages: string[] = [
   PageName.RASTER_PLOT,
   PageName.DRAW_LINE,
   PageName.PLOT_PEAKS,
+  PageName.SHOW_SINGLE_GIF,
+  PageName.SHOW_DETECTION_GIF,
+  PageName.RASTER_PLOT_GIF,
+  PageName.DRAW_LINE_GIF,
 ];
 
 export const onlyPythonList = [
