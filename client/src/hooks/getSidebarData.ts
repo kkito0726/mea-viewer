@@ -7,7 +7,7 @@ type SidebarData = {
   label: string;
 };
 
-export const sidebarData: SidebarData[] = [
+export const graphSectionData: SidebarData[] = [
   {
     name: PageName.SHOW_ALL,
     link: PagePath.SHOW_ALL,
@@ -47,5 +47,43 @@ export const sidebarData: SidebarData[] = [
     name: PageName.PLOT_PEAKS,
     link: PagePath.PLOT_PEAKS,
     label: "ピーク抽出",
+  },
+];
+
+export const gifSectionData = [
+  {
+    name: PageName.SHOW_ALL_GIF,
+    link: PagePath.SHOW_ALL_GIF,
+    label: "64電極表示",
+  },
+  {
+    name: PageName.SHOW_SINGLE_GIF,
+    link: PagePath.SHOW_SINGLE_GIF,
+    label: "1電極表示",
+  },
+  {
+    name: PageName.SHOW_DETECTION_GIF,
+    link: PagePath.SHOW_DETECTION_GIF,
+    label: "積み上げ表示",
+  },
+  {
+    name: PageName.RASTER_PLOT_GIF,
+    link: PagePath.RASTER_PLOT_GIF,
+    label: "ラスタプロット",
+  },
+  {
+    name: PageName.DRAW_2D_GIF,
+    link: PagePath.DRAW_2D_GIF,
+    label: "2Dカラーマップ",
+  },
+  {
+    name: PageName.DRAW_3D_GIF,
+    link: PagePath.DRAW_3D_GIF,
+    label: "3Dカラーマップ",
+  },
+  {
+    name: PageName.DRAW_LINE_GIF,
+    link: PagePath.DRAW_LINE_GIF,
+    label: "AMCカラーマップ",
   },
 ];
