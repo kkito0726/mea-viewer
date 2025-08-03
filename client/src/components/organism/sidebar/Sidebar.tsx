@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   gifSectionData,
@@ -10,8 +10,18 @@ type SidebarProps = {
 };
 
 export const Sidebar: React.FC<SidebarProps> = ({ name }) => {
-  const [graphOpen, setGraphOpen] = useState(true);
-  const [gifOpen, setGifOpen] = useState(false);
+  const [graphOpen, setGraphOpen] = useState<boolean>(() => {
+    const stored = localStorage.getItem("graphOpen");
+    return stored ? JSON.parse(stored) : true;
+  });
+  const [gifOpen, setGifOpen] = useState<boolean>(() => {
+    const stored = localStorage.getItem("gifOpen");
+    return stored ? JSON.parse(stored) : false;
+  });
+  useEffect(() => {
+    localStorage.setItem("graphOpen", JSON.stringify(graphOpen));
+    localStorage.setItem("gifOpen", JSON.stringify(gifOpen));
+  }, [graphOpen, gifOpen]);
   const buttonCss = "ml-5 p-3 cursor-pointer hover:bg-zinc-800 ";
   const selectCss = "bg-zinc-900";
 
