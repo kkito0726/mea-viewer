@@ -1,9 +1,7 @@
 import unittest
-
-import numpy as np
-
 from test.src.utils import get_resource_path
 
+import numpy as np
 from pyMEA import read_MEA
 from pyMEA.figure.plot.plot import circuit_eles
 
@@ -50,8 +48,7 @@ class CompleteDataTest(unittest.TestCase):
         # アサーション
         for ch in circuit_eles:
             np.testing.assert_allclose(
-                actual_data[ch], self.mea.data[ch],
-                err_msg=f"Mismatch at channel {ch}"
+                actual_data[ch], self.mea.data[ch], err_msg=f"Mismatch at channel {ch}"
             )
 
     def test_入力chが順不同で入力されても電位データの整合性が保たれている(self):
@@ -89,10 +86,8 @@ class CompleteDataTest(unittest.TestCase):
         # アサーション
         for ch in input_chs:
             np.testing.assert_allclose(
-                actual_data[ch], self.mea.data[ch],
-                err_msg=f"Mismatch at channel {ch}"
+                actual_data[ch], self.mea.data[ch], err_msg=f"Mismatch at channel {ch}"
             )
-
 
 
 if __name__ == "__main__":

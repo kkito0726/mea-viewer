@@ -53,9 +53,12 @@ export const PeakForm: React.FC<PeakFormProps> = ({
               </div>
             );
           })}
-          {[PageName.DRAW_2D, PageName.DRAW_LINE].includes(
-            pageName as PageName
-          ) ? (
+          {[
+            PageName.DRAW_2D,
+            PageName.DRAW_LINE,
+            PageName.DRAW_2D_GIF,
+            PageName.DRAW_LINE_GIF,
+          ].includes(pageName as PageName) ? (
             <>
               <Checkbox
                 name="isLoop"

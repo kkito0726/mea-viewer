@@ -7,7 +7,7 @@ type SidebarData = {
   label: string;
 };
 
-export const sidebarData: SidebarData[] = [
+export const graphSectionData: SidebarData[] = [
   {
     name: PageName.SHOW_ALL,
     link: PagePath.SHOW_ALL,
@@ -47,5 +47,23 @@ export const sidebarData: SidebarData[] = [
     name: PageName.PLOT_PEAKS,
     link: PagePath.PLOT_PEAKS,
     label: "ピーク抽出",
+  },
+];
+
+export const gifSectionData = [
+  {
+    name: PageName.DRAW_2D_GIF,
+    link: PagePath.DRAW_2D_GIF,
+    label: "2Dカラーマップ",
+  },
+  {
+    name: PageName.DRAW_3D_GIF,
+    link: PagePath.DRAW_3D_GIF,
+    label: "3Dカラーマップ",
+  },
+  {
+    name: PageName.DRAW_LINE_GIF,
+    link: PagePath.DRAW_LINE_GIF,
+    label: "AMCカラーマップ",
   },
 ];

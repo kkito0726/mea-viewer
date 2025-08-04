@@ -7,6 +7,14 @@ export const enum PageName {
   DRAW_3D = "draw3d",
   DRAW_LINE = "drawLine",
   PLOT_PEAKS = "plotPeaks",
+
+  SHOW_ALL_GIF = "showAllGif",
+  SHOW_SINGLE_GIF = "showSingleGif",
+  SHOW_DETECTION_GIF = "showDetectionGif",
+  RASTER_PLOT_GIF = "rasterPlotGif",
+  DRAW_2D_GIF = "draw2dGif",
+  DRAW_3D_GIF = "draw3dGif",
+  DRAW_LINE_GIF = "drawLineGif",
 }
 
 export const chPadPages: string[] = [
@@ -15,6 +23,10 @@ export const chPadPages: string[] = [
   PageName.RASTER_PLOT,
   PageName.DRAW_LINE,
   PageName.PLOT_PEAKS,
+  PageName.SHOW_SINGLE_GIF,
+  PageName.SHOW_DETECTION_GIF,
+  PageName.RASTER_PLOT_GIF,
+  PageName.DRAW_LINE_GIF,
 ];
 
 export const onlyPythonList = [
