@@ -22,7 +22,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ name }) => {
     localStorage.setItem("graphOpen", JSON.stringify(graphOpen));
     localStorage.setItem("gifOpen", JSON.stringify(gifOpen));
   }, [graphOpen, gifOpen]);
-  const buttonCss = "ml-5 p-3 cursor-pointer hover:bg-zinc-800 ";
+  const buttonCss = "pl-8 p-3 cursor-pointer hover:bg-zinc-800 ";
   const selectCss = "bg-zinc-900";
 
   return (
