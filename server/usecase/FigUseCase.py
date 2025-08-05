@@ -9,6 +9,7 @@ from enums.FigType import FigType
 from model.FigRequest import FigRequest
 from model.form_value import FormValue
 from model.peak_form_value import PeakFormValue
+from model.video_form_value import VideoFormValue
 from repository.fig_image_repository import FigImageRepository
 from service.FigDispatchServiceFactory import FigDispatchServiceFactory
 from service.mino_service import MinioService
@@ -22,14 +23,13 @@ class FigUseCase:
         # 入力データ読み込み
         form_value = FormValue(self.fig_request.json_data)
         peak_form_value = PeakFormValue(self.fig_request.json_data)
+        video_form_value = VideoFormValue(self.fig_request.json_data)
         completed_data = complete_data(self.fig_request.data, form_value)
 
-        fm = create_figMEA(completed_data, form_value)
-        fig_type = FigType.from_value(form_value.fig_type)
-
         # グラフ描画
+        fm = create_figMEA(completed_data, form_value)
         fig_dispatch_service = FigDispatchServiceFactory.create(
-            fm, form_value, peak_form_value, fig_type
+            fm, form_value, peak_form_value, video_form_value
         )
         image_data_list = fig_dispatch_service.create_fig()
 

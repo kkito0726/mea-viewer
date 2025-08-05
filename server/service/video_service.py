@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 
-from pyMEA import FigMEA, detect_peak_neg
+from pyMEA import FigMEA, VideoMEA, detect_peak_neg
 
 from enums.FigType import FigType
 from lib.bufferUtil import bytesio_list_to_gif
 from model.FigImageData import FigImageData
 from model.form_value import FormValue
 from model.peak_form_value import PeakFormValue
+from model.video_form_value import VideoFormValue
 
 
 @dataclass(frozen=True)
@@ -14,6 +15,39 @@ class VideoService:
     fm: FigMEA
     form_value: FormValue
     peak_form_value: PeakFormValue
+    video_form_value: VideoFormValue
+
+    def showSingle(self):
+        fig_images = [
+            self.fm.showSingle(
+                self.form_value.chs[0],
+                self.form_value.start + i * self.video_form_value.duration,
+                self.form_value.start
+                + self.video_form_value.window_time
+                + i * self.video_form_value.duration,
+                isBuf=True,
+                dpi=100,
+            )
+            for i in range(
+                int(
+                    (
+                        self.form_value.end
+                        - self.form_value.start
+                        - self.video_form_value.window_time
+                    )
+                    / self.video_form_value.duration
+                )
+                + 1
+            )
+        ]
+        video = VideoMEA(fig_images)
+        gif_buf = bytesio_list_to_gif(video.buf_list, self.video_form_value.duration)
+
+        return [
+            FigImageData(
+                None, FigType.SHOW_SINGLE_GIF, gif_buf, self.form_value.filename
+            )
+        ]
 
     def draw_2d(self):
         peak_index = detect_peak_neg(
