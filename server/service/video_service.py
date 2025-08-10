@@ -49,35 +49,38 @@ class VideoService:
         gif_buf = bytesio_list_to_gif(video.buf_list, self.video_form_value.duration)
 
         return [
-            FigImageData(
-                None, FigType.SHOW_ALL_GIF, gif_buf, self.form_value.filename
-            )
+            FigImageData(None, FigType.SHOW_ALL_GIF, gif_buf, self.form_value.filename)
         ]
 
     def showSingle(self):
-        fig_images = [
-            self.fm.showSingle(
-                self.form_value.chs[0],
-                self.form_value.start + i * self.video_form_value.duration,
-                self.form_value.start
-                + self.video_form_value.window_time
-                + i * self.video_form_value.duration,
-                self.form_value.volt_min,
-                self.form_value.volt_max,
-                (self.form_value.x_ratio, self.form_value.y_ratio),
-                dpi=self.form_value.dpi,
-                isBuf=True,
+        result: list[FigImageData] = []
+        for ch in self.form_value.chs:
+            fig_images = [
+                self.fm.showSingle(
+                    ch,
+                    self.form_value.start + i * self.video_form_value.duration,
+                    self.form_value.start
+                    + self.video_form_value.window_time
+                    + i * self.video_form_value.duration,
+                    self.form_value.volt_min,
+                    self.form_value.volt_max,
+                    (self.form_value.x_ratio, self.form_value.y_ratio),
+                    dpi=self.form_value.dpi,
+                    isBuf=True,
+                )
+                for i in range(self.frames)
+            ]
+            video = VideoMEA(fig_images)
+            gif_buf = bytesio_list_to_gif(
+                video.buf_list, self.video_form_value.duration
             )
-            for i in range(self.frames)
-        ]
-        video = VideoMEA(fig_images)
-        gif_buf = bytesio_list_to_gif(video.buf_list, self.video_form_value.duration)
+            result.append(
+                FigImageData(
+                    ch, FigType.SHOW_SINGLE_GIF, gif_buf, self.form_value.filename
+                )
+            )
 
-        return [
-            FigImageData(
-                None, FigType.SHOW_SINGLE_GIF, gif_buf, self.form_value.filename
-            )
-        ]
+        return result
 
     def showDetection(self):
         fig_images = [
@@ -89,7 +92,7 @@ class VideoService:
                 + i * self.video_form_value.duration,
                 figsize=(self.form_value.x_ratio, self.form_value.y_ratio),
                 dpi=self.form_value.dpi,
-                isBuf=True
+                isBuf=True,
             )
             for i in range(self.frames)
         ]
@@ -114,7 +117,7 @@ class VideoService:
                 + self.video_form_value.window_time
                 + i * self.video_form_value.duration,
                 dpi=self.form_value.dpi,
-                isBuf=True
+                isBuf=True,
             )
             for i in range(self.frames)
         ]

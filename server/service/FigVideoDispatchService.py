@@ -13,7 +13,7 @@ class FigVideoDispatchService(FigDispatchService):
 
     def create_fig(self) -> list[FigImageData]:
         if self.fig_type == FigType.SHOW_ALL_GIF:
-            return  self.video_service.showAll()
+            return self.video_service.showAll()
         if self.fig_type == FigType.SHOW_SINGLE_GIF:
             return self.video_service.showSingle()
         if self.fig_type == FigType.SHOW_DETECTION_GIF:
