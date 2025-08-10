@@ -72,18 +72,18 @@ export const getFormData = (values: FormValues): FormData[] => {
 export const getVideoFormData = (value: VideoFormValue) => {
   return [
     {
-      name: "window_time",
+      name: "videoFormValue.window_time",
       label: "1フレーム描画時間",
       value: value.window_time,
       min: 0,
       step: 0.1,
     },
     {
-      name: "duration",
+      name: "videoFormValue.duration",
       label: "フレーム間隔",
       value: value.duration,
       min: 0,
-      step: 0.1,
+      step: 0.01,
     },
   ];
 };

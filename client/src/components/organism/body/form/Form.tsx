@@ -3,6 +3,8 @@ import { getFormData } from "../../../../hooks/getFormData";
 import { Footer } from "../../footer/Footer";
 import { PeakForm, PeakFormProps } from "./PeakForm";
 import { MEAViewerInputForm } from "../../../molecule/MEAViewerInputForm";
+import { VideoForm } from "./VideoForm";
+import { gifPageList, PageName } from "../../../../enum/PageName";
 
 export type FormProps = {
   pageName: string;
@@ -47,6 +49,13 @@ export const Form: React.FC<FormProps> = ({
           peakFormValue={peakFormValue}
           handlePeakFormChange={handlePeakFormChange}
         />
+        {gifPageList.includes(pageName as PageName) ? (
+          <VideoForm
+            value={values.videoFormValue}
+            handleFormChange={handleChange}
+          />
+        ) : null}
+
         <div className="flex justify-end">
           <button
             type="button"
