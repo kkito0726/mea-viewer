@@ -12,8 +12,14 @@ class FigVideoDispatchService(FigDispatchService):
     fig_type: FigType
 
     def create_fig(self) -> list[FigImageData]:
+        if self.fig_type == FigType.SHOW_ALL_GIF:
+            return  self.video_service.showAll()
         if self.fig_type == FigType.SHOW_SINGLE_GIF:
             return self.video_service.showSingle()
+        if self.fig_type == FigType.SHOW_DETECTION_GIF:
+            return self.video_service.showDetection()
+        if self.fig_type == FigType.RASTER_PLOT_GIF:
+            return self.video_service.rasterPlot()
         if self.fig_type == FigType.DRAW_2D_GIF:
             return self.video_service.draw_2d()
         if self.fig_type == FigType.DRAW_3D_GIF:
