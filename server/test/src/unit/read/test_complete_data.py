@@ -2,10 +2,9 @@ import unittest
 from test.src.utils import get_resource_path
 
 import numpy as np
+from model.form_value import FormValue
 from pyMEA import read_MEA
 from pyMEA.figure.plot.plot import circuit_eles
-
-from model.form_value import FormValue
 from usecase.FigUseCase import complete_data
 
 

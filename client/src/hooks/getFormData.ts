@@ -1,4 +1,4 @@
-import { FormValues } from "../types/FormValues";
+import { FormValues, VideoFormValue } from "../types/FormValues";
 
 type FormData = {
   name: string;
@@ -65,6 +65,25 @@ export const getFormData = (values: FormValues): FormData[] => {
       value: values.electrode_distance,
       min: 0,
       step: 1,
+    },
+  ];
+};
+
+export const getVideoFormData = (value: VideoFormValue) => {
+  return [
+    {
+      name: "videoFormValue.window_time",
+      label: "1フレーム描画時間",
+      value: value.window_time,
+      min: 0,
+      step: 0.1,
+    },
+    {
+      name: "videoFormValue.duration",
+      label: "フレーム間隔",
+      value: value.duration,
+      min: 0,
+      step: 0.01,
     },
   ];
 };

@@ -34,3 +34,13 @@ export const onlyPythonList = [
   PageName.DRAW_3D,
   PageName.DRAW_LINE,
 ];
+
+export const gifPageList = [
+  PageName.SHOW_ALL_GIF,
+  PageName.SHOW_SINGLE_GIF,
+  PageName.SHOW_DETECTION_GIF,
+  PageName.RASTER_PLOT_GIF,
+  PageName.DRAW_2D_GIF,
+  PageName.DRAW_3D_GIF,
+  PageName.DRAW_LINE_GIF,
+];

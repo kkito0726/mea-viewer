@@ -51,6 +51,22 @@ export const useDataSubmission = (
         ...values,
         chs: [parseInt(value)],
       });
+    } else if (name === "videoFormValue.window_time") {
+      setValues({
+        ...values,
+        videoFormValue: {
+          ...values.videoFormValue,
+          window_time: parseFloat(e.target.value),
+        },
+      });
+    } else if (name === "videoFormValue.duration") {
+      setValues({
+        ...values,
+        videoFormValue: {
+          ...values.videoFormValue,
+          duration: parseFloat(e.target.value),
+        },
+      });
     } else {
       setValues({
         ...values,

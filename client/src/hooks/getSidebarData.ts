@@ -52,6 +52,26 @@ export const graphSectionData: SidebarData[] = [
 
 export const gifSectionData = [
   {
+    name: PageName.SHOW_ALL_GIF,
+    link: PagePath.SHOW_ALL_GIF,
+    label: "64電極表示",
+  },
+  {
+    name: PageName.SHOW_SINGLE_GIF,
+    link: PagePath.SHOW_SINGLE_GIF,
+    label: "1電極表示",
+  },
+  {
+    name: PageName.SHOW_DETECTION_GIF,
+    link: PagePath.SHOW_DETECTION_GIF,
+    label: "積み上げ表示",
+  },
+  {
+    name: PageName.RASTER_PLOT_GIF,
+    link: PagePath.RASTER_PLOT_GIF,
+    label: "ラスタプロット",
+  },
+  {
     name: PageName.DRAW_2D_GIF,
     link: PagePath.DRAW_2D_GIF,
     label: "2Dカラーマップ",

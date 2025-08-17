@@ -8,6 +8,7 @@ export type FormValues = {
   y_ratio: number;
   dpi: number;
   electrode_distance: number;
+  videoFormValue: VideoFormValue;
 };
 
 export const initFormValue = (figType: string): FormValues => {
@@ -21,5 +22,18 @@ export const initFormValue = (figType: string): FormValues => {
     y_ratio: 8,
     dpi: 100,
     electrode_distance: 450,
+    videoFormValue: initVideoFormValue(),
+  };
+};
+
+export type VideoFormValue = {
+  window_time: number;
+  duration: number;
+};
+
+export const initVideoFormValue = (): VideoFormValue => {
+  return {
+    window_time: 1,
+    duration: 0.1,
   };
 };

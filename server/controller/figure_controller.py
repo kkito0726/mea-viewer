@@ -4,7 +4,6 @@ import time
 import uuid
 
 from flask import Blueprint, Response, jsonify, stream_with_context
-
 from model.FigRequest import decode_request
 from usecase.FigUseCase import FigUseCase
 
