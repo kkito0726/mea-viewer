@@ -1,15 +1,14 @@
 from dataclasses import dataclass
 
 import numpy as np
-from pyMEA import MEA, FigMEA
-from pyMEA.core.Electrode import Electrode
-from pyMEA.read.model.HedPath import HedPath
-
 from enums.FigType import FigType
 from model.FigRequest import FigRequest
 from model.form_value import FormValue
 from model.peak_form_value import PeakFormValue
 from model.video_form_value import VideoFormValue
+from pyMEA import MEA, FigMEA
+from pyMEA.core.Electrode import Electrode
+from pyMEA.read.model.HedPath import HedPath
 from repository.fig_image_repository import FigImageRepository
 from service.FigDispatchServiceFactory import FigDispatchServiceFactory
 from service.mino_service import MinioService

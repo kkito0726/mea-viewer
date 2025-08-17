@@ -1,13 +1,12 @@
 from dataclasses import dataclass
 
-from pyMEA import FigMEA, VideoMEA, detect_peak_neg
-
 from enums.FigType import FigType
 from lib.bufferUtil import bytesio_list_to_gif
 from model.FigImageData import FigImageData
 from model.form_value import FormValue
 from model.peak_form_value import PeakFormValue
 from model.video_form_value import VideoFormValue
+from pyMEA import FigMEA, VideoMEA, detect_peak_neg
 from service.fig_service import get_peak_indexes
 
 
@@ -141,7 +140,7 @@ class VideoService:
             isBuf=True,
         ).buf_list
 
-        gif_buf = bytesio_list_to_gif(image_bufs)
+        gif_buf = bytesio_list_to_gif(image_bufs, self.video_form_value.duration)
 
         return [
             FigImageData(None, FigType.DRAW_2D_GIF, gif_buf, self.form_value.filename)
@@ -155,7 +154,7 @@ class VideoService:
             peak_index, dpi=self.form_value.dpi, isBuf=True
         ).buf_list
 
-        gif_buf = bytesio_list_to_gif(image_bufs)
+        gif_buf = bytesio_list_to_gif(image_bufs, self.video_form_value.duration)
 
         return [
             FigImageData(None, FigType.DRAW_3D_GIF, gif_buf, self.form_value.filename)
@@ -174,7 +173,7 @@ class VideoService:
             isBuf=True,
         ).buf_list
 
-        gif_buf = bytesio_list_to_gif(image_bufs)
+        gif_buf = bytesio_list_to_gif(image_bufs, self.video_form_value.duration)
 
         return [
             FigImageData(None, FigType.DRAW_LINE_GIF, gif_buf, self.form_value.filename)

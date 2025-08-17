@@ -1,7 +1,6 @@
 import unittest
 
 import numpy as np
-
 from model.FigRequest import clean_data
 
 

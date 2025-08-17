@@ -1,9 +1,8 @@
-from pyMEA import FigMEA
-
 from enums.FigType import FigType
 from model.form_value import FormValue
 from model.peak_form_value import PeakFormValue
 from model.video_form_value import VideoFormValue
+from pyMEA import FigMEA
 from service.fig_service import FigService
 from service.FigDispatchService import FigDispatchService
 from service.FigImageDispatchService import FigImageDispatchService
