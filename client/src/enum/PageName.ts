@@ -29,12 +29,6 @@ export const chPadPages: string[] = [
   PageName.DRAW_LINE_GIF,
 ];
 
-export const onlyPythonList = [
-  PageName.DRAW_2D,
-  PageName.DRAW_3D,
-  PageName.DRAW_LINE,
-];
-
 export const gifPageList = [
   PageName.SHOW_ALL_GIF,
   PageName.SHOW_SINGLE_GIF,
@@ -43,4 +37,11 @@ export const gifPageList = [
   PageName.DRAW_2D_GIF,
   PageName.DRAW_3D_GIF,
   PageName.DRAW_LINE_GIF,
+];
+
+export const onlyPythonList = [
+  PageName.DRAW_2D,
+  PageName.DRAW_3D,
+  PageName.DRAW_LINE,
+  ...gifPageList,
 ];
