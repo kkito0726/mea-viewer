@@ -78,6 +78,16 @@ docker compose down
 docker compose up -d
 ```
 
+### pyMEA を最新版に更新する場合
+
+サーバーのキャッシュを無効にしてビルドし直すことで、pyMEA の最新版を取得できます。
+
+```bash
+cd ~/Workspace/mea-viewer
+docker compose build --no-cache server
+docker compose up -d
+```
+
 ---
 
 ## 開発環境

@@ -1,0 +1,44 @@
+# Git
+.git
+.gitignore
+
+# Dependencies
+**/node_modules
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+
+# Build outputs
+**/dist
+**/build
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Environment
+**/.env
+**/.env.*
+!**/.env.example
+
+# Docker
+**/Dockerfile*
+**/docker-compose*.yml
+.dockerignore
+
+# Data directories (handled by volumes)
+data/
+minio_data/
+
+# Documentation
+*.md
+LICENSE
+
+# Test files
+**/test/
+**/tests/
+**/*_test.go
+**/*.test.js
+**/*.spec.js
