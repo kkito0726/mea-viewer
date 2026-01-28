@@ -94,37 +94,36 @@ docker rmi mea-viewer-server mea-viewer-client mea-viewer-go-backend
 ### オペレーションフロー
 
 ```mermaid
-flowchart TB
-    subgraph 開発者["開発者 (kkito0726)"]
-        A[コード変更] --> B[mainブランチにマージ]
+flowchart LR
+    subgraph DEV["👨‍💻 開発"]
+        A([コード変更]) --> B[main にマージ]
     end
 
-    subgraph GitHub["GitHub"]
-        B --> C[GitHub Actions]
-        C --> D[イメージビルド]
-        D --> E[ghcr.io にプッシュ]
-
-        subgraph GHCR["GitHub Container Registry"]
-            E --> F[mea-viewer-server:latest]
-            E --> G[mea-viewer-client:latest]
-            E --> H[mea-viewer-go-backend:latest]
-        end
+    subgraph CI["⚙️ CI/CD"]
+        C[GitHub Actions] --> D[ビルド実行]
+        D --> E[(ghcr.io)]
     end
 
-    subgraph 利用者["利用者"]
-        I[git pull] --> J[docker compose pull]
-        J --> K[イメージ取得]
-        F --> K
-        G --> K
-        H --> K
-        K --> L[docker compose up -d]
-        L --> M[アプリ起動]
+    subgraph IMAGES["📦 コンテナイメージ"]
+        F[server]
+        G[client]
+        H[go-backend]
     end
 
-    style 開発者 fill:#e1f5fe
-    style GitHub fill:#fff3e0
-    style GHCR fill:#fff8e1
-    style 利用者 fill:#e8f5e9
+    subgraph USER["👤 利用者"]
+        I([git pull]) --> J[docker compose pull]
+        J --> K[docker compose up -d]
+        K --> L([🚀 アプリ起動])
+    end
+
+    B --> C
+    E --> F & G & H
+    F & G & H -.->|pull| J
+
+    style DEV fill:transparent,stroke:#64b5f6,stroke-width:2px
+    style CI fill:transparent,stroke:#ffb74d,stroke-width:2px
+    style IMAGES fill:transparent,stroke:#f06292,stroke-width:2px
+    style USER fill:transparent,stroke:#81c784,stroke-width:2px
 ```
 
 ### ローカルでビルドする場合
