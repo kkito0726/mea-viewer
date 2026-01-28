@@ -78,6 +78,15 @@ docker compose pull
 docker compose up -d
 ```
 
+### 古いイメージを削除する場合（任意）
+
+以前のバージョンでローカルビルドしていた場合、古いイメージが残っています。
+ディスク容量を節約したい場合は以下を実行してください。
+
+```bash
+docker rmi mea-viewer-server mea-viewer-client mea-viewer-go-backend
+```
+
 ---
 
 ## 開発者向け
