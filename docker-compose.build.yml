@@ -1,0 +1,22 @@
+# 開発用: ローカルでビルドする場合に使用
+# 使い方: docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build
+
+services:
+  server:
+    build:
+      context: ./server
+      target: production
+    image: ghcr.io/kkito0726/mea-viewer-server:latest
+
+  client:
+    build:
+      context: ./client
+      target: production
+    image: ghcr.io/kkito0726/mea-viewer-client:latest
+
+  go-backend:
+    build:
+      context: ./
+      dockerfile: ./go-backend/dockerfile
+      target: production
+    image: ghcr.io/kkito0726/mea-viewer-go-backend:latest

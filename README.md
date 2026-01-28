@@ -58,50 +58,59 @@ docker compose -f ~/Workspace/mea-viewer/docker-compose.yml stop
 
 ## 3. アプリのアップデートをする場合
 
-以下どちらかを実行 <br>
-ローカルリポジトリを最新版にして、docker コンテナを build する
+最新版のイメージを取得して再起動する
 
 ```bash
 cd ~/Workspace/mea-viewer
 git pull
-docker compose up -d --build
-```
-
-もしくはバックアップ初期化してバージョンアップ場合
-
-```bash
-cd ~/Workspace/mea-viewer
-git pull
-rm -rf ./data
-rm -rf ./minio_data
-docker compose down
+docker compose pull
 docker compose up -d
 ```
 
-### pyMEA を最新版に更新する場合
-
-サーバーのキャッシュを無効にしてビルドし直すことで、pyMEA の最新版を取得できます。
+もしくはデータを初期化してバージョンアップする場合
 
 ```bash
 cd ~/Workspace/mea-viewer
-docker compose build --no-cache server
+git pull
+docker compose down
+docker volume rm mea-viewer_mysql_data mea-viewer_minio_data
+docker compose pull
 docker compose up -d
 ```
 
 ---
 
-## 開発環境
+## 開発者向け
 
-### 1. フロントエンド
+### ローカルでビルドする場合
+
+```bash
+cd ~/Workspace/mea-viewer
+docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build
+```
+
+### pyMEA を最新版に更新してビルドする場合
+
+```bash
+cd ~/Workspace/mea-viewer
+docker compose -f docker-compose.yml -f docker-compose.build.yml build --no-cache server
+docker compose up -d
+```
+
+### イメージの自動ビルド
+
+main ブランチにマージされると、GitHub Actions により自動的にイメージがビルドされ、GitHub Container Registry (ghcr.io) にプッシュされます。
+
+---
+
+## 技術スタック
+
+### フロントエンド
 
 - Vite + React + TypeScript
 - Tailwind css
 
-#### デプロイ
-
-- Vercel
-
-### 2. バックエンド
+### バックエンド
 
 - Python + Flask
 - [PyMEA](https://github.com/kkito0726/MEA_modules), Matplotlib, etc...
