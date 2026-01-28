@@ -1,8 +1,6 @@
 services:
   server:
-    build:
-      context: ./server
-      target: production
+    image: ghcr.io/kkito0726/mea-viewer-server:latest
     restart: unless-stopped
     ports:
       - "5001:5001"
@@ -33,9 +31,7 @@ services:
       start_period: 10s
 
   client:
-    build:
-      context: ./client
-      target: production
+    image: ghcr.io/kkito0726/mea-viewer-client:latest
     restart: unless-stopped
     ports:
       - "4173:4173"
@@ -71,11 +67,8 @@ services:
       start_period: 30s
 
   go-backend:
+    image: ghcr.io/kkito0726/mea-viewer-go-backend:latest
     restart: on-failure
-    build:
-      context: ./
-      dockerfile: ./go-backend/dockerfile
-      target: production
     ports:
       - "8080:8080"
     depends_on:
