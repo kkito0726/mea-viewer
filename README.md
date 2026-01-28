@@ -91,6 +91,42 @@ docker rmi mea-viewer-server mea-viewer-client mea-viewer-go-backend
 
 ## 開発者向け
 
+### オペレーションフロー
+
+```mermaid
+flowchart TB
+    subgraph 開発者["開発者 (kkito0726)"]
+        A[コード変更] --> B[mainブランチにマージ]
+    end
+
+    subgraph GitHub["GitHub"]
+        B --> C[GitHub Actions]
+        C --> D[イメージビルド]
+        D --> E[ghcr.io にプッシュ]
+
+        subgraph GHCR["GitHub Container Registry"]
+            E --> F[mea-viewer-server:latest]
+            E --> G[mea-viewer-client:latest]
+            E --> H[mea-viewer-go-backend:latest]
+        end
+    end
+
+    subgraph 利用者["利用者"]
+        I[git pull] --> J[docker compose pull]
+        J --> K[イメージ取得]
+        F --> K
+        G --> K
+        H --> K
+        K --> L[docker compose up -d]
+        L --> M[アプリ起動]
+    end
+
+    style 開発者 fill:#e1f5fe
+    style GitHub fill:#fff3e0
+    style GHCR fill:#fff8e1
+    style 利用者 fill:#e8f5e9
+```
+
 ### ローカルでビルドする場合
 
 ```bash
