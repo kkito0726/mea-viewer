@@ -126,19 +126,17 @@ flowchart LR
     style USER fill:transparent,stroke:#81c784,stroke-width:2px
 ```
 
-### ローカルでビルドする場合
+### 開発用コマンド（Makefile）
 
 ```bash
-cd ~/Workspace/mea-viewer
-docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build
-```
-
-### pyMEA を最新版に更新してビルドする場合
-
-```bash
-cd ~/Workspace/mea-viewer
-docker compose -f docker-compose.yml -f docker-compose.build.yml build --no-cache server
-docker compose up -d
+make dev              # ローカルビルド＆起動
+make build            # ビルドのみ
+make up               # イメージをpullして起動（本番用）
+make down             # コンテナ停止
+make pull             # 最新イメージを取得
+make logs             # ログ表示
+make rebuild-server   # pyMEAを最新版にしてビルド
+make clean            # 全てクリーンアップ（データも削除）
 ```
 
 ### イメージの自動ビルド
