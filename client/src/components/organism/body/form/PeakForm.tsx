@@ -16,12 +16,15 @@ export const PeakForm: React.FC<PeakFormProps> = ({
 }) => {
   const peakFormData = getPeakFormData(peakFormValue);
   return (
-    <div className="text-slate-200">
-      <div className="py-2 block text-sm font-medium text-gray-300 px-1">
-        <span>ピーク抽出条件</span>
+    <div className="mt-4">
+      <div className="flex items-center gap-2 mb-3">
+        <div className="w-1 h-4 rounded-full bg-green-500/40" />
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 font-ui">
+          Peak Detection
+        </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 pb-2">
+      <div className="grid grid-cols-2 gap-3 pb-3">
         <Checkbox
           name="isPositive"
           checked={peakFormValue.isPositive}
@@ -36,48 +39,46 @@ export const PeakForm: React.FC<PeakFormProps> = ({
         />
       </div>
 
-      <div>
-        <div className="grid grid-cols-2 gap-4">
-          {peakFormData.map((data, i) => {
-            return (
-              <div key={i}>
-                <MEAViewerInputForm
-                  label={data.label}
-                  name={data.name}
-                  value={data.value}
-                  min={1}
-                  max={undefined}
-                  step={1}
-                  onChange={handlePeakFormChange}
-                />
-              </div>
-            );
-          })}
-          {[
-            PageName.DRAW_2D,
-            PageName.DRAW_LINE,
-            PageName.DRAW_2D_GIF,
-            PageName.DRAW_LINE_GIF,
-          ].includes(pageName as PageName) ? (
-            <>
-              <Checkbox
-                name="isLoop"
-                checked={peakFormValue.isLoop}
-                onChange={handlePeakFormChange}
-                label="環状経路"
-              />
+      <div className="grid grid-cols-2 gap-3">
+        {peakFormData.map((data, i) => {
+          return (
+            <div key={i}>
               <MEAViewerInputForm
-                label={"拍動周期の基準電極"}
-                name={"baseCh"}
-                value={peakFormValue.baseCh}
+                label={data.label}
+                name={data.name}
+                value={data.value}
                 min={1}
-                max={64}
+                max={undefined}
                 step={1}
                 onChange={handlePeakFormChange}
               />
-            </>
-          ) : null}
-        </div>
+            </div>
+          );
+        })}
+        {[
+          PageName.DRAW_2D,
+          PageName.DRAW_LINE,
+          PageName.DRAW_2D_GIF,
+          PageName.DRAW_LINE_GIF,
+        ].includes(pageName as PageName) ? (
+          <>
+            <Checkbox
+              name="isLoop"
+              checked={peakFormValue.isLoop}
+              onChange={handlePeakFormChange}
+              label="環状経路"
+            />
+            <MEAViewerInputForm
+              label={"Base Ch"}
+              name={"baseCh"}
+              value={peakFormValue.baseCh}
+              min={1}
+              max={64}
+              step={1}
+              onChange={handlePeakFormChange}
+            />
+          </>
+        ) : null}
       </div>
     </div>
   );

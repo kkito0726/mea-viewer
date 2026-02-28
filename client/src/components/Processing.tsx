@@ -3,9 +3,14 @@ type ProcessingProps = {
 };
 export const Processing: React.FC<ProcessingProps> = ({ message }) => {
   return (
-    <div className="fixed top-0 w-screen h-screen  bg-gray-500 opacity-60 z-10">
-      <div className="flex justify-center rounded-lg fixed top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-7xl z-50">
-        <p className="text-slate-200 p-2">{message}</p>
+    <div className="fixed inset-0 z-40 processing-overlay flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4 animate-fade-in">
+        <div className="flex gap-1.5">
+          <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" style={{ animationDelay: "0ms" }} />
+          <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" style={{ animationDelay: "150ms" }} />
+          <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" style={{ animationDelay: "300ms" }} />
+        </div>
+        <p className="font-ui text-lg text-slate-200 tracking-wide">{message}</p>
       </div>
     </div>
   );

@@ -5,10 +5,8 @@ export type InputLabelProps = {
 };
 
 export const InputLabel: React.FC<InputLabelProps> = ({ label }) => {
-  const labelCss = "block text-sm font-medium text-gray-300 px-1";
-
   return (
-    <label htmlFor="" className={labelCss}>
+    <label className="block text-xs font-medium text-slate-400 tracking-wide uppercase font-ui mb-1.5">
       {label}
     </label>
   );

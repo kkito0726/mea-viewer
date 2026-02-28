@@ -15,12 +15,14 @@ export const NumberSelectForm: React.FC<NumberSelectFormProps> = ({
   disabled,
   optionValues,
 }) => {
-  const barCss =
-    "mt-1 block w-full px-3 py-2 text-green-300 bg-zinc-800 border-none rounded-md shadow-sm focus: border-none";
-
   return (
     <select
-      className={barCss}
+      className="block w-full px-3 py-2 font-mono text-sm text-green-400 bg-[var(--bg-input)] border border-[var(--border-subtle)] rounded-md transition-colors duration-150 hover:border-[var(--border-default)] focus:border-green-500/50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer appearance-none"
+      style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E")`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "right 10px center",
+      }}
       value={value}
       onChange={handleChange}
       name={name}

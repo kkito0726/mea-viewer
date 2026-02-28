@@ -25,29 +25,32 @@ export const BioInput: React.FC<BioInputProps> = ({
     }
   };
   return (
-    <div className="px-4 py-2 text-white">
-      <div className="flex flex-col px-4 pb-1">
-        <span className="block font-medium text-gray-300 rounded-sm text-sm px-1">
-          .bioファイルを選択
+    <div className="p-4 panel-section">
+      <div className="flex items-center gap-2 mb-3">
+        <div className="w-1 h-4 rounded-full bg-green-500/60" />
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 font-ui">
+          .bio Data Input
         </span>
-        <button
-          type="button"
-          className="mt-1 block w-full px-4 py-2 text-center text-white bg-green-600 border border-green-600 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50"
-          onClick={handleFileButtonClick}
-        >
-          ファイルを選択
-        </button>
-        <input
-          ref={fileInputRef}
-          onChange={handleBioInput}
-          type="file"
-          accept=".bio"
-          className="hidden"
-        />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <button
+        type="button"
+        className="w-full px-4 py-2 text-sm font-ui font-medium text-green-400 bg-[var(--accent-dim)] border border-green-500/20 rounded-md hover:bg-[var(--accent-muted)] hover:border-green-500/30 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-green-500/30"
+        onClick={handleFileButtonClick}
+      >
+        .bioファイルを選択
+      </button>
+      <input
+        ref={fileInputRef}
+        onChange={handleBioInput}
+        type="file"
+        accept=".bio"
+        className="hidden"
+      />
+
+      <div className="grid grid-cols-2 gap-3 mt-3">
         <MEAViewerInputForm
-          label={"開始時間 (s)"}
+          label={"Start (s)"}
           name={"start"}
           value={readTime.start}
           min={0}
@@ -56,7 +59,7 @@ export const BioInput: React.FC<BioInputProps> = ({
           onChange={handleReadTime}
         />
         <MEAViewerInputForm
-          label={"終了時間 (s)"}
+          label={"End (s)"}
           name={"end"}
           value={readTime.end}
           min={readTime.start + 1}
@@ -65,30 +68,25 @@ export const BioInput: React.FC<BioInputProps> = ({
           onChange={handleReadTime}
         />
       </div>
+
       {bioName ? (
-        <>
-          <div className="flex flex-col p-2">
-            <div className="flex justify-between">
-              <div>
-                <span>{bioName}</span>
-              </div>
-              <div>
-                <span>
-                  {readTime.start} ~ {readTime.end} (s)
-                </span>
-              </div>
-            </div>
+        <div className="mt-3">
+          <div className="flex items-center justify-between px-1">
+            <span className="font-mono text-xs text-green-400/80 truncate">{bioName}</span>
+            <span className="font-mono text-xs text-slate-500">
+              {readTime.start}–{readTime.end}s
+            </span>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-2">
             <button
               type="submit"
-              className=" bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              className="text-xs font-ui font-medium text-green-400 bg-[var(--accent-dim)] hover:bg-[var(--accent-muted)] border border-green-500/20 hover:border-green-500/30 px-3 py-1.5 rounded-md transition-all duration-150"
               onClick={handleReadBio}
             >
               Read Again
             </button>
           </div>
-        </>
+        </div>
       ) : null}
     </div>
   );
