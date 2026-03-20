@@ -7,15 +7,25 @@ type TopbarProps = {
 
 export const Topbar: React.FC<TopbarProps> = ({ displayName }) => {
   return (
-    <div className="flex items-center justify-between w-screen bg-zinc-950 border-zinc-600 sticky top-0 z-50 p-2 min-h-8">
+    <div className="flex items-center justify-between w-screen bg-[var(--bg-surface)] border-b border-[var(--border-subtle)] sticky top-0 z-50 px-4 h-12">
       <Link to={"/"}>
-        <div className="p-2 rounded cursor-pointer hover:bg-zinc-900">
+        <div className="px-2 py-1 rounded-md cursor-pointer hover:bg-[var(--bg-hover)] transition-colors duration-150">
           <MEAViewerLogo size={null} />
         </div>
       </Link>
-      <span className="text-green-400 ml-32">{displayName}</span>
 
-      <div className="text-slate-200">LaRC FB Hosei Univ.</div>
+      {displayName && (
+        <div className="flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+          <span className="font-mono text-sm text-green-400 tracking-wide">
+            {displayName}
+          </span>
+        </div>
+      )}
+
+      <div className="font-ui text-xs text-slate-500 tracking-wider uppercase">
+        LaRC FB Hosei Univ.
+      </div>
     </div>
   );
 };

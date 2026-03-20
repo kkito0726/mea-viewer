@@ -17,9 +17,6 @@ export const NumberForm: React.FC<NumberFormProps> = ({
   step,
   onChange: handleChange,
 }) => {
-  const barCss =
-    "mt-1 block w-full px-3 py-2 text-green-300 bg-zinc-800 border-none rounded-md shadow-sm focus: border-none";
-
   return (
     <input
       type="number"
@@ -28,7 +25,7 @@ export const NumberForm: React.FC<NumberFormProps> = ({
       min={min}
       max={max}
       step={step}
-      className={barCss}
+      className="block w-full px-3 py-2 font-mono text-sm text-green-400 bg-[var(--bg-input)] border border-[var(--border-subtle)] rounded-md transition-colors duration-150 hover:border-[var(--border-default)] focus:border-green-500/50 placeholder:text-slate-600"
       value={value}
       onChange={handleChange}
     />

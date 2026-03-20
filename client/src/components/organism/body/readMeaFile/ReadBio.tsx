@@ -49,9 +49,6 @@ export const ReadBio: React.FC<ReadBioProps> = ({
         handleBioInput={handleBioInput}
         bioName={fileName.bioName}
       />
-      <div className="px-9 pb-2">
-        <hr className="border border-zinc-600" />
-      </div>
       {isBioRead ? <Processing message="MEAデータ読み込み中..." /> : null}
     </>
   );

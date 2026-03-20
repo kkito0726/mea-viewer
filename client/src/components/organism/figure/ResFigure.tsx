@@ -44,36 +44,39 @@ export const ResFigure: React.FC<FigureProps> = ({ imgs, handleRemoveImg }) => {
             return (
               <div
                 key={i}
-                className="flex items-center justify-center py-4 px-8"
+                className="flex items-center justify-center py-4 px-6 animate-fade-in"
               >
                 <div className="relative group">
                   {img.ch ? (
-                    <span className="absolute top-5 left-2 text-zinc-800">{`ch ${img.ch}`}</span>
+                    <span className="absolute top-3 left-3 font-mono text-xs text-slate-400 bg-[var(--bg-surface)]/80 backdrop-blur-sm px-2 py-0.5 rounded">{`ch ${img.ch}`}</span>
                   ) : null}
                   <img
                     src={img.image_url}
-                    className="rounded max-w-screen-md"
+                    className="rounded-lg max-w-screen-md border border-[var(--border-subtle)]"
                     alt=""
                   />
 
+                  {/* Delete Button */}
                   <button
                     onClick={() => handleRemoveImg(i)}
-                    className="absolute top-2 right-2 text-white rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute top-2 right-2 p-1 rounded-md opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-red-500/20"
                   >
-                    <CancelIcon className="text-red-500" />
+                    <CancelIcon className="text-red-400" fontSize="small" />
                   </button>
-                  <div className="absolute bottom-2 right-2">
+
+                  {/* Copy / Download */}
+                  <div className="absolute bottom-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200">
                     <button
                       onClick={() => handleCopyToClipboard(img.image_url)}
-                      className="text-gray-400 rounded-sm px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-200 hover:text-gray-500"
+                      className="p-1.5 text-slate-400 rounded-md bg-[var(--bg-surface)]/80 backdrop-blur-sm border border-[var(--border-subtle)] hover:text-green-400 hover:border-green-500/30 transition-colors duration-150"
                     >
-                      <ContentCopyIcon />
+                      <ContentCopyIcon fontSize="small" />
                     </button>
                     <button
                       onClick={() => handleDownloadImage(img.image_url)}
-                      className="text-gray-400 rounded-sm px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-200 hover:text-gray-500"
+                      className="p-1.5 text-slate-400 rounded-md bg-[var(--bg-surface)]/80 backdrop-blur-sm border border-[var(--border-subtle)] hover:text-green-400 hover:border-green-500/30 transition-colors duration-150"
                     >
-                      <SaveAlt />
+                      <SaveAlt fontSize="small" />
                     </button>
                   </div>
                 </div>

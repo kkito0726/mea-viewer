@@ -10,12 +10,15 @@ type Props = {
 export const VideoForm: React.FC<Props> = ({ value, handleFormChange }) => {
   const videoFormData = getVideoFormData(value);
   return (
-    <div className="text-slate-200">
-      <div className="py-2 block text-sm font-medium text-gray-300 px-1">
-        <span>GIF動画作成条件</span>
+    <div className="mt-4">
+      <div className="flex items-center gap-2 mb-3">
+        <div className="w-1 h-4 rounded-full bg-green-500/40" />
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 font-ui">
+          GIF Settings
+        </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         {videoFormData.map((data, i) => {
           return (
             <div key={i}>

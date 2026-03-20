@@ -13,15 +13,16 @@ export const Checkbox: React.FC<Props> = ({
   label,
 }) => {
   return (
-    <div className="flex items-center">
+    <label className="flex items-center gap-2.5 cursor-pointer group">
       <input
         type="checkbox"
         name={name}
         checked={checked}
         onChange={onChange}
-        className="form-checkbox h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
       />
-      <label className="ml-2">{label}</label>
-    </div>
+      <span className="text-sm text-slate-300 font-ui group-hover:text-slate-200 transition-colors select-none">
+        {label}
+      </span>
+    </label>
   );
 };

@@ -13,13 +13,11 @@ export const FigImageTemplate: React.FC<Props> = ({
   pageName,
 }) => {
   return (
-    <div className="min-h-screen w-screen">
-      <div className="overflow-auto">
-        <Topbar displayName={displayName} />
-        <div className="flex">
-          <Sidebar name={pageName} />
-          <Body pageName={pageName} />
-        </div>
+    <div className="min-h-screen w-screen bg-[var(--bg-root)] font-ui">
+      <Topbar displayName={displayName} />
+      <div className="flex">
+        <Sidebar name={pageName} />
+        <Body pageName={pageName} />
       </div>
     </div>
   );
