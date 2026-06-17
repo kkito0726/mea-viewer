@@ -6,6 +6,7 @@ import { HedValue } from "../types/HedValue";
 import {
   delete_image,
   fetchCreateFigure,
+  fetchCreateFigureNpz,
   FLASK_ROOT_URL,
   GIN_ROOT_URL,
 } from "./fetchApi";
@@ -14,6 +15,7 @@ import { toast } from "react-toastify";
 import { ImgResponse } from "../types/ImgResponse";
 import { chPadPages, onlyPythonList, PageName } from "../enum/PageName";
 import { ReadTime } from "../types/ReadTime";
+import { InputMode } from "./useFileHandler";
 
 export const useDataSubmission = (
   pageName: string,
@@ -23,7 +25,9 @@ export const useDataSubmission = (
   meaData: Float32Array[],
   hedValue: HedValue,
   peakFormValue: PeakFormValue,
-  isPython: boolean
+  isPython: boolean,
+  inputMode: InputMode,
+  npzFile: File | undefined
 ) => {
   const [values, setValues] = useState<ChFormValue>(() => {
     const stored = localStorage.getItem("chFormValue");
@@ -86,7 +90,7 @@ export const useDataSubmission = (
       return;
     }
     setDisabled(true);
-    if (!meaData[0]) {
+    if (inputMode === "npz" ? !npzFile : !meaData[0]) {
       alert("MEAデータが読み込まれていません");
       setDisabled(false);
       return;
@@ -153,17 +157,32 @@ export const useDataSubmission = (
       hideProgressBar: true,
     });
 
+    // npzはバックエンド(pyMEA)で読み込むためFlask固定。それ以外は従来通り。
     const rootUrl =
-      isPython || onlyPythonList.includes(pageName as PageName)
+      inputMode === "npz" ||
+      isPython ||
+      onlyPythonList.includes(pageName as PageName)
         ? FLASK_ROOT_URL
         : GIN_ROOT_URL;
 
-    const resData = await fetchCreateFigure(
-      rootUrl,
-      peakRequestEntity,
-      meaData,
-      chPadPages.includes(pageName as PageName) ? activeChs : null
-    );
+    const activeChsArg = chPadPages.includes(pageName as PageName)
+      ? activeChs
+      : null;
+
+    const resData =
+      inputMode === "npz" && npzFile
+        ? await fetchCreateFigureNpz(
+            rootUrl,
+            peakRequestEntity,
+            npzFile,
+            activeChsArg
+          )
+        : await fetchCreateFigure(
+            rootUrl,
+            peakRequestEntity,
+            meaData,
+            activeChsArg
+          );
 
     // resData.job_id があるなら SSE を Promise 化して返す
     if (resData?.job_id) {

@@ -54,6 +54,32 @@ export const fetchCreateFigure = async (
   }
 };
 
+// npzファイルをそのまま送信する (描画メタデータはバックエンドがnpzから復元する)
+export const fetchCreateFigureNpz = async (
+  rootUrl: string,
+  value: RequestEntity,
+  npzFile: File,
+  activeChs: number[] | null
+) => {
+  const url = rootUrl + "/draw/npz";
+
+  const formData = new FormData();
+  formData.append("npz", npzFile);
+  value.chs = activeChs ? activeChs : [];
+  formData.append("jsonData", JSON.stringify(value));
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      body: formData,
+    });
+    const resData = await res.json();
+    return resData;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const get_images = async (pageName: string, fileName: string) => {
   const url = `${GIN_ROOT_URL}/fig/${pageName}/${fileName}`;
   const res = await fetch(url);

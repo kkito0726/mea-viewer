@@ -1,5 +1,9 @@
 import React, { createContext, ReactNode, useContext, useState } from "react";
-import { FileName, useFileHandler } from "../hooks/useFileHandler";
+import {
+  FileName,
+  InputMode,
+  useFileHandler,
+} from "../hooks/useFileHandler";
 import { HedValue } from "../types/HedValue";
 import { ReadTime } from "../types/ReadTime";
 
@@ -9,12 +13,18 @@ interface SharedMeaContextType {
   hedValue: HedValue;
   readTime: ReadTime;
   meaData: Float32Array[];
+  npzFile: File | undefined;
+  npzName: string;
+  inputMode: InputMode;
   handleHedChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   handleHedFile: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
   handleReadTime: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleBioInput: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
   handleRefreshHedFile: () => void;
   handleReadBio: () => Promise<void>;
+  handleNpzInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleRefreshNpzFile: () => void;
+  handleInputMode: (mode: InputMode) => void;
   isPython: boolean;
   togglePython: () => void;
 }
@@ -36,12 +46,18 @@ export const SharedMeaProvider: React.FC<SharedMeaProviderProps> = ({
     hedValue,
     readTime,
     meaData,
+    npzFile,
+    npzName,
+    inputMode,
     handleHedChange,
     handleHedFile,
     handleReadTime,
     handleBioInput,
     handleRefreshHedFile,
     handleReadBio,
+    handleNpzInput,
+    handleRefreshNpzFile,
+    handleInputMode,
   } = useFileHandler();
   const [isPython, setIsPython] = useState(true);
   const togglePython = () => {
@@ -56,12 +72,18 @@ export const SharedMeaProvider: React.FC<SharedMeaProviderProps> = ({
         hedValue,
         readTime,
         meaData,
+        npzFile,
+        npzName,
+        inputMode,
         handleHedChange,
         handleHedFile,
         handleReadTime,
         handleBioInput,
         handleRefreshHedFile,
         handleReadBio,
+        handleNpzInput,
+        handleRefreshNpzFile,
+        handleInputMode,
         isPython,
         togglePython,
       }}

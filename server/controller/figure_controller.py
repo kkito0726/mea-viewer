@@ -4,8 +4,8 @@ import time
 import uuid
 
 from flask import Blueprint, Response, jsonify, stream_with_context
-from model.FigRequest import decode_request
-from usecase.FigUseCase import FigUseCase
+from model.FigRequest import decode_request, decode_request_npz
+from usecase.FigUseCase import FigUseCase, NpzFigUseCase
 
 figure = Blueprint("figure", __name__)
 
@@ -27,6 +27,26 @@ def background_draw(fig_request, job_id):
     with app.app_context():
         try:
             result = FigUseCase(fig_request).create_fig()
+            jobs[job_id] = {"status": "done", "result": result}
+        except Exception as e:
+            jobs[job_id] = {"status": "failed", "result": str(e)}
+
+
+@figure.route("/draw/npz", methods=["POST"])
+def draw_npz():
+    npz_request = decode_request_npz()
+    job_id = str(uuid.uuid4())
+    jobs[job_id] = {"status": "pending", "result": None}
+    threading.Thread(target=background_draw_npz, args=(npz_request, job_id)).start()
+    return jsonify({"job_id": job_id}), 202
+
+
+def background_draw_npz(npz_request, job_id):
+    from app import app
+
+    with app.app_context():
+        try:
+            result = NpzFigUseCase(npz_request).create_fig()
             jobs[job_id] = {"status": "done", "result": result}
         except Exception as e:
             jobs[job_id] = {"status": "failed", "result": str(e)}
