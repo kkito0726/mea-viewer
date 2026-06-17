@@ -1,6 +1,8 @@
 import { ResFigure } from "../figure/ResFigure";
 import { Form } from "./form/Form";
 import { ReadBio } from "./readMeaFile/ReadBio";
+import { NpzInput } from "./readMeaFile/NpzInput";
+import { InputModeTabs } from "./readMeaFile/InputModeTabs";
 import { useDataSubmission } from "../../../hooks/useDataSubmition";
 import { ChPad } from "../ChPad/ChPad";
 import { useChPad } from "../../../hooks/useChPad";
@@ -21,12 +23,18 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     hedValue,
     readTime,
     meaData,
+    npzFile,
+    npzName,
+    inputMode,
     handleHedChange,
     handleHedFile,
     handleReadTime,
     handleBioInput,
     handleRefreshHedFile,
     handleReadBio,
+    handleNpzInput,
+    handleRefreshNpzFile,
+    handleInputMode,
     isPython,
     togglePython,
   } = useSharedMEA();
@@ -51,13 +59,15 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     handleRemoveImg,
   } = useDataSubmission(
     pageName,
-    fileName.bioName,
+    inputMode === "npz" ? npzName : fileName.bioName,
     readTime,
     activeChs,
     meaData,
     hedValue,
     peakFormValue,
-    isPython
+    isPython,
+    inputMode,
+    npzFile
   );
 
   const pythonAndGoPages: string[] = [
@@ -68,22 +78,25 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     PageName.PLOT_PEAKS,
   ];
 
+  // 現在のモードで読み込み中のファイル名 (図の取得・削除キーに使う)
+  const currentFileName = inputMode === "npz" ? npzName : fileName.bioName;
+
   useEffect(() => {
-    if (fileName.bioName) {
+    if (currentFileName) {
       const func = async () => {
-        const db_images = await get_images(pageName, fileName.bioName);
+        const db_images = await get_images(pageName, currentFileName);
         setImageResponses(db_images);
       };
       func();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fileName.bioName]);
+  }, [currentFileName]);
 
   const handleDeleteAllFigure = () => {
     const isDelete = confirm("すべての図を削除しますか？");
     if (isDelete) {
-      delete_all_image(pageName, fileName.bioName);
+      delete_all_image(pageName, currentFileName);
       setImageResponses([]);
       toast.error("Figureを全件削除しました", {
         position: "top-right",
@@ -97,18 +110,31 @@ export const Body: React.FC<BodyProps> = ({ pageName }) => {
     <div className="flex h-screen-minus-topbar flex-1">
       {/* Input Panel */}
       <div className="flex flex-col w-input min-w-input max-w-input bg-[var(--bg-panel)] border-r border-[var(--border-subtle)] overflow-y-auto hide-scrollbar">
-        <ReadBio
-          isBioRead={isBioRead}
-          hedValue={hedValue}
-          readTime={readTime}
-          fileName={fileName}
-          handleHedChange={handleHedChange}
-          handleHedFile={handleHedFile}
-          handleBioInput={handleBioInput}
-          handleReadTime={handleReadTime}
-          handleRefreshHedFile={handleRefreshHedFile}
-          handleReadBio={handleReadBio}
+        <InputModeTabs
+          inputMode={inputMode}
+          handleInputMode={handleInputMode}
         />
+
+        {inputMode === "npz" ? (
+          <NpzInput
+            npzName={npzName}
+            handleNpzInput={handleNpzInput}
+            handleRefreshNpzFile={handleRefreshNpzFile}
+          />
+        ) : (
+          <ReadBio
+            isBioRead={isBioRead}
+            hedValue={hedValue}
+            readTime={readTime}
+            fileName={fileName}
+            handleHedChange={handleHedChange}
+            handleHedFile={handleHedFile}
+            handleBioInput={handleBioInput}
+            handleReadTime={handleReadTime}
+            handleRefreshHedFile={handleRefreshHedFile}
+            handleReadBio={handleReadBio}
+          />
+        )}
 
         {chPadPages.includes(pageName) ? (
           <ChPad

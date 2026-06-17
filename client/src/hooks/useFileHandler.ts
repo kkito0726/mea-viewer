@@ -6,6 +6,8 @@ import { readBio } from "./readBio";
 import { ReadTime } from "../types/ReadTime";
 import { toast } from "react-toastify";
 
+export type InputMode = "bio" | "npz";
+
 export type MeaFile = {
   hedFile: File | undefined;
   bioFile: File | undefined;
@@ -28,6 +30,9 @@ export const useFileHandler = () => {
   const [meaData, setMeaData] = useState<Float32Array[]>([]);
   const [readTime, setReadTime] = useState<ReadTime>({ start: 0, end: 30 });
   const [isBioRead, setIsBioRead] = useState(false);
+  const [npzFile, setNpzFile] = useState<File | undefined>(undefined);
+  const [npzName, setNpzName] = useState("");
+  const [inputMode, setInputMode] = useState<InputMode>("bio");
 
   const handleHedChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -100,17 +105,56 @@ export const useFileHandler = () => {
     });
   };
 
+  // .npzファイルが選択されたら保持する (パースはバックエンドに委譲)
+  const handleNpzInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = handleFileFromChangeEvent(e);
+    if (file) {
+      setNpzFile(file);
+      setNpzName(file.name);
+      toast.success("npzファイルを選択しました", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+      });
+    }
+  };
+
+  // .npzファイルのリセット
+  const handleRefreshNpzFile = () => {
+    setNpzFile(undefined);
+    setNpzName("");
+  };
+
+  // 入力モードを切り替える (切替時に他方のファイル状態をクリアして排他にする)
+  const handleInputMode = (mode: InputMode) => {
+    if (mode === inputMode) return;
+    setInputMode(mode);
+    if (mode === "npz") {
+      setMeaFile({ hedFile: undefined, bioFile: undefined });
+      setFileName({ hedName: "", bioName: "" });
+      setMeaData([]);
+    } else {
+      handleRefreshNpzFile();
+    }
+  };
+
   return {
     fileName,
     isBioRead,
     hedValue,
     readTime,
     meaData,
+    npzFile,
+    npzName,
+    inputMode,
     handleHedChange,
     handleHedFile,
     handleReadTime,
     handleBioInput,
     handleRefreshHedFile,
     handleReadBio,
+    handleNpzInput,
+    handleRefreshNpzFile,
+    handleInputMode,
   } as const;
 };

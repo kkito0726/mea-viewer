@@ -1,14 +1,15 @@
+import os
 from dataclasses import dataclass
 
 import numpy as np
 from enums.FigType import FigType
-from model.FigRequest import FigRequest
+from model.FigRequest import FigRequest, NpzFigRequest
 from model.form_value import FormValue
 from model.peak_form_value import PeakFormValue
 from model.video_form_value import VideoFormValue
-from pyMEA import MEA, FigMEA
-from pyMEA.core.Electrode import Electrode
-from pyMEA.read.model.HedPath import HedPath
+from pyMEA import MEA, FigMEA, read_MEA_npz
+from pyMEA.domain.model.Electrode import Electrode
+from pyMEA.domain.model.HedPath import HedPath
 from repository.fig_image_repository import FigImageRepository
 from service.FigDispatchServiceFactory import FigDispatchServiceFactory
 from service.mino_service import MinioService
@@ -80,3 +81,42 @@ def create_figMEA(data, form_value: FormValue):
         data,
     )
     return FigMEA(data, Electrode(form_value.electrode_distance))
+
+
+@dataclass(frozen=True)
+class NpzFigUseCase:
+    fig_request: NpzFigRequest
+
+    def create_fig(self):
+        try:
+            pymea = read_MEA_npz(self.fig_request.npz_path)
+        finally:
+            os.remove(self.fig_request.npz_path)
+
+        json_data = {
+            **self.fig_request.json_data,
+            "start": float(pymea.data.start),
+            "end": float(pymea.data.end),
+            "hedValue": {
+                "sampling_rate": int(pymea.data.SAMPLING_RATE),
+                "gain": int(pymea.data.GAIN),
+            },
+            "electrode_distance": int(pymea.electrode.ele_dis),
+            "readTime": {
+                "start": int(pymea.data.start),
+                "end": int(pymea.data.end),
+            },
+        }
+
+        form_value = FormValue(json_data)
+        peak_form_value = PeakFormValue(json_data)
+        video_form_value = VideoFormValue(json_data)
+
+        fm = pymea.fig
+        fig_dispatch_service = FigDispatchServiceFactory.create(
+            fm, form_value, peak_form_value, video_form_value
+        )
+        image_data_list = fig_dispatch_service.create_fig()
+
+        fig_images = MinioService.saves(image_data_list)
+        return [FigImageRepository.insert(fig_image) for fig_image in fig_images]

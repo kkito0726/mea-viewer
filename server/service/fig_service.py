@@ -9,7 +9,7 @@ matplotlib.use("Agg")  # GUIバックエンドを使用しないように設定
 from model.form_value import FormValue
 from model.peak_form_value import PeakFormValue
 from pyMEA import FigMEA, detect_peak_all, detect_peak_neg, detect_peak_pos
-from pyMEA.read.model.MEA import MEA
+from pyMEA.domain.model.MEA import MEA
 
 
 @dataclass(frozen=True)

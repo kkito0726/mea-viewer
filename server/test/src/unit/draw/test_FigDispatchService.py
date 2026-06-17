@@ -7,7 +7,7 @@ from enums.FigType import FigType
 from model.form_value import FormValue
 from model.peak_form_value import PeakFormValue
 from pyMEA import detect_peak_neg, read_MEA
-from pyMEA.figure.plot.plot import circuit_eles
+from pyMEA.presentation.plot.plot import circuit_eles
 from service.fig_service import FigService
 from service.FigImageDispatchService import FigImageDispatchService
 from usecase.FigUseCase import complete_data, create_figMEA

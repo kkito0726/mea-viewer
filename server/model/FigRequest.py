@@ -1,6 +1,7 @@
 import json
+import os
+import tempfile
 from dataclasses import dataclass
-from trace import Trace
 
 import numpy as np
 from flask import request
@@ -10,6 +11,29 @@ from flask import request
 class FigRequest:
     data: np.ndarray[float]
     json_data: dict
+
+
+@dataclass(frozen=True)
+class NpzFigRequest:
+    npz_path: str
+    json_data: dict
+
+
+def decode_request_npz():
+    npz_file = request.files.get("npz")
+    json_data = request.form.get("jsonData")
+    if json_data:
+        json_data = json.loads(json_data)
+
+    tmp = tempfile.NamedTemporaryFile(suffix=".npz", delete=False)
+    try:
+        tmp.write(npz_file.read())
+        tmp.flush()
+        tmp_path = tmp.name
+    finally:
+        tmp.close()
+
+    return NpzFigRequest(tmp_path, json_data)
 
 
 def decode_request():
