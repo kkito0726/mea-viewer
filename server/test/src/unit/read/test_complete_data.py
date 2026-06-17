@@ -4,7 +4,7 @@ from test.src.utils import get_resource_path
 import numpy as np
 from model.form_value import FormValue
 from pyMEA import read_MEA
-from pyMEA.figure.plot.plot import circuit_eles
+from pyMEA.presentation.plot.plot import circuit_eles
 from usecase.FigUseCase import complete_data
 
 
